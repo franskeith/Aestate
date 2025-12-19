@@ -32,34 +32,6 @@ body {
 
 /* --- NAVBAR (Copy Style Dasar) --- */
 /* --- NAVBAR (UPDATED BIAR KONSISTEN SAMA HOME) --- */
-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 20px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* Awalnya Transparan */
-    background: transparent; 
-    z-index: 1000;
-    transition: all 0.4s ease;
-}
-
-/* Pas di-Scroll (Class ini nanti ditembak pake JS) */
-nav.scrolled {
-    background: rgba(255, 246, 233, 0.85); /* Warna cream transparan */
-    backdrop-filter: blur(10px); /* Efek Kaca/Blur */
-    padding: 15px 50px; /* Mengecil dikit biar sleek */
-    box-shadow: 0 4px 30px rgba(82, 63, 55, 0.05);
-}
-
-.logo h1 { font-family: var(--font-head); font-size: 24px; color: #333; }
-.logo span { display: block; font-size: 10px; letter-spacing: 2px; color: #888; }
-.nav-links { list-style: none; display: flex; gap: 30px; }
-.nav-links a { text-decoration: none; color: #333; font-weight: 600; font-size: 14px; }
-.nav-links .active { color: #FFAF02; border-bottom: 2px solid #FFAF02; }
-
 /* --- MAIN CONTAINER --- */
 #magic-studio {
     display: flex;

@@ -1,0 +1,118 @@
+/* =========================================
+   NAVBAR.CSS - PREMIUM STYLE
+   ========================================= */
+
+/* 1. KUNCI SCROLLBAR (Wajib ada biar gak goyang) */
+html {
+    overflow-y: scroll;
+}
+
+/* 2. BASE NAVIGATION */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 25px 50px; /* Padding awal agak lega */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9999;
+    
+    /* Animasi Transisi Super Smooth */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+    
+    /* Animasi Masuk (Entrance) */
+    animation: slideDown 1s ease-out forwards;
+}
+
+/* 3. STATE SAAT DI-SCROLL (Glassmorphism) */
+nav.scrolled {
+    padding: 15px 50px; /* Mengecil jadi compact */
+    background: rgba(255, 246, 233, 0.7); /* Lebih transparan */
+    backdrop-filter: blur(15px); /* Blur makin kuat */
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Bayangan halus */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Garis batas tipis */
+}
+
+/* 4. LOGO STYLING */
+.logo h1 { 
+    font-family: 'Days One', sans-serif;
+    font-size: 24px; 
+    color: #333;
+    letter-spacing: -1px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* Efek Logo pas dihover */
+.logo:hover h1 {
+    transform: scale(1.05); /* Gede dikit */
+}
+
+.logo span { 
+    display: block; 
+    font-size: 10px; 
+    letter-spacing: 3px; 
+    color: #888; 
+    text-transform: uppercase;
+}
+
+/* 5. NAVIGATION LINKS (The Magic Part) */
+.nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 40px; 
+}
+
+.nav-links a { 
+    text-decoration: none; 
+    color: #523F37; 
+    font-weight: 500; 
+    font-size: 14px; 
+    letter-spacing: 1px;
+    position: relative; /* Penting buat garis bawah */
+    padding-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+/* Garis Bawah Ajaib (Garis muncul dari kiri ke kanan) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #FFAF02; /* Warna Aksen */
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #FFAF02;
+}
+
+.nav-links a:hover::after {
+    width: 100%; /* Garis memanjang */
+}
+
+/* State Active (Halaman yang lagi dibuka) */
+.nav-links .active { 
+    color: #FFAF02; 
+    font-weight: 700;
+}
+.nav-links .active::after {
+    width: 100%; /* Garis stay */
+}
+
+/* 6. KEYFRAMES ANIMATION */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%); /* Mulai dari atas layar */
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

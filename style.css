@@ -20,26 +20,6 @@ body {
     overflow-x: hidden;
 }
 
-/* NAVBAR */
-nav {
-    position: fixed;
-    top: 0; width: 100%; padding: 20px 50px;
-    display: flex; justify-content: space-between; align-items: center;
-    z-index: 1000; transition: all 0.4s ease;
-}
-
-nav.scrolled {
-    background: rgba(255, 246, 233, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 15px 50px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.logo h1 { font-family: var(--font-head); font-size: 24px; color: #333; }
-.logo span { display: block; font-size: 10px; letter-spacing: 2px; color: #888; }
-.nav-links { list-style: none; display: flex; gap: 30px; }
-.nav-links a { text-decoration: none; color: #333; font-weight: 600; font-size: 14px; letter-spacing: 1px; }
-.nav-links .highlight { color: var(--accent); }
 
 /* HERO SECTION */
 #hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
