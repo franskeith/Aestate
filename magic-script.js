@@ -1,17 +1,6 @@
 // =========================================
 // 1. DATA & STATE MANAGEMENT
 // =========================================
-const navbar = document.getElementById('navbar');
-
-window.addEventListener('scroll', () => {
-    // Kalau scroll lebih dari 50px, tambah class 'scrolled'
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        // Kalau di paling atas, balikin transparan
-        navbar.classList.remove('scrolled');
-    }
-});
 
 // --- DATA SHAPE CEWEK ---
 const femaleBodyTypes = [
@@ -41,7 +30,7 @@ let userState = {
 };
 
 // --- URL API ---
-// Pastikan ini URL Google Apps Script yang TERBARU
+// Mengarah ke Google Apps Script (Main.gs)
 const API_URL = "https://script.google.com/macros/s/AKfycbwiO26llTJTaHC97avm3Cz9hVMdjpxU11UV-2bD5p6PIB7DCAaq7H_lsVe-U2N2TQg/exec";
 let allProducts = []; 
 
@@ -87,7 +76,6 @@ function switchGender(gender) {
     // 2. Update Visual Tombol Gender (Highlight)
     const btns = document.querySelectorAll('.btn-gender');
     btns.forEach(btn => {
-        // Cek teks tombol (WOMEN / MEN) case insensitive
         if(btn.innerText.toLowerCase().includes(gender)) {
             btn.classList.add('active');
         } else {
@@ -103,7 +91,7 @@ function switchGender(gender) {
 function changeBody(direction) {
     userState.bodyIndex += direction;
     
-    // Looping Logic (Pake currentBodyList biar dinamis)
+    // Looping Logic
     if (userState.bodyIndex < 0) userState.bodyIndex = currentBodyList.length - 1;
     if (userState.bodyIndex >= currentBodyList.length) userState.bodyIndex = 0;
 
@@ -156,17 +144,19 @@ function selectHeight(el) {
 }
 
 // =========================================
-// 4. DATA FETCHING (DENGAN SAFEGUARD)
+// 4. DATA FETCHING (UPDATED FOR ROUTING)
 // =========================================
 
 async function fetchProducts() {
-    // Clear cache dulu biar data gender masuk
+    // Clear cache biar data baru masuk
     localStorage.removeItem('product_data'); 
 
     try {
         if(elements.generateBtn) elements.generateBtn.innerText = "Connecting to Database..."; 
         
-        const response = await fetch(API_URL);
+        // 🔥 UPDATE PENTING: Pake parameter ?action=get_all_products
+        // Biar backend tau kita minta SEMUA data (MagicService)
+        const response = await fetch(API_URL + "?action=get_all_products");
         const data = await response.json();
         
         // Cek Validitas Data
@@ -207,19 +197,16 @@ if (elements.generateBtn) {
         const bodyTag = `${currentBody}-body`;
         const genderTag = userState.gender;
         const currentFace = userState.face; 
-        const faceTag = `${currentFace}-face`; // Tags: oval-face, round-face, dll
+        const faceTag = `${currentFace}-face`; 
         
-        // --- LOGIC HEIGHT MAPPING (SESUAI HTML KAMU) ---
-        let heightTag = 'average-height'; // Default
+        // --- LOGIC HEIGHT MAPPING ---
+        let heightTag = 'average-height'; 
 
         if (userState.height === 'tall' || userState.height === 'very_tall') {
-            // Kalau Tinggi / Tinggi Banget -> Cari sepatu Flat/Low
             heightTag = 'tall-height'; 
         } else if (userState.height === 'mini') {
-            // Kalau Mini -> Cari sepatu Heels/Platform/Chunky
             heightTag = 'short-height'; 
         } else {
-            // Kalau Average -> Cari yang standar
             heightTag = 'average-height';
         }
         
@@ -242,21 +229,20 @@ if (elements.generateBtn) {
             // Set pake Body Tag
             sets: filterProducts('Set', toneTag, bodyTag, genderTag),
 
-            // 🔥 SEPATU PAKE HEIGHT TAG 🔥
-            // Parameter ke-3 kita isi heightTag
+            // Sepatu pake Height Tag
             shoes: filterProducts('Shoes', toneTag, heightTag, genderTag)
         };
 
         console.log("Filtered Results:", recs); 
 
-        // 3. Update Visual Teks (Opsional)
+        // 3. Update Visual Teks
         const currentBodyLabel = currentBodyList[userState.bodyIndex].label;
         const tagElement = document.querySelector('.look-tag span');
         if (tagElement) {
             tagElement.innerText = `✨ Best Match for ${currentBodyLabel}`;
         }
         
-        // Ganti Foto Gede (Visual)
+        // Ganti Foto Gede
         const bigImageElement = document.querySelector('.look-visual img');
         if (bigImageElement && recs.sets.length > 0) {
             bigImageElement.src = recs.sets[0].image; 
@@ -267,8 +253,6 @@ if (elements.generateBtn) {
         renderGrid(elements.topContainer, recs.tops.concat(recs.outers));
         renderGrid(elements.bottomContainer, recs.bottoms);
         renderGrid(elements.accContainer, recs.accs);
-        
-        // 👇 RENDER SEPATU DI SINI
         renderGrid(elements.shoesContainer, recs.shoes);
 
         if(elements.skinAdvice) {
@@ -281,8 +265,7 @@ if (elements.generateBtn) {
     });
 }
 
-// --- LOGIC FILTER UTAMA (SMART VERSION) ---
-// Parameter ke-3 kita ganti nama jadi 'shapeTag' (bisa Body atau Face)
+// --- LOGIC FILTER UTAMA (UNIVERSAL SHAPE) ---
 function filterProducts(category, toneTag, shapeTag, genderTag) {
     if (!Array.isArray(allProducts)) return []; 
 
@@ -296,11 +279,8 @@ function filterProducts(category, toneTag, shapeTag, genderTag) {
         // 2. Cek Gender (STRICT MODE)
         let isGenderMatch = false;
         if (genderTag === 'men') {
-            // Kalau Cowok: WAJIB ada tag 'men' atau 'unisex'
-            // Aksesoris cewek yg ga ada tag ini bakal ketendang
             isGenderMatch = tags.includes('men') || tags.includes('unisex');
         } else {
-            // Kalau Cewek: Cari 'women', 'unisex', atau yg kosong (backward compatible)
             const isExplicitMen = tags.includes('men'); 
             isGenderMatch = tags.includes('women') || tags.includes('unisex') || !isExplicitMen;
         }
@@ -308,13 +288,12 @@ function filterProducts(category, toneTag, shapeTag, genderTag) {
         // 3. Cek Tone
         const isToneMatch = tags.includes(toneTag) || tags.includes('neutral-tone') || tags.includes('all-tone');
         
-        // 4. Cek Shape (Bisa Body Shape ATAU Face Shape)
-        // Kita bolehin juga tag 'all-body', 'all-face', atau 'all'
-const isShapeMatch = shapeTag === 'all' || 
+        // 4. Cek Shape (Bisa Body / Face / Height)
+        const isShapeMatch = shapeTag === 'all' || 
                              tags.includes(shapeTag) || 
                              tags.includes('all-body') || 
                              tags.includes('all-face') ||
-                             tags.includes('all-height') || // <-- Tambahin ini biar aman
+                             tags.includes('all-height') || 
                              tags.includes('all-shape');
 
         return isGenderMatch && isToneMatch && isShapeMatch;
@@ -405,10 +384,10 @@ function formatPrice(num) {
 // =========================================
 
 window.addEventListener('DOMContentLoaded', () => {
-    // Clear cache dulu biar data gender masuk
+    // Clear cache biar data baru masuk
     localStorage.removeItem('product_data');
     
-    // Set UI Awal: PAKE currentBodyList (Bukan bodyTypes yg lama)
+    // Set UI Awal
     const current = currentBodyList[userState.bodyIndex]; 
     if(elements.bodyLabel) elements.bodyLabel.innerText = current.label;
     if(elements.bodyDesc) elements.bodyDesc.innerText = current.desc;
@@ -440,7 +419,3 @@ function slowScrollTo(target, duration) {
 
     requestAnimationFrame(animation);
 }
-
-// =========================================
-// NAVBAR SCROLL EFFECT (BIAR SAMA KAYA HOME)
-// =========================================
