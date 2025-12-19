@@ -28,76 +28,89 @@ setInterval(nextSlide, slideInterval);
 // ==========================================
 // 2. DATA FETCHING (GOOGLE SHEETS)
 // ==========================================
+// ==========================================
+// 2. DATA FETCHING (NEW ARRIVAL - SETS ONLY)
+// ==========================================
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbwiO26llTJTaHC97avm3Cz9hVMdjpxU11UV-2bD5p6PIB7DCAaq7H_lsVe-U2N2TQg/exec'; 
+const API_URL = "https://script.google.com/macros/s/AKfycbxbPkvjyWrnKeiIr9unaPwWLgqrZv7AnWyP4roAgvMgpA6f_e8u6u1FZazoqgSurV0D/exec";
+                                
+const katalogArea = document.getElementById('katalog-area');
+const loadingIndicator = document.getElementById('loading-indicator');
 
-async function ambilDataKatalog() {
-    const container = document.getElementById('katalog-area');
-    const loadingText = document.getElementById('loading-text'); // Text kecil di header (opsional)
-
-    // 1. TAMPILKAN LOADING (SPINNER) SEBELUM FETCH
-    // Kita inject HTML loader ke dalam container
-    container.innerHTML = '<div class="loader"></div>';
-    
+async function loadNewArrivals() {
     try {
-        // Proses ambil data (ini yang butuh waktu lama)
-        const response = await fetch(API_URL);
-        const dataProduk = await response.json();
-        
-        console.log("Data Full:", dataProduk);
+        // Backend (HomeService.gs) udah otomatis:
+        // 1. Filter cuma 'Set'
+        // 2. Sort by Date
+        // 3. Potong cuma 3 biji
+        const response = await fetch(API_URL + "?action=get_new_arrivals");
+        const data = await response.json();
 
-        // 2. AMBIL CUMA 3 PRODUK PERTAMA
-        // .slice(0, 3) artinya potong dari index 0 sampai 3
-        const topThree = dataProduk.slice(0, 3);
+        console.log("Data New Sets:", data);
 
-        renderKatalog(topThree);
-        
+        // Cek Error dari Google Sheet
+        if (data.status === 'error') {
+            // Tampilkan pesan error ASLI dari backend biar ketahuan salahnya
+            console.error("Backend Error:", data.message); 
+            showError("Error: " + data.message); 
+            return;
+        }
+
+        if (!Array.isArray(data)) {
+            showError("Format data salah (Bukan Array).");
+            return;
+        }
+
+        // Render Data (Gak perlu slice lagi karena backend udah kasih 3)
+        renderGrid(data);
+
+        if(loadingIndicator) loadingIndicator.style.display = 'none';
+
     } catch (error) {
-        console.error("Gagal ambil data:", error);
-        container.innerHTML = '<p style="text-align:center; color:red;">Gagal memuat data. Cek koneksi.</p>';
-        if(loadingText) loadingText.innerText = "Error";
+        console.error("Fetch Error:", error);
+        showError("Koneksi bermasalah.");
     }
 }
 
-function renderKatalog(data) {
-    const container = document.getElementById('katalog-area');
-    const loadingText = document.getElementById('loading-text');
-    
-    // Hilangkan teks loading di header (jika ada)
-    if(loadingText) loadingText.style.display = 'none';
+function renderGrid(products) {
+    katalogArea.innerHTML = ''; 
 
-    // 3. BERSIHKAN LOADING SPINNER DULU
-    // Sebelum loop, kita kosongin container biar loader-nya ilang
-    container.innerHTML = '';
+    if (products.length === 0) {
+        katalogArea.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">Belum ada koleksi Set terbaru.</p>';
+        return;
+    }
 
-    data.forEach(item => {
-        // Format Rupiah
-        let hargaFormat = "Hubungi Admin";
-        if (item.harga) {
-            hargaFormat = "Rp " + new Intl.NumberFormat('id-ID').format(item.harga);
-        }
+    products.forEach(p => {
+        const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
+        const shopLink = p.shop_link || '#';
 
-        const linkTujuan = item.link_shopee || '#';
-
-        const htmlCard = `
-            <div class="product-card" onclick="window.open('${linkTujuan}', '_blank')">
-                <img src="${item.link_gambar}" alt="${item.nama_produk}">
+        const cardHTML = `
+            <div class="product-card" onclick="window.open('${shopLink}', '_blank')">
+                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
                 
                 <div class="overlay">
-                    <h3>${item.nama_produk}</h3>
-                    <p>${hargaFormat}</p>
-                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">${item.kategori}</p>
+                    <h3>${p.name}</h3>
+                    <p>Full Set • IDR ${priceFormatted}</p>
                     
-                    <a href="${linkTujuan}" target="_blank" class="btn-shopee">
-                        SHOP NOW
+                    <a href="${shopLink}" target="_blank" class="btn-shopee">
+                        SHOP LOOK
                     </a>
                 </div>
             </div>
         `;
-        
-        container.innerHTML += htmlCard;
+        katalogArea.innerHTML += cardHTML;
     });
 }
 
+function showError(msg) {
+    if(loadingIndicator) {
+        loadingIndicator.innerHTML = `<span style="color:red;">⚠️ ${msg}</span>`;
+    }
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    loadNewArrivals();
+});
+
 // Jalankan fungsi
-ambilDataKatalog();

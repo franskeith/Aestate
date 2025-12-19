@@ -31,7 +31,7 @@ let userState = {
 
 // --- URL API ---
 // Mengarah ke Google Apps Script (Main.gs)
-const API_URL = "https://script.google.com/macros/s/AKfycbwiO26llTJTaHC97avm3Cz9hVMdjpxU11UV-2bD5p6PIB7DCAaq7H_lsVe-U2N2TQg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxbPkvjyWrnKeiIr9unaPwWLgqrZv7AnWyP4roAgvMgpA6f_e8u6u1FZazoqgSurV0D/exec";
 let allProducts = []; 
 
 // =========================================

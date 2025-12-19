@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AESTATE - Capsule Wardrobe</title>
+    <title>AESTATE - Timeless Essentials</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   
-    <link rel="stylesheet" href="Modular Css/navbar.css">
+    <link rel="stylesheet" href="Modular Css/navbar.css"> 
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<script src="Modular Css/navbar.js"></script>    
-
+<script src="Modular Css/navbar.js"></script>
     <nav id="navbar">
         <div class="logo">
-            <h1>AE<span>LOREM</span></h1>
+            <h1>AE<span>STATE</span></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="try-magic.html" class="highlight active">TRY MAGIC</a></li> <li><a href="#">NEW MODEL</a></li>
+            <li><a href="index.html" class="active">HOME</a></li>
+            <li><a href="try-magic.html">TRY MAGIC</a></li> 
+            <li><a href="#">NEW MODEL</a></li>
             <li><a href="#">CULTURE</a></li>
             <li><a href="#">CONTACT</a></li>
         </ul>
@@ -39,7 +41,6 @@
                     <p>TIMELESS ESSENTIALS.</p>
                 </div>
             </div>
-
             <div class="slide">
                 <div class="layer layer-5-bg" style="background-color: #E6C4A8;"></div>
                 <div class="layer layer-2-text">
@@ -58,15 +59,40 @@
 
     <section id="new-arrival">
         <div class="section-header">
-            <h2>Catalog</h2>
-            <p>Koleksi terkini dari Google Sheet Database</p>
-            <p id="loading-text" style="font-size: 0.8rem; color: gray; margin-top: 10px;">Sedang memuat data...</p>
+            <h2>Just Landed</h2> <p>Curated fresh picks for your capsule wardrobe.</p>
+            
+            <div id="loading-indicator">
+                <div class="spinner"></div>
+                <span>Syncing Database...</span>
+            </div>
         </div>
         
         <div class="product-grid" id="katalog-area">
             </div>
     </section>
+<section id="try-magic-promo">
+        <div class="promo-container">
+            <div class="promo-content" data-aos="fade-right">
+                <h2>WANNA TRY<br>SOMETHING COOL?</h2>
+                <p>
+                    Create your outfit reference based on skin tone and face shape. 
+                    Explore our avatar feature to <strong>preview the look instantly</strong>.
+                </p>
+                <a href="try-magic.html" class="btn-try-magic">
+                    TRY MAGIC NOW
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
 
+            <div class="promo-visual" data-aos="fade-left">
+                <img src="Home section Image/try magic.png" alt="Try Magic Avatar Preview" class="avatar-img">
+                
+                <div class="floating-element float-1"></div>
+                <div class="floating-element float-2"></div>
+            </div>
+        </div>
+    </section>
+      
     <script src="script.js"></script>
 </body>
 </html>

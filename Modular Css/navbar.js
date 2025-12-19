@@ -1,30 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('nav');
     
-    // Logic Scroll Effect
+    // =========================================
+    // 1. SCROLL EFFECT (Glassmorphism)
+    // =========================================
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) { // Lebih sensitif (20px aja udah berubah)
+        if (window.scrollY > 20) { 
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
     });
 
-    // Optional: Highlight Menu Otomatis
-    // Biar navbar tau dia lagi di halaman mana dan nambahin class 'active' sendiri
-    const currentPath = window.location.pathname.split("/").pop();
-    const navLinks = document.querySelectorAll('.nav-links a');
+    // =========================================
+    // 2. ACTIVE LINK HIGHLIGHT (DETEKTIF URL)
+    // =========================================
+    function setActiveLink() {
+        // Ambil nama file dari URL sekarang (misal: 'try-magic.html')
+        // Kalau kosong (root), kita anggap 'index.html'
+        let currentPath = window.location.pathname.split("/").pop();
+        if (currentPath === '') currentPath = 'index.html';
 
-    navLinks.forEach(link => {
-        // Hapus active lama
-        link.classList.remove('active'); 
-        
-        // Ambil href dari link (misal: index.html)
-        const href = link.getAttribute('href');
-        
-        // Cek kecocokan
-        if (href === currentPath || (currentPath === '' && href === 'index.html')) {
-            link.classList.add('active');
-        }
-    });
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        navLinks.forEach(link => {
+            // Ambil tujuan link (misal: href="try-magic.html")
+            const linkHref = link.getAttribute('href');
+
+            // Hapus kelas active dari semua link dulu biar bersih
+            link.classList.remove('active');
+
+            // Cek Kesamaan
+            // Jika nama file di browser SAMA dengan tujuan link -> AKTIFKAN
+            if (currentPath === linkHref) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Jalankan fungsi saat halaman dimuat
+    setActiveLink();
 });
