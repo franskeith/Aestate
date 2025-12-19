@@ -1,0 +1,526 @@
+/* --- VARIABLES & RESET --- */
+/* --- TAMBAHAN PENTING (SCROLLBAR FIX) --- */
+html {
+    overflow-y: scroll; /* Paksa track scrollbar selalu muncul */
+}
+:root {
+    --bg-main: #FFF6E9;       /* Latar Belakang Utama */
+    --bg-panel: #FFEBD8;      /* Warna Panel (Agak lebih gelap dikit) */
+    --card-white: #FFFFFF;    /* Warna Kartu Pilihan */
+    --text-dark: #523F37;     /* Warna Teks Utama */
+    --accent-blue: #6366f1;   /* Warna Border Seleksi (Biru-Ungu) */
+    --btn-gradient-start: #523F37; /* Gradient Tombol Dark */
+    --btn-gradient-end: #8B5E3C;   /* Gradient Tombol Light */
+    
+    --font-head: 'Days One', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    padding-top: 80px; /* Space buat Navbar Fixed */
+    min-height: 100vh;
+}
+
+/* --- NAVBAR (Copy Style Dasar) --- */
+/* --- NAVBAR (UPDATED BIAR KONSISTEN SAMA HOME) --- */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Awalnya Transparan */
+    background: transparent; 
+    z-index: 1000;
+    transition: all 0.4s ease;
+}
+
+/* Pas di-Scroll (Class ini nanti ditembak pake JS) */
+nav.scrolled {
+    background: rgba(255, 246, 233, 0.85); /* Warna cream transparan */
+    backdrop-filter: blur(10px); /* Efek Kaca/Blur */
+    padding: 15px 50px; /* Mengecil dikit biar sleek */
+    box-shadow: 0 4px 30px rgba(82, 63, 55, 0.05);
+}
+
+.logo h1 { font-family: var(--font-head); font-size: 24px; color: #333; }
+.logo span { display: block; font-size: 10px; letter-spacing: 2px; color: #888; }
+.nav-links { list-style: none; display: flex; gap: 30px; }
+.nav-links a { text-decoration: none; color: #333; font-weight: 600; font-size: 14px; }
+.nav-links .active { color: #FFAF02; border-bottom: 2px solid #FFAF02; }
+
+/* --- MAIN CONTAINER --- */
+#magic-studio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    min-height: calc(100vh - 80px);
+}
+
+.container {
+    background-color: var(--bg-panel); /* Warna Panel sesuai desain */
+    border-radius: 40px;
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    padding: 50px;
+    gap: 50px;
+    box-shadow: 0 10px 40px rgba(82, 63, 55, 0.1);
+}
+
+/* --- LEFT PANEL (Body Slider) --- */
+.left-panel {
+    flex: 0 0 35%; /* Lebar 35% */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.panel-header h2 {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+#body-type-label {
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.body-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 80%;
+}
+
+.body-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px; /* Tinggi area gambar */
+}
+
+.body-preview-image img {
+    height: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Tombol Panah Slider */
+.nav-arrow {
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 12px;
+    width: 50px;
+    height: 80px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
+    position: absolute;
+    z-index: 2;
+}
+
+.nav-arrow:hover { background: rgba(255, 255, 255, 0.9); transform: scale(1.05); }
+.nav-arrow img { width: 24px; opacity: 0.7; }
+.nav-arrow.prev { left: 0; }
+.nav-arrow.next { right: 0; }
+
+/* --- RIGHT PANEL (Options Grid) --- */
+.right-panel {
+    flex: 1; /* Sisa lebar (65%) */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+}
+
+.option-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* Kartu Label (Icon + Judul) */
+.option-label-card {
+    background: var(--card-white);
+    border-radius: 12px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+
+.option-label-card img.icon-small {
+    width: 40px;
+    margin-bottom: 10px;
+}
+
+.option-label-card span {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+/* 1. Tone Options */
+.tone-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 140px; /* Biar sejajar sama label card */
+}
+
+.tone-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.tone-circle:hover { transform: scale(1.1); }
+.tone-circle.selected {
+    border-color: var(--accent-blue);
+    transform: scale(1.1);
+}
+
+/* 2 & 3. Face & Height Grids */
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+.selection-card {
+    background: var(--card-white);
+    border-radius: 12px;
+    height: 140px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent; /* Border default transparan */
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.selection-card img {
+    height: 70px;
+    width: auto;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.selection-card span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #666;
+}
+
+/* Hover & Selected States */
+.selection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.selection-card.selected {
+    border-color: var(--accent-blue);
+    background-color: #F8F9FF; /* Background agak biru dikit pas dipilih */
+}
+.selection-card.selected span {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+/* --- GENERATE BUTTON --- */
+.action-area {
+    margin-top: 20px;
+}
+
+#generate-btn {
+    width: 100%;
+    padding: 25px;
+    background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end));
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(82, 63, 55, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#generate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(82, 63, 55, 0.6);
+}
+
+#generate-btn:active {
+    transform: translateY(1px);
+}
+
+/* --- RESPONSIVE (Mobile) --- */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        padding: 30px;
+    }
+    
+    .left-panel, .right-panel {
+        flex: auto;
+        width: 100%;
+    }
+
+    .body-slider-wrapper {
+        height: 400px;
+    }
+
+    .option-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option-label-card {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        gap: 15px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .tone-options {
+        justify-content: center;
+    }
+}
+
+/* --- RECOMMENDATION RESULT STYLES --- */
+
+/* Wrapper Section */
+.result-section {
+    padding: 80px 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.result-section.bg-white {
+    background-color: #FFFFFF; /* Selang seling warna background */
+}
+
+.container-result {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Titles */
+.section-title { margin-bottom: 40px; }
+.section-title.center { text-align: center; }
+.section-title h2 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 10px; }
+.section-title h3 { font-family: var(--font-head); font-size: 2rem; margin-bottom: 10px; }
+
+/* SECTION 2: THE LOOK (Split Layout) */
+.look-book-wrapper {
+    display: flex;
+    gap: 50px;
+    align-items: stretch;
+    background: #fff;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
+
+.look-visual {
+    flex: 1;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.look-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.look-tag {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255,255,255,0.9);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.look-items {
+    flex: 0 0 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Item Row (List Barang) */
+.item-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    transition: transform 0.2s;
+}
+
+.item-row:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
+
+.item-row img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.item-info { flex: 1; }
+.item-info h4 { font-size: 1rem; font-weight: 700; color: var(--text-dark); }
+.item-info p { font-size: 0.8rem; color: #888; margin-bottom: 5px; }
+.item-info .price { font-size: 0.9rem; font-weight: 600; color: var(--btn-gradient-end); }
+
+.btn-shop {
+    text-decoration: none;
+    background: var(--text-dark);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+
+/* SECTION 3, 4, 5: GRID CATALOG */
+.section-header-left {
+    margin-bottom: 40px;
+    border-left: 5px solid var(--accent-blue);
+    padding-left: 20px;
+}
+
+.badge-tone {
+    background: var(--bg-panel);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+/* Product Card Simple */
+.product-card-simple {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    cursor: pointer;
+}
+
+.product-card-simple:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+.img-wrapper {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.product-card-simple:hover .img-wrapper img { transform: scale(1.1); }
+
+.card-details { padding: 20px; }
+.card-details h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 600; }
+.card-details .category { font-size: 0.8rem; color: #999; margin-bottom: 15px; }
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.card-footer .price { font-weight: 700; color: var(--text-dark); }
+.card-footer .btn-arrow {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card-footer .btn-arrow:hover { background: var(--text-dark); color: #fff; border-color: var(--text-dark); }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .look-book-wrapper { flex-direction: column; }
+    .look-items { flex: auto; }
+}
+
+
+.btn-gender {
+    padding: 10px 25px;
+    border: 2px solid #523F37;
+    background: transparent;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 20px;
+    margin-right: 10px;
+    transition: 0.3s;
+}
+.btn-gender.active {
+    background: #523F37;
+    color: white;
+}

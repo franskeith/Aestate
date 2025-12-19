@@ -1,0 +1,141 @@
+/* --- TAMBAHAN PENTING (SCROLLBAR FIX) --- */
+html {
+    overflow-y: scroll; /* Paksa track scrollbar selalu muncul */
+}
+
+:root {
+    --bg-primary: #FFF6E9;
+    --text-primary: #523F37;
+    --accent: #FFAF02;
+    --font-head: 'Days One', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-primary);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+/* NAVBAR */
+nav {
+    position: fixed;
+    top: 0; width: 100%; padding: 20px 50px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000; transition: all 0.4s ease;
+}
+
+nav.scrolled {
+    background: rgba(255, 246, 233, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 50px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.logo h1 { font-family: var(--font-head); font-size: 24px; color: #333; }
+.logo span { display: block; font-size: 10px; letter-spacing: 2px; color: #888; }
+.nav-links { list-style: none; display: flex; gap: 30px; }
+.nav-links a { text-decoration: none; color: #333; font-weight: 600; font-size: 14px; letter-spacing: 1px; }
+.nav-links .highlight { color: var(--accent); }
+
+/* HERO SECTION */
+#hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+.slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: all 1s ease-in-out; }
+.slide.active { opacity: 1; visibility: visible; }
+
+/* LAYERS */
+.layer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: center; align-items: center; }
+.layer-2-text h2 {
+    font-family: var(--font-head); font-size: 25vw; color: #fff; opacity: 0.8;
+    transform: translateY(50px); transition: transform 1.5s ease;
+    white-space: nowrap; writing-mode: vertical-rl; text-orientation: mixed;
+    position: absolute; left: 20%;
+}
+.slide.active .layer-2-text h2 { transform: translateY(0); }
+
+.layer-1-model { z-index: 3; display: flex; justify-content: center; align-items: flex-end; }
+.layer-1-model img { height: 90vh; object-fit: cover; transform: scale(1.1); transition: transform 3s ease; }
+.slide.active .layer-1-model img { transform: scale(1); }
+
+.hero-content { position: absolute; z-index: 4; left: 10%; top: 40%; color: #333; }
+.hero-content h3 { font-family: var(--font-head); font-size: 3rem; line-height: 1.2; margin-bottom: 20px; }
+
+/* CATALOG SECTION (GRID) */
+#new-arrival { padding: 100px 50px; background-color: var(--bg-primary); }
+.section-header { text-align: center; margin-bottom: 50px; }
+.section-header h2 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 10px; }
+
+.product-grid {
+    display: grid;
+    /* 1. MAKSA JADI 3 KOLOM */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+}
+.product-card {
+    position: relative;
+    /* 2. LEBIH PANJANG (TALL) */
+    height: 700px; 
+    overflow: hidden;
+    cursor: pointer;
+    /* 3. JANGAN ADA ROUNDED (TAJAM) */
+    border-radius: 0px; 
+    border: 1px solid #e0e0e0; /* Opsional: garis tipis biar rapi */
+}
+
+.product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.product-card:hover img { transform: scale(1.05); }
+
+/* OVERLAY */
+.overlay {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 30px; opacity: 0; transition: opacity 0.3s ease; color: white;
+}
+.product-card:hover .overlay { opacity: 1; }
+
+.overlay h3 { font-family: var(--font-head); margin-bottom: 5px; }
+.overlay p { font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9; }
+
+/* Tombol Beli di Overlay */
+.btn-shopee {
+    display: inline-block; padding: 10px 20px;
+    background: var(--accent); color: black;
+    text-decoration: none; font-weight: bold; font-size: 0.8rem;
+    border-radius: 20px; text-align: center; width: fit-content;
+}
+
+/* Biar di HP tetep 1 kolom (Responsive) */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- LOADING SPINNER UPDATE --- */
+.loader {
+    /* 1. UKURAN LEBIH GEDE */
+    width: 80px;
+    height: 80px;
+    
+    /* 2. BORDER LEBIH TEBAL */
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #333; /* Warna muternya */
+    border-radius: 50%;
+    
+    /* 3. ANIMASI */
+    animation: spin 1s linear infinite;
+
+    /* 4. POSISI DI TENGAH (PENTING BUAT GRID) */
+    grid-column: 1 / -1; /* Maksa ambil lebar penuh (3 kolom) */
+    justify-self: center; /* Tengahin horizontal */
+    margin: 100px 0; /* Kasih napas atas bawah biar lega */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

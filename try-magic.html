@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTATE - Try Magic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="magic-style.css">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">
+            <h1>AE<span>LOREM</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="#" class="highlight active">TRY MAGIC</a></li> <li><a href="#">NEW MODEL</a></li>
+            <li><a href="#">CULTURE</a></li>
+            <li><a href="#">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <section id="magic-studio">
+        <div class="container">
+            
+            <div class="left-panel">
+                <div class="panel-header">
+                    <div class="gender-switch-container" style="margin-bottom: 20px;">
+                    <button class="btn-gender active" onclick="switchGender('women')">WOMEN</button>
+                    <button class="btn-gender" onclick="switchGender('men')">MEN</button>
+                </div>
+                    <h2>Select Your<br>type Of Body :</h2>
+                    <h3 id="body-type-label">Rectangle</h3> 
+                    <p id="body-desc" class="body-description">Badan rata dari bahu sampai pinggul.</p>
+                </div>
+
+                <div class="body-slider-wrapper">
+                    <button class="nav-arrow prev" onclick="changeBody(-1)">
+                        <img src="assets/TryMagicPage/Icons/arrow-left.svg" alt="Previous">
+                    </button>
+                    
+                    <div class="body-preview-image">
+                        <img src="assets/TryMagicPage/Body/rectangle.png" id="current-body-img" alt="Rectangle Body">
+                    </div>
+
+                    <button class="nav-arrow next" onclick="changeBody(1)">
+                        <img src="assets/TryMagicPage/Icons/arrow-right.svg" alt="Next">
+                    </button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                
+                <div class="option-group tone-group">
+                    <div class="option-label-card">
+                        <img src="assets/TryMagicPage/Icons/palette-icon.png" class="icon-small" alt="">
+                        <span>Select Your tone</span>
+                    </div>
+                    <div class="tone-options">
+                        <div class="tone-circle" style="background-color: #F8E5D3;" data-value="light" onclick="selectTone(this)"></div>
+                        <div class="tone-circle selected" style="background-color: #EAC096;" data-value="medium" onclick="selectTone(this)"></div>
+                        <div class="tone-circle" style="background-color: #DFA473;" data-value="tan" onclick="selectTone(this)"></div>
+                        <div class="tone-circle" style="background-color: #5C4033;" data-value="deep" onclick="selectTone(this)"></div>
+                    </div>
+                </div>
+
+                <div class="option-group face-group">
+                    <div class="option-label-card">
+                        <img src="assets/TryMagicPage/Icons/face-icon.png" class="icon-small" alt="">
+                        <span>Select Your Face Shape</span>
+                    </div>
+                    <div class="face-options grid-4">
+                        <div class="selection-card" data-value="heart" onclick="selectFace(this)">
+                            <img src="assets/TryMagicPage/Face/heart.png" alt="Heart">
+                            <span>Heart</span>
+                        </div>
+                        <div class="selection-card" data-value="diamond" onclick="selectFace(this)">
+                            <img src="assets/TryMagicPage/Face/diamond.png" alt="Diamond">
+                            <span>Diamond</span>
+                        </div>
+                        <div class="selection-card" data-value="oblong" onclick="selectFace(this)">
+                            <img src="assets/TryMagicPage/Face/oblong.png" alt="Oblong">
+                            <span>Oblong</span>
+                        </div>
+                        <div class="selection-card selected" data-value="oval" onclick="selectFace(this)">
+                            <img src="assets/TryMagicPage/Face/oval.png" alt="Oval">
+                            <span>Oval</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-group height-group">
+                    <div class="option-label-card">
+                        <img src="assets/TryMagicPage/Icons/height-icon.png" class="icon-small" alt="">
+                        <span>Your Height?</span>
+                    </div>
+                    <div class="height-options grid-4">
+                        <div class="selection-card" data-value="tall" onclick="selectHeight(this)">
+                            <img src="assets/TryMagicPage/Height/tall.png" alt="I'm Tall">
+                            <span>I'm Tall</span>
+                        </div>
+                        <div class="selection-card" data-value="very_tall" onclick="selectHeight(this)">
+                            <img src="assets/TryMagicPage/Height/too-tall.png" alt="Too Tall">
+                            <span>Too Tall</span>
+                        </div>
+                        <div class="selection-card selected" data-value="average" onclick="selectHeight(this)">
+                            <img src="assets/TryMagicPage/Height/average.png" alt="Average">
+                            <span>Average</span>
+                        </div>
+                        <div class="selection-card" data-value="mini" onclick="selectHeight(this)">
+                            <img src="assets/TryMagicPage/Height/mini.png" alt="Mini">
+                            <span>Mini.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button id="generate-btn" class="btn-main">
+                        CLICK TO GENERATE YOUR STYLE
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div id="recommendation-results" style="display: none;">
+        
+        <section class="result-section highlight-look">
+            <div class="container-result">
+                <div class="section-title center">
+                    <h2>Your Curated Capsule</h2>
+                    <p>Berdasarkan profilmu, ini adalah kombinasi terbaik untuk proporsi tubuhmu.</p>
+                </div>
+
+                <div class="look-book-wrapper">
+                    <div class="look-visual">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Full Outfit Look">
+                        <div class="look-tag">
+                            <span>✨ Best Match for Rectangle Body</span>
+                        </div>
+                    </div>
+
+                    <div class="look-items">
+                        <h3>The Breakdown</h3>
+                        
+                        <div class="item-row">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Top">
+                            <div class="item-info">
+                                <h4>Linen Boxy Shirt</h4>
+                                <p>Atasan yang memberi volume di bahu.</p>
+                                <span class="price">Rp 250.000</span>
+                            </div>
+                            <a href="#" class="btn-shop">Lihat</a>
+                        </div>
+
+                        <div class="item-row">
+                            <img src="https://images.unsplash.com/photo-1551488852-080175d0452d?q=80&w=200&auto=format&fit=crop" alt="Pants">
+                            <div class="item-info">
+                                <h4>High-Waist Trousers</h4>
+                                <p>Menciptakan ilusi pinggang.</p>
+                                <span class="price">Rp 350.000</span>
+                            </div>
+                            <a href="#" class="btn-shop">Lihat</a>
+                        </div>
+
+                        <div class="item-row">
+                            <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=200&auto=format&fit=crop" alt="Acc">
+                            <div class="item-info">
+                                <h4>Minimalist Tote</h4>
+                                <p>Pelengkap yang fungsional.</p>
+                                <span class="price">Rp 150.000</span>
+                            </div>
+                            <a href="#" class="btn-shop">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-section bg-white">
+            <div class="container-result">
+                <div class="section-header-left">
+                    <span class="badge-tone">COLOR ANALYSIS</span>
+                    <h3 id="skin-advice-text">
+                        Karena Tone Kulitmu "Medium", pilih warna Earthy agar kulit terlihat lebih cerah.
+                    </h3>
+                </div>
+
+                <div class="catalog-grid" id="rec-tops-container">
+                    
+                    <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=500" alt="Baju 1">
+                        </div>
+                        <div class="card-details">
+                            <h4>Sage Green Blouse</h4>
+                            <p class="category">Tops</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 199.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1551163943-3f6a29e39bb7?q=80&w=500" alt="Baju 2">
+                        </div>
+                        <div class="card-details">
+                            <h4>Cream Knit Vest</h4>
+                            <p class="category">Outer</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 229.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?q=80&w=500" alt="Baju 3">
+                        </div>
+                        <div class="card-details">
+                            <h4>Terracotta Tee</h4>
+                            <p class="category">Basic</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 129.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="result-section">
+            <div class="container-result">
+                <div class="section-title">
+                    <h3>Curated Bottoms</h3>
+                    <p>Potongan yang menyeimbangkan bentuk tubuhmu.</p>
+                </div>
+                
+                <div class="catalog-grid" id="rec-bottoms-container">
+                    <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=500" alt="Celana">
+                        </div>
+                        <div class="card-details">
+                            <h4>Pleated Skirt</h4>
+                            <p class="category">Bottom</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 299.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=500" alt="Celana">
+                        </div>
+                        <div class="card-details">
+                            <h4>Straight Denim</h4>
+                            <p class="category">Jeans</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 399.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <section class="result-section bg-white">
+            <div class="container-result">
+                <div class="section-title">
+                    <h3>Finishing Touches</h3>
+                    <p>Aksesoris untuk melengkapi look kamu.</p>
+                </div>
+                <div class="catalog-grid" id="rec-acc-container">
+                     <div class="product-card-simple">
+                        <div class="img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=500" alt="Kalung">
+                        </div>
+                        <div class="card-details">
+                            <h4>Gold Layered Necklace</h4>
+                            <p class="category">Jewelry</p>
+                            <div class="card-footer">
+                                <span class="price">Rp 89.000</span>
+                                <button class="btn-arrow">→</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </section>
+         <section class="result-section">
+            <div class="container-result">
+                <div class="section-title">
+                    <h3>The Perfect Pair</h3>
+                    <p>Sepatu yang menunjang postur tinggimu.</p>
+                </div>
+                
+                <div class="catalog-grid" id="rec-shoes-container">
+                     </div>
+            </div>
+        </section>
+
+    </div>
+  
+   <script src="magic-script.js"></script>
+</body>
+</html>
