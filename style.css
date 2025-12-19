@@ -85,7 +85,7 @@ body {
 .product-card {
     position: relative;
     /* REVISI UKURAN: Lebih pendek dari 700px biar pas */
-    height: 480px; 
+    height: 580px; 
     overflow: hidden;
     cursor: pointer;
     background: #eaeaea; /* Warna loading */
@@ -363,4 +363,293 @@ body {
     .btn-try-magic { width: 100%; justify-content: center; }
     .promo-visual { width: 100%; margin-bottom: 40px; }
     .avatar-img { max-width: 80%; }
+}
+
+/* =========================================
+   MAGIC EFFECTS (NEW)
+   ========================================= */
+
+/* 1. HIGHLIGHT TEXT 'COOL' (GLOWING) */
+.cool-text {
+    color: var(--accent); /* Warna Kuning/Emas */
+    position: relative;
+    display: inline-block;
+    
+    /* Efek Bloom Teks */
+    text-shadow: 0 0 20px rgba(255, 175, 2, 0.6);
+    animation: pulse-glow 2s infinite alternate;
+}
+
+/* Garis bawah artistik */
+.cool-text::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 175, 2, 0.3);
+    z-index: -1;
+    transform: skewX(-20deg);
+}
+
+@keyframes pulse-glow {
+    0% { text-shadow: 0 0 10px rgba(255, 175, 2, 0.4); }
+    100% { text-shadow: 0 0 30px rgba(255, 175, 2, 0.9), 0 0 10px rgba(255, 255, 255, 0.8); }
+}
+
+/* 2. BUTTON BLOOM EFFECT */
+.btn-try-magic {
+    position: relative;
+    overflow: hidden; /* Biar partikel ga keluar kotak tombol */
+    z-index: 10;
+}
+
+/* Efek sinar pas hover */
+.btn-try-magic:hover {
+    box-shadow: 0 0 30px var(--accent), 0 0 60px rgba(255, 175, 2, 0.4);
+    border: 1px solid rgba(255,255,255,0.5);
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
+/* PARTICLE CSS (Dipake sama JS nanti) */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none; /* Biar ga ngehalangin klik */
+    animation: pop 0.6s ease-out forwards;
+}
+
+@keyframes pop {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0) translate(var(--x), var(--y)); }
+}
+/* =========================================
+   CINEMATIC MAGIC TRANSITION (FIXED VERSION)
+   ========================================= */
+
+/* 1. LAYAR HITAM (OVERLAY) */
+#magic-overlay {
+    position: fixed; /* Ubah jadi Fixed biar nutup satu layar penuh */
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.9), #000);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+    z-index: 9998; /* Di bawah tombol, di atas konten lain */
+    pointer-events: none;
+}
+
+body.magic-active #magic-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 2. TOMBOL JADI SPOTLIGHT */
+body.magic-active #magic-btn {
+    position: relative; 
+    z-index: 9999; /* Paling atas */
+    transform: scale(1.1); 
+    box-shadow: 0 0 50px #FFAF02, 0 0 100px rgba(255, 175, 2, 0.5);
+    transition: all 0.5s ease;
+    cursor: default;
+}
+
+/* 3. PARTIKEL MAGIC */
+.magic-particle {
+    position: fixed; /* PENTING: Fixed biar ga ikut scroll */
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999; 
+    box-shadow: 0 0 10px #fff, 0 0 20px #FFAF02;
+    top: 0; left: 0; /* Reset posisi */
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dest-x), var(--dest-y)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* =========================================
+   FULL CATALOG SECTION
+   ========================================= */
+#full-catalog {
+    padding: 80px 40px;
+    background-color: #fff; /* White background for clean look */
+    min-height: 100vh;
+}
+
+.catalog-header { text-align: center; margin-bottom: 40px; }
+.catalog-header h2 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 10px; text-transform: uppercase; }
+.catalog-header p { color: #888; font-family: var(--font-body); }
+
+/* --- TOOLBAR (FILTER & SEARCH) --- */
+.catalog-toolbar {
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+/* Filter Tabs */
+.filter-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+.filter-btn {
+    background: none; border: none;
+    font-family: var(--font-body); font-size: 0.9rem;
+    cursor: pointer; padding: 8px 16px;
+    border-radius: 20px; color: #888;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+.filter-btn:hover { color: var(--text-primary); background: #f5f5f5; }
+.filter-btn.active { background: var(--text-primary); color: #fff; }
+
+/* Search Bar */
+.search-container {
+    position: relative;
+    width: 300px;
+}
+.search-container input {
+    width: 100%;
+    padding: 12px 20px 12px 45px; /* Padding kiri buat icon */
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    font-family: var(--font-body);
+    outline: none;
+    transition: all 0.3s ease;
+}
+.search-container input:focus {
+    background: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255, 175, 2, 0.1);
+}
+.search-icon {
+    position: absolute; left: 15px; top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+}
+/* =========================================
+   CATALOG GRID STYLING (E-COMMERCE STYLE)
+   ========================================= */
+
+.catalog-grid {
+    display: grid;
+    /* Responsive Grid: Minimal lebar 240px */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* KARTU KATALOG (Khusus di dalam #full-catalog) */
+.catalog-card {
+    background: #fff;
+    border-radius: 16px; /* Rounded banget */
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0; /* Garis tepi halus */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06); /* Tambah bayangan lembut */
+    display: flex;
+    flex-direction: column; /* Susun ke bawah */
+    height: 100%; /* Biar tinggi sama rata */
+}
+
+/* EFEK HOVER: Naik dikit & Shadow */
+.catalog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border-color: var(--accent);
+}
+
+/* 1. BAGIAN GAMBAR (ATAS) */
+.catalog-card .img-wrapper {
+    width: 100%;
+    height: 280px; /* Tinggi gambar fix */
+    overflow: hidden;
+    background: #f9f9f9;
+    position: relative;
+}
+
+.catalog-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Zoom halus pas hover */
+.catalog-card:hover img {
+    transform: scale(1.08);
+}
+
+/* 2. BAGIAN INFO (BAWAH) */
+.catalog-card .card-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1; /* Ngisi sisa ruang */
+}
+
+.catalog-card h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    /* Batasi jadi 2 baris kalau kepanjangan */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.catalog-card .category {
+    font-size: 0.8rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.catalog-card .price {
+    font-family: var(--font-body); /* Gunakan Inter */
+    font-size: 1.1rem;
+    color: #C07A00; /* Warna amber lebih lembut, tidak terlalu kuning */
+    font-weight: 700; /* Bold */
+    margin-top: auto; /* Dorong harga ke paling bawah */
+    padding-top: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .catalog-grid {
+        gap: 15px;
+        grid-template-columns: repeat(2, 1fr); /* HP tetep 2 kolom biar kaya Shopee */
+    }
+    .catalog-card .img-wrapper {
+        height: 200px; /* Gambar lebih kecil di HP */
+    }
+    .catalog-card h3 { font-size: 0.9rem; }
+    .catalog-card .price { font-size: 1rem; }
 }

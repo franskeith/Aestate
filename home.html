@@ -18,7 +18,7 @@
             <h1>AE<span>STATE</span></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="index.html" class="active">HOME</a></li>
+            <li><a href="home.html">HOME</a></li>
             <li><a href="try-magic.html">TRY MAGIC</a></li> 
             <li><a href="#">NEW MODEL</a></li>
             <li><a href="#">CULTURE</a></li>
@@ -29,7 +29,7 @@
     <section id="hero">
         <div class="slider-container">
             <div class="slide active">
-                <div class="layer layer-5-bg" style="background-color: #F2E8DC;"></div>
+                <div class="layer layer-5-bg" style="background: linear-gradient(135deg, #D9D9D9 0%, #FFECD8 40%, #737373 100%);"></div>
                 <div class="layer layer-2-text">
                     <h2>2025</h2>
                 </div>
@@ -73,12 +73,16 @@
 <section id="try-magic-promo">
         <div class="promo-container">
             <div class="promo-content" data-aos="fade-right">
-                <h2>WANNA TRY<br>SOMETHING COOL?</h2>
+                <h2>
+                    WANNA TRY<br>
+                    SOMETHING <span class="cool-text">COOL?</span>
+                </h2>
                 <p>
                     Create your outfit reference based on skin tone and face shape. 
                     Explore our avatar feature to <strong>preview the look instantly</strong>.
                 </p>
-                <a href="try-magic.html" class="btn-try-magic">
+                
+                <a href="try-magic.html" class="btn-try-magic" id="magic-btn">
                     TRY MAGIC NOW
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </a>
@@ -92,7 +96,33 @@
             </div>
         </div>
     </section>
-      
+    <section id="full-catalog">
+        <div class="catalog-header">
+            <h2>The Collection</h2>
+            <p>Explore our essentials. Mix and match your way.</p>
+        </div>
+
+        <div class="catalog-toolbar">
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="top">Tops</button>
+                <button class="filter-btn" data-filter="bottom">Bottoms</button>
+                <button class="filter-btn" data-filter="shoes">Shoes</button>
+                <button class="filter-btn" data-filter="accessories">Accessories</button>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search items...">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+        </div>
+
+        <div class="catalog-grid" id="main-catalog-grid">
+            <div class="loader-catalog"></div>
+        </div>
+    </section>
+    
+    <div id="magic-overlay"></div>
     <script src="script.js"></script>
 </body>
 </html>
