@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AESTATE - Timeless Essentials</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  
-    <link rel="stylesheet" href="Modular Css/navbar.css"> 
-    
-    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/components/navbar.css">
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<script src="Modular Css/navbar.js"></script>
+    <script src="js/components/navbar.js"></script>
     <nav id="navbar">
         <div class="logo">
             <h1>AE<span>STATE</span></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="try-magic.html">TRY MAGIC</a></li> 
-            <li><a href="#">NEW MODEL</a></li>
-            <li><a href="#">CULTURE</a></li>
-            <li><a href="#">CONTACT</a></li>
+            <li><a href="index.html" class="active">HOME</a></li>
+            <li><a href="pages/try-magic.html">TRY MAGIC</a></li>
+            <li><a href="pages/new-model.html">NEW MODEL</a></li>
+            <li><a href="pages/culture.html">CULTURE</a></li>
+            <li><a href="pages/contact.html">CONTACT</a></li>
         </ul>
     </nav>
 
     <section id="hero">
         <div class="slider-container">
             <div class="slide active">
-                <div class="layer layer-5-bg" style="background: linear-gradient(135deg, #D9D9D9 0%, #FFECD8 40%, #737373 100%);"></div>
+                <div class="layer layer-5-bg"
+                    style="background: linear-gradient(135deg, #D9D9D9 0%, #FFECD8 40%, #737373 100%);"></div>
                 <div class="layer layer-2-text">
                     <h2>2025</h2>
                 </div>
                 <div class="layer layer-1-model">
-                    <img src="Home section Image/Model.png" alt="Model 1"> 
+                    <img src="assets/images/home/Model.png" alt="Model 1">
                 </div>
                 <div class="hero-content">
                     <h3>BUILD YOUR<br>IDENTITY</h3>
@@ -47,7 +51,7 @@
                     <h2>NEW</h2>
                 </div>
                 <div class="layer layer-1-model">
-                    <img src="Home section Image/Model cowo.png" alt="Model 2">
+                    <img src="assets/images/home/Model cowo.png" alt="Model 2">
                 </div>
                 <div class="hero-content">
                     <h3>LESS IS<br>MORE</h3>
@@ -59,18 +63,19 @@
 
     <section id="new-arrival">
         <div class="section-header">
-            <h2>Just Landed</h2> <p>Curated fresh picks for your capsule wardrobe.</p>
-            
+            <h2>Just Landed</h2>
+            <p>Curated fresh picks for your capsule wardrobe.</p>
+
             <div id="loading-indicator">
                 <div class="spinner"></div>
                 <span>Syncing Database...</span>
             </div>
         </div>
-        
+
         <div class="product-grid" id="katalog-area">
-            </div>
+        </div>
     </section>
-<section id="try-magic-promo">
+    <section id="try-magic-promo">
         <div class="promo-container">
             <div class="promo-content" data-aos="fade-right">
                 <h2>
@@ -78,19 +83,24 @@
                     SOMETHING <span class="cool-text">COOL?</span>
                 </h2>
                 <p>
-                    Create your outfit reference based on skin tone and face shape. 
+                    Create your outfit reference based on skin tone and face shape.
                     Explore our avatar feature to <strong>preview the look instantly</strong>.
                 </p>
-                
-                <a href="try-magic.html" class="btn-try-magic" id="magic-btn">
+
+                <a href="pages/try-magic.html" class="btn-try-magic" id="magic-btn">
                     TRY MAGIC NOW
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-arrow-right">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
 
             <div class="promo-visual" data-aos="fade-left">
-                <img src="Home section Image/try magic.png" alt="Try Magic Avatar Preview" class="avatar-img">
-                
+                <img src="assets/images/home/try magic.png" alt="Try Magic Avatar Preview" class="avatar-img">
+
                 <div class="floating-element float-1"></div>
                 <div class="floating-element float-2"></div>
             </div>
@@ -113,7 +123,11 @@
 
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="Search items...">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
             </div>
         </div>
 
@@ -121,8 +135,9 @@
             <div class="loader-catalog"></div>
         </div>
     </section>
-    
+
     <div id="magic-overlay"></div>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>

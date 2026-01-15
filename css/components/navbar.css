@@ -1,5 +1,5 @@
 /* =========================================
-   NAVBAR.CSS - PREMIUM STYLE
+   NAVBAR.CSS - PREMIUM STYLE (FIXED)
    ========================================= */
 
 /* 1. KUNCI SCROLLBAR (Wajib ada biar gak goyang) */
@@ -7,22 +7,25 @@ html {
     overflow-y: scroll;
 }
 
-/* 2. BASE NAVIGATION */
+/* 2. BASE NAVIGATION (CONSISTENT) */
 nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 25px 50px; /* Padding awal agak lega */
+    padding: 20px 50px; /* Padding konsisten */
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 9999;
     
-    /* Animasi Transisi Super Smooth */
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+    /* Background default agar konsisten */
+    background: rgba(255, 246, 233, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     
-    /* Animasi Masuk (Entrance) */
-    animation: slideDown 1s ease-out forwards;
+    /* Animasi Transisi Super Smooth */
+    transition: all 0.3s ease;
 }
 
 /* 3. STATE SAAT DI-SCROLL (Glassmorphism) */

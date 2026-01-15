@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTATE - Culture</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/components/navbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #FFF6E9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .culture-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+        }
+
+        .culture-container {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .culture-container h1 {
+            font-family: 'Days One', sans-serif;
+            font-size: 4.5rem;
+            color: #523F37;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        .culture-container .subtitle {
+            font-size: 1.5rem;
+            color: #FFAF02;
+            font-weight: 600;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .culture-container p {
+            font-size: 1.1rem;
+            color: #858280;
+            line-height: 1.9;
+            margin-bottom: 30px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .value-item {
+            padding: 30px;
+            background: linear-gradient(135deg, #FFEBD8 0%, #E6C4A8 100%);
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .value-item:hover {
+            transform: scale(1.05);
+        }
+
+        .value-item h3 {
+            font-family: 'Days One', sans-serif;
+            color: #523F37;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .value-item p {
+            color: #523F37;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="logo">
+            <h1>AE<span>STATE</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">HOME</a></li>
+            <li><a href="try-magic.html">TRY MAGIC</a></li>
+            <li><a href="new-model.html">NEW MODEL</a></li>
+            <li><a href="culture.html" class="active">CULTURE</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <div class="culture-hero">
+        <div class="culture-container">
+            <h1>Our Culture</h1>
+            <p class="subtitle">"Less is More, Quality over Quantity"</p>
+
+            <p>
+                AESTATE percaya pada filosofi <strong>Capsule Wardrobe</strong> – sebuah pendekatan minimalis dalam
+                berpakaian yang mengutamakan kualitas, keserbagunaan, dan keberlanjutan. Kami membantu Anda membangun
+                koleksi pakaian yang timeless, mudah dipadukan, dan mencerminkan identitas personal Anda.
+            </p>
+
+            <p>
+                Dengan AESTATE, Anda tidak perlu lemari yang penuh sesak. Cukup dengan item-item esensial yang
+                dipilih dengan cermat, Anda sudah bisa tampil percaya diri di berbagai kesempatan.
+            </p>
+
+            <div class="values-grid">
+                <div class="value-item">
+                    <h3>Minimalist</h3>
+                    <p>Sederhana namun bermakna, setiap item memiliki purpose.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Timeless</h3>
+                    <p>Desain klasik yang tidak terpengaruh tren musiman.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Versatile</h3>
+                    <p>Satu item, banyak cara padu padan untuk berbagai acara.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Sustainable</h3>
+                    <p>Investasi jangka panjang untuk fashion yang lebih bertanggung jawab.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/components/navbar.js"></script>
+</body>
+
+</html>

@@ -1,93 +1,121 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AESTATE - Try Magic</title>
-    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="Modular Css/navbar.css">
-    <link rel="stylesheet" href="magic-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/components/navbar.css">
+    <link rel="stylesheet" href="../css/magic-style.css">
 </head>
+
 <body>
 
     <nav id="navbar">
         <div class="logo">
-            <h1>AE<span>LOREM</span></h1>
+            <h1>AE<span>STATE</span></h1>
         </div>
-            <ul class="nav-links">
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="try-magic.html">TRY MAGIC</a></li>
-            <li><a href="#">NEW MODEL</a></li>
-            <li><a href="#">CULTURE</a></li>
-            <li><a href="#">CONTACT</a></li>
+        <ul class="nav-links">
+            <li><a href="../index.html">HOME</a></li>
+            <li><a href="try-magic.html" class="active">TRY MAGIC</a></li>
+            <li><a href="new-model.html">NEW MODEL</a></li>
+            <li><a href="culture.html">CULTURE</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
         </ul>
     </nav>
 
+    <!-- Navbar Hint Indicator -->
+    <div id="navbar-hint" class="navbar-hint">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+    </div>
+
     <section id="magic-studio">
         <div class="container">
-            
+
             <div class="left-panel">
                 <div class="panel-header">
-                    <div class="gender-switch-container" style="margin-bottom: 20px;">
-                    <button class="btn-gender active" onclick="switchGender('women')">WOMEN</button>
-                    <button class="btn-gender" onclick="switchGender('men')">MEN</button>
-                </div>
-                    <h2>Select Your<br>type Of Body :</h2>
-                    <h3 id="body-type-label">Rectangle</h3> 
+                    <div class="header-with-gender">
+                        <h2>Select Your<br>type Of Body :</h2>
+                        <div class="gender-switch-container">
+                            <button class="btn-gender active" onclick="switchGender('women')">WOMEN</button>
+                            <button class="btn-gender" onclick="switchGender('men')">MEN</button>
+                        </div>
+                    </div>
+                    <h3 id="body-type-label">Rectangle</h3>
                     <p id="body-desc" class="body-description">Badan rata dari bahu sampai pinggul.</p>
                 </div>
 
                 <div class="body-slider-wrapper">
                     <button class="nav-arrow prev" onclick="changeBody(-1)">
-                        <img src="assets/TryMagicPage/Icons/arrow-left.svg" alt="Previous">
+                        <img src="../assets/images/magic/Icons/arrow-left.svg" alt="Previous">
                     </button>
-                    
+
                     <div class="body-preview-image">
-                        <img src="assets/TryMagicPage/Body/rectangle.png" id="current-body-img" alt="Rectangle Body">
+                        <img src="../assets/images/magic/Body/rectangle.png" id="current-body-img" alt="Rectangle Body">
                     </div>
 
                     <button class="nav-arrow next" onclick="changeBody(1)">
-                        <img src="assets/TryMagicPage/Icons/arrow-right.svg" alt="Next">
+                        <img src="../assets/images/magic/Icons/arrow-right.svg" alt="Next">
                     </button>
                 </div>
             </div>
 
             <div class="right-panel">
-                
+
                 <div class="option-group tone-group">
                     <div class="option-label-card">
-                        <img src="assets/TryMagicPage/Icons/palette-icon.png" class="icon-small" alt="">
+                        <img src="../assets/images/magic/Icons/palette-icon.png" class="icon-small" alt="">
                         <span>Select Your tone</span>
                     </div>
                     <div class="tone-options">
-                        <div class="tone-circle" style="background-color: #F8E5D3;" data-value="light" onclick="selectTone(this)"></div>
-                        <div class="tone-circle selected" style="background-color: #EAC096;" data-value="medium" onclick="selectTone(this)"></div>
-                        <div class="tone-circle" style="background-color: #DFA473;" data-value="tan" onclick="selectTone(this)"></div>
-                        <div class="tone-circle" style="background-color: #5C4033;" data-value="deep" onclick="selectTone(this)"></div>
+                        <div class="tone-item">
+                            <div class="tone-circle" style="background-color: #F8E5D3;" data-value="light"
+                                onclick="selectTone(this)"></div>
+                            <span class="tone-label">Light</span>
+                        </div>
+                        <div class="tone-item">
+                            <div class="tone-circle selected" style="background-color: #EAC096;" data-value="medium"
+                                onclick="selectTone(this)"></div>
+                            <span class="tone-label">Medium</span>
+                        </div>
+                        <div class="tone-item">
+                            <div class="tone-circle" style="background-color: #DFA473;" data-value="tan"
+                                onclick="selectTone(this)"></div>
+                            <span class="tone-label">Tan</span>
+                        </div>
+                        <div class="tone-item">
+                            <div class="tone-circle" style="background-color: #5C4033;" data-value="deep"
+                                onclick="selectTone(this)"></div>
+                            <span class="tone-label">Deep</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="option-group face-group">
                     <div class="option-label-card">
-                        <img src="assets/TryMagicPage/Icons/face-icon.png" class="icon-small" alt="">
+                        <img src="../assets/images/magic/Icons/face-icon.png" class="icon-small" alt="">
                         <span>Select Your Face Shape</span>
                     </div>
                     <div class="face-options grid-4">
                         <div class="selection-card" data-value="heart" onclick="selectFace(this)">
-                            <img src="assets/TryMagicPage/Face/heart.png" alt="Heart">
+                            <img src="../assets/images/magic/Face/heart.png" alt="Heart">
                             <span>Heart</span>
                         </div>
                         <div class="selection-card" data-value="diamond" onclick="selectFace(this)">
-                            <img src="assets/TryMagicPage/Face/diamond.png" alt="Diamond">
+                            <img src="../assets/images/magic/Face/diamond.png" alt="Diamond">
                             <span>Diamond</span>
                         </div>
                         <div class="selection-card" data-value="oblong" onclick="selectFace(this)">
-                            <img src="assets/TryMagicPage/Face/oblong.png" alt="Oblong">
+                            <img src="../assets/images/magic/Face/oblong.png" alt="Oblong">
                             <span>Oblong</span>
                         </div>
                         <div class="selection-card selected" data-value="oval" onclick="selectFace(this)">
-                            <img src="assets/TryMagicPage/Face/oval.png" alt="Oval">
+                            <img src="../assets/images/magic/Face/oval.png" alt="Oval">
                             <span>Oval</span>
                         </div>
                     </div>
@@ -95,24 +123,24 @@
 
                 <div class="option-group height-group">
                     <div class="option-label-card">
-                        <img src="assets/TryMagicPage/Icons/height-icon.png" class="icon-small" alt="">
+                        <img src="../assets/images/magic/Icons/height-icon.png" class="icon-small" alt="">
                         <span>Your Height?</span>
                     </div>
                     <div class="height-options grid-4">
                         <div class="selection-card" data-value="tall" onclick="selectHeight(this)">
-                            <img src="assets/TryMagicPage/Height/tall.png" alt="I'm Tall">
+                            <img src="../assets/images/magic/Height/tall.png" alt="I'm Tall">
                             <span>I'm Tall</span>
                         </div>
                         <div class="selection-card" data-value="very_tall" onclick="selectHeight(this)">
-                            <img src="assets/TryMagicPage/Height/too-tall.png" alt="Too Tall">
+                            <img src="../assets/images/magic/Height/too-tall.png" alt="Too Tall">
                             <span>Too Tall</span>
                         </div>
                         <div class="selection-card selected" data-value="average" onclick="selectHeight(this)">
-                            <img src="assets/TryMagicPage/Height/average.png" alt="Average">
+                            <img src="../assets/images/magic/Height/average.png" alt="Average">
                             <span>Average</span>
                         </div>
                         <div class="selection-card" data-value="mini" onclick="selectHeight(this)">
-                            <img src="assets/TryMagicPage/Height/mini.png" alt="Mini">
+                            <img src="../assets/images/magic/Height/mini.png" alt="Mini">
                             <span>Mini.</span>
                         </div>
                     </div>
@@ -128,7 +156,7 @@
         </div>
     </section>
     <div id="recommendation-results" style="display: none;">
-        
+
         <section class="result-section highlight-look">
             <div class="container-result">
                 <div class="section-title center">
@@ -138,7 +166,24 @@
 
                 <div class="look-book-wrapper">
                     <div class="look-visual">
-                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Full Outfit Look">
+                        <!-- Slider Navigation Arrows -->
+                        <button class="set-nav-arrow prev" id="set-prev-btn" style="display:none;">
+                            <img src="../assets/images/magic/Icons/arrow-left.svg" alt="Previous">
+                        </button>
+
+                        <img id="set-main-image"
+                            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop"
+                            alt="Full Outfit Look">
+
+                        <button class="set-nav-arrow next" id="set-next-btn" style="display:none;">
+                            <img src="../assets/images/magic/Icons/arrow-right.svg" alt="Next">
+                        </button>
+
+                        <!-- Image Counter -->
+                        <div class="set-counter" id="set-counter" style="display:none;">
+                            <span>1 / 1</span>
+                        </div>
+
                         <div class="look-tag">
                             <span>✨ Best Match for Rectangle Body</span>
                         </div>
@@ -146,9 +191,10 @@
 
                     <div class="look-items">
                         <h3>The Breakdown</h3>
-                        
+
                         <div class="item-row">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Top">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
+                                alt="Top">
                             <div class="item-info">
                                 <h4>Linen Boxy Shirt</h4>
                                 <p>Atasan yang memberi volume di bahu.</p>
@@ -158,7 +204,8 @@
                         </div>
 
                         <div class="item-row">
-                            <img src="https://images.unsplash.com/photo-1551488852-080175d0452d?q=80&w=200&auto=format&fit=crop" alt="Pants">
+                            <img src="https://images.unsplash.com/photo-1551488852-080175d0452d?q=80&w=200&auto=format&fit=crop"
+                                alt="Pants">
                             <div class="item-info">
                                 <h4>High-Waist Trousers</h4>
                                 <p>Menciptakan ilusi pinggang.</p>
@@ -168,7 +215,8 @@
                         </div>
 
                         <div class="item-row">
-                            <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=200&auto=format&fit=crop" alt="Acc">
+                            <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=200&auto=format&fit=crop"
+                                alt="Acc">
                             <div class="item-info">
                                 <h4>Minimalist Tote</h4>
                                 <p>Pelengkap yang fungsional.</p>
@@ -191,10 +239,11 @@
                 </div>
 
                 <div class="catalog-grid" id="rec-tops-container">
-                    
+
                     <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=500" alt="Baju 1">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=500"
+                                alt="Baju 1">
                         </div>
                         <div class="card-details">
                             <h4>Sage Green Blouse</h4>
@@ -208,7 +257,8 @@
 
                     <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1551163943-3f6a29e39bb7?q=80&w=500" alt="Baju 2">
+                            <img src="https://images.unsplash.com/photo-1551163943-3f6a29e39bb7?q=80&w=500"
+                                alt="Baju 2">
                         </div>
                         <div class="card-details">
                             <h4>Cream Knit Vest</h4>
@@ -220,9 +270,10 @@
                         </div>
                     </div>
 
-                     <div class="product-card-simple">
+                    <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?q=80&w=500" alt="Baju 3">
+                            <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?q=80&w=500"
+                                alt="Baju 3">
                         </div>
                         <div class="card-details">
                             <h4>Terracotta Tee</h4>
@@ -244,11 +295,12 @@
                     <h3>Curated Bottoms</h3>
                     <p>Potongan yang menyeimbangkan bentuk tubuhmu.</p>
                 </div>
-                
+
                 <div class="catalog-grid" id="rec-bottoms-container">
                     <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=500" alt="Celana">
+                            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=500"
+                                alt="Celana">
                         </div>
                         <div class="card-details">
                             <h4>Pleated Skirt</h4>
@@ -259,9 +311,10 @@
                             </div>
                         </div>
                     </div>
-                     <div class="product-card-simple">
+                    <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=500" alt="Celana">
+                            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=500"
+                                alt="Celana">
                         </div>
                         <div class="card-details">
                             <h4>Straight Denim</h4>
@@ -276,16 +329,17 @@
             </div>
         </section>
 
-         <section class="result-section bg-white">
+        <section class="result-section bg-white">
             <div class="container-result">
                 <div class="section-title">
                     <h3>Finishing Touches</h3>
                     <p>Aksesoris untuk melengkapi look kamu.</p>
                 </div>
                 <div class="catalog-grid" id="rec-acc-container">
-                     <div class="product-card-simple">
+                    <div class="product-card-simple">
                         <div class="img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=500" alt="Kalung">
+                            <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=500"
+                                alt="Kalung">
                         </div>
                         <div class="card-details">
                             <h4>Gold Layered Necklace</h4>
@@ -298,21 +352,22 @@
                     </div>
                 </div>
             </div>
-         </section>
-         <section class="result-section">
+        </section>
+        <section class="result-section">
             <div class="container-result">
                 <div class="section-title">
                     <h3>The Perfect Pair</h3>
                     <p>Sepatu yang menunjang postur tinggimu.</p>
                 </div>
-                
+
                 <div class="catalog-grid" id="rec-shoes-container">
-                     </div>
+                </div>
             </div>
         </section>
 
     </div>
-  <script src="Modular Css/navbar.js"></script>  
-   <script src="magic-script.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/magic-script.js"></script>
 </body>
+
 </html>

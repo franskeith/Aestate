@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTATE - New Model</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/components/navbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #FFF6E9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .dummy-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+            text-align: center;
+        }
+
+        .dummy-content h1 {
+            font-family: 'Days One', sans-serif;
+            font-size: 4rem;
+            color: #523F37;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .dummy-content p {
+            font-size: 1.2rem;
+            color: #858280;
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            background: #FFAF02;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .grid-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin-top: 60px;
+        }
+
+        .preview-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-card h3 {
+            font-family: 'Days One', sans-serif;
+            color: #523F37;
+            margin-bottom: 15px;
+        }
+
+        .preview-card p {
+            color: #858280;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="logo">
+            <h1>AE<span>STATE</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">HOME</a></li>
+            <li><a href="try-magic.html">TRY MAGIC</a></li>
+            <li><a href="new-model.html" class="active">NEW MODEL</a></li>
+            <li><a href="culture.html">CULTURE</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <div class="dummy-content">
+        <span class="badge">COMING SOON</span>
+        <h1>New Model</h1>
+        <p>
+            Koleksi terbaru kami sedang dalam proses kurasi. Temukan model-model eksklusif yang dirancang khusus
+            untuk melengkapi capsule wardrobe Anda dengan sentuhan modern dan timeless.
+        </p>
+
+        <div class="grid-preview">
+            <div class="preview-card">
+                <h3>Spring 2025</h3>
+                <p>Koleksi musim semi dengan warna-warna segar dan material breathable.</p>
+            </div>
+            <div class="preview-card">
+                <h3>Minimalist Essentials</h3>
+                <p>Item-item dasar dengan desain minimalis yang mudah dipadukan.</p>
+            </div>
+            <div class="preview-card">
+                <h3>Premium Fabrics</h3>
+                <p>Material berkualitas tinggi untuk kenyamanan maksimal sehari-hari.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/components/navbar.js"></script>
+</body>
+
+</html>

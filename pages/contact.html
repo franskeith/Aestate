@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTATE - Contact</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/components/navbar.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #FFF6E9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-container h1 {
+            font-family: 'Days One', sans-serif;
+            font-size: 3rem;
+            color: #523F37;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .contact-container .subtitle {
+            text-align: center;
+            color: #858280;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 30px;
+            background: #FFF6E9;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .info-card h3 {
+            font-family: 'Days One', sans-serif;
+            color: #523F37;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #858280;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .info-card a {
+            color: #FFAF02;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .info-card a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: #FFAF02;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.1);
+            background: #523F37;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="logo">
+            <h1>AE<span>STATE</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">HOME</a></li>
+            <li><a href="try-magic.html">TRY MAGIC</a></li>
+            <li><a href="new-model.html">NEW MODEL</a></li>
+            <li><a href="culture.html">CULTURE</a></li>
+            <li><a href="contact.html" class="active">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <div class="contact-section">
+        <div class="contact-container">
+            <h1>Get in Touch</h1>
+            <p class="subtitle">Punya pertanyaan? Kami siap membantu Anda!</p>
+
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="icon">📧</div>
+                    <h3>Email</h3>
+                    <p><a href="mailto:hello@aestate.com">hello@aestate.com</a></p>
+                </div>
+
+                <div class="info-card">
+                    <div class="icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p><a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a></p>
+                </div>
+
+                <div class="info-card">
+                    <div class="icon">📍</div>
+                    <h3>Location</h3>
+                    <p>Jakarta, Indonesia</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 30px 0; border-top: 1px solid #E6C4A8;">
+                <h3 style="font-family: 'Days One', sans-serif; color: #523F37; margin-bottom: 20px;">Follow Us</h3>
+                <div class="social-links">
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="Facebook">👤</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="TikTok">🎵</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/components/navbar.js"></script>
+</body>
+
+</html>
