@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="../css/components/navbar.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/product-popup.css">
     <style>
         body {
             background-color: #FFF6E9;
@@ -139,7 +140,81 @@
         </div>
     </div>
 
+    <!-- Product Detail Pop-up -->
+    <div id="product-popup" class="popup-overlay">
+        <div class="popup-modal">
+            <button class="popup-close">&times;</button>
+
+            <div class="popup-content">
+                <!-- Left: Image -->
+                <div class="popup-image">
+                    <img id="popup-product-image" src="" alt="Product">
+                </div>
+
+                <!-- Right: Info -->
+                <div class="popup-info">
+                    <span class="popup-category"></span>
+                    <h2 class="popup-title"></h2>
+                    <p class="popup-price"></p>
+
+                    <div class="popup-description"></div>
+
+                    <div class="popup-tags">
+                        <div class="tags-header">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                </path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            <strong>Perfect Match For</strong>
+                        </div>
+                        <div class="tag-list"></div>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-row">
+                            <div class="detail-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                    </path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <strong>Size Availability</strong>
+                                <p class="popup-size"></p>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <strong>Material</strong>
+                                <p class="popup-material"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a id="popup-shop-link" href="#" target="_blank" class="btn-visit-store">
+                        Visit Store
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/product-popup.js"></script>
 </body>
 
 </html>

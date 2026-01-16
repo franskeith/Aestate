@@ -35,66 +35,267 @@ body {
     background-color: var(--bg-main);
     font-family: var(--font-body);
     color: var(--text-dark);
-    padding-top: 80px;
-    /* Space buat Navbar Fixed */
+    padding-top: 0;
+    /* No padding since navbar auto-hides */
     min-height: 100vh;
 }
 
-/* --- NAVBAR AUTO-HIDE (TRY MAGIC PAGE ONLY) --- */
+/* --- PROMOTIONAL TAGLINE BANNER --- */
+.magic-tagline-banner {
+    text-align: center;
+    padding: 30px 20px 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    /* Full width */
+    display: block;
+    /* Block level element */
+}
+
+.magic-tagline-banner h2 {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.magic-tagline-banner .highlight-time {
+    background: linear-gradient(135deg, #FFAF02, #FF8C00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2rem;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+}
+
+.magic-tagline-banner .highlight-time::after {
+    content: '⚡';
+    position: absolute;
+    right: -25px;
+    top: -5px;
+    font-size: 1.2rem;
+    -webkit-text-fill-color: #FFAF02;
+}
+
+/* =========================================
+   MORPHING NAVBAR ANIMATION (TRY MAGIC)
+   ========================================= */
+
+/* Trigger class untuk memulai animasi */
+body.navbar-morph #navbar {
+    /* USER REFERENCE TIMING: 3.5s with aggressive bezier */
+    animation: morphNavbar 3.5s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Animasi untuk menghilangkan content navbar (logo & links) */
+body.navbar-morph #navbar .logo,
+body.navbar-morph #navbar .nav-links {
+    /* Fade out lebih cepat agar aman sebelum morph mulai */
+    animation: fadeOutContent 0.5s forwards ease-out;
+    animation-delay: 0.2s;
+}
+
+/* Keyframes: REFERENCE STRUCTURE (Persis ritme user) */
+/* 0-30% -> 45% -> 55% -> 70% -> 85% -> 100% */
+@keyframes morphNavbar {
+
+    /* 0% - 30%: STAY (Diam sejenak, persis referensi user) */
+    /* Start centered explicitly for symmetry */
+    0%,
+    30% {
+        width: 100%;
+        height: auto;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 0;
+        padding: 20px 50px;
+
+        /* A Estate Glass */
+        background: linear-gradient(180deg, rgba(255, 246, 233, 0.15), rgba(255, 246, 233, 0.15));
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* 45%: FADE TO CENTER & JADI GARIS VERTICAL */
+    /* Shrink cepat dari 30% ke 45% */
+    45% {
+        width: 4px;
+        height: 60px;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+
+        /* Masih nuansa putih/glass (Color delay) */
+        background: linear-gradient(180deg, rgba(255, 252, 245, 0.3), rgba(255, 251, 246, 0.3));
+        backdrop-filter: blur(5px);
+        border: none;
+        padding: 0;
+    }
+
+    /* 55%: COMPRESS TO DOT (Titik Kecil) */
+    55% {
+        width: 12px;
+        height: 12px;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+
+        /* Sedikit orange semu */
+        background: rgba(241, 171, 20, 0.6);
+        box-shadow: 0 0 10px rgba(255, 175, 2, 0.4);
+    }
+
+    /* 70%: MOVE UP (Terbang ke atas) */
+    /* Saat naik baru jadi ORANGE BENERAN */
+    70% {
+        width: 20px;
+        height: 20px;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+
+        background: #FF8C00;
+        box-shadow: 0 0 30px rgba(255, 140, 0, 0.8);
+    }
+
+    /* 85%: MELEBUR (Gepeng) */
+    85% {
+        width: 100px;
+        height: 4px;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+
+        background: linear-gradient(90deg, #FFAF02, #FF8C00);
+    }
+
+    /* 100%: GARIS HORIZONTAL PENUH */
+    100% {
+        width: 100%;
+        height: 3px;
+        top: 0;
+        left: 0;
+        transform: none;
+        border-radius: 0;
+
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 175, 2, 0.6) 20%,
+                rgba(255, 175, 2, 0.8) 50%,
+                rgba(255, 175, 2, 0.6) 80%,
+                transparent 100%);
+        box-shadow: 0 2px 8px rgba(255, 175, 2, 0.3);
+        padding: 0;
+    }
+}
+
+/* Keyframe untuk menghilangkan content */
+@keyframes fadeOutContent {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+/* =========================================
+   POST-MORPH NAVBAR STATES (Option B)
+   ========================================= */
+
+/* Base transition for smooth show/hide */
 #navbar {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.3s ease;
 }
 
-/* Default state: navbar tersembunyi ke atas */
+/* Default visible state */
 body #navbar {
-    transform: translateY(-100%);
-}
-
-/* Navbar muncul saat mouse di area atas atau hover langsung */
-body #navbar:hover,
-body.navbar-visible #navbar {
     transform: translateY(0);
 }
 
-/* Navbar Hint Indicator */
-.navbar-hint {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    background: rgba(82, 63, 55, 0.8);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    z-index: 998;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+/* Post-morph: Navbar is now a regular hideable navbar */
+#navbar.navbar-post-morph {
+    /* Reset all animation styles to default navbar appearance */
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    padding: 20px 50px;
+    background: rgba(255, 246, 233, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
-.navbar-hint:hover {
-    background: rgba(82, 63, 55, 1);
-    transform: scale(1.05);
-}
-
-/* Hide hint saat navbar visible */
-body.navbar-visible .navbar-hint {
+/* Hidden state: Slide up and fade */
+#navbar.navbar-post-morph.navbar-hidden {
+    transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
 }
 
+/* Orange Indicator Line - Always visible when navbar hidden */
+/* This is a SEPARATE ELEMENT, not affected by navbar opacity */
+.navbar-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 175, 2, 0.6) 20%,
+            rgba(255, 175, 2, 0.8) 50%,
+            rgba(255, 175, 2, 0.6) 80%,
+            transparent 100%);
+    box-shadow: 0 2px 8px rgba(255, 175, 2, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    z-index: 9998;
+    transition: opacity 0.3s ease;
+}
 
-/* --- NAVBAR (Copy Style Dasar) --- */
-/* --- NAVBAR (UPDATED BIAR KONSISTEN SAMA HOME) --- */
+/* Show indicator when navbar is hidden */
+.navbar-indicator.indicator-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Visible state: Slide down and show */
+#navbar.navbar-post-morph.navbar-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Ensure logo and links are visible again after morph */
+#navbar.navbar-post-morph .logo,
+#navbar.navbar-post-morph .nav-links {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
 /* --- MAIN CONTAINER --- */
 #magic-studio {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* Stack vertically */
     align-items: center;
     padding: 20px;
     min-height: calc(100vh - 80px);
@@ -478,10 +679,15 @@ body.navbar-visible .navbar-hint {
 }
 
 .look-visual {
-    flex: 1;
+    flex: 0 0 350px;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
 }
 
 .look-visual img {
@@ -489,6 +695,9 @@ body.navbar-visible .navbar-hint {
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .look-tag {
@@ -506,40 +715,47 @@ body.navbar-visible .navbar-hint {
 /* Set Navigation Arrows */
 .set-nav-arrow {
     position: absolute;
-    top: 50%;
+    top: 52%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
+    background: transparent;
     border: none;
-    border-radius: 50%;
     width: 50px;
-    height: 50px;
+    height: 60px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     z-index: 10;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
 }
 
 .set-nav-arrow:hover {
-    background: rgba(255, 255, 255, 1);
     transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-.set-nav-arrow img {
-    width: 20px;
-    opacity: 0.8;
+.set-nav-arrow svg {
+    width: 32px;
+    height: 32px;
+    opacity: 0.6;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    transition: all 0.3s ease;
+}
+
+.set-nav-arrow:hover svg {
+    opacity: 1;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
 }
 
 .set-nav-arrow.prev {
-    left: 20px;
+    left: 5px;
+    justify-content: flex-start;
+    padding-left: 8px;
 }
 
 .set-nav-arrow.next {
-    right: 20px;
+    right: 5px;
+    justify-content: flex-end;
+    padding-right: 8px;
 }
 
 /* Set Counter */
@@ -559,10 +775,36 @@ body.navbar-visible .navbar-hint {
 
 
 .look-items {
-    flex: 0 0 400px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 500px;
+    padding: 10px;
+}
+
+/* Scrollbar styling */
+.look-items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.look-items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.look-items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.look-items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.look-items h3 {
+    width: 100%;
 }
 
 /* Item Row (List Barang) */
@@ -580,6 +822,13 @@ body.navbar-visible .navbar-hint {
     transform: translateY(-3px);
     border-color: var(--accent-blue);
 }
+
+.item-row.active-preview {
+    border-color: var(--accent-blue);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.1));
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+}
+
 
 .item-row img {
     width: 70px;
@@ -617,6 +866,15 @@ body.navbar-visible .navbar-hint {
     padding: 8px 15px;
     border-radius: 8px;
     font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.btn-shop:hover {
+    background: #8B5E3C;
+    transform: translateY(-2px);
 }
 
 /* SECTION 3, 4, 5: GRID CATALOG */

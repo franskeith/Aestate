@@ -7,14 +7,14 @@ const femaleBodyTypes = [
     { id: 'rectangle', label: 'Rectangle', desc: 'Badan rata dari bahu sampai pinggul.', img: '../assets/images/magic/Body/rectangle.png' },
     { id: 'pear', label: 'Pear', desc: 'Pinggul lebih lebar dibanding bahu.', img: '../assets/images/magic/Body/pear.png' },
     { id: 'hourglass', label: 'Hourglass', desc: 'Bahu dan pinggul seimbang.', img: '../assets/images/magic/Body/hourglass.png' },
-    { id: 'inverted_triangle', label: 'Inverted Triangle', desc: 'Bahu lebih lebar dari pinggul.', img: '../assets/images/magic/Body/inverted_triangle.png' },
+    { id: 'inverted-triangle', label: 'Inverted Triangle', desc: 'Bahu lebih lebar dari pinggul.', img: '../assets/images/magic/Body/inverted_triangle.png' },
     { id: 'apple', label: 'Apple', desc: 'Berisi di area perut dan dada.', img: '../assets/images/magic/Body/apple.png' }
 ];
 
 // --- DATA SHAPE COWOK ---
 const maleBodyTypes = [
     { id: 'rectangle', label: 'Rectangle (H)', desc: 'Bahu dan pinggang sejajar (Proporsional).', img: '../assets/images/magic/Body/male_rectangle.png' },
-    { id: 'inverted_triangle', label: 'V-Shape', desc: 'Bahu lebar, pinggang ramping (Athletic).', img: '../assets/images/magic/Body/male_triangle.png' },
+    { id: 'inverted-triangle', label: 'V-Shape', desc: 'Bahu lebar, pinggang ramping (Athletic).', img: '../assets/images/magic/Body/male_triangle.png' },
     { id: 'oval', label: 'Oval (O)', desc: 'Bagian tengah tubuh lebih berisi.', img: '../assets/images/magic/Body/male_oval.png' }
 ];
 
@@ -267,6 +267,9 @@ if (elements.generateBtn) {
         renderGrid(elements.accContainer, recs.accs);
         renderGrid(elements.shoesContainer, recs.shoes);
 
+        // 6. Attach click handlers untuk preview image
+        attachSetClickHandlers(recs.sets);
+
         if (elements.skinAdvice) {
             elements.skinAdvice.innerText = `Tone "${userState.tone}" cocok dengan warna ${toneTag.replace('-tone', '')}. Untuk tinggi "${userState.height}", kami pilihkan sepatu yang proporsional!`;
         }
@@ -450,6 +453,7 @@ function renderOneSet(sets, accs) {
 
     // 3. Render displayed sets
     displayedSets.forEach((set, index) => {
+        const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
         const setHtml = `
             <div class="item-row" data-set-index="${index}">
                 <img src="${set.image}" alt="${set.name}" onerror="this.src='https://via.placeholder.com/100'">
@@ -458,7 +462,7 @@ function renderOneSet(sets, accs) {
                     <p>${index === 0 ? 'Best Match Look' : 'Alternative Look'}</p>
                     <span class="price">Rp ${formatPrice(set.price)}</span>
                 </div>
-                <a href="${set.shop_link}" target="_blank" class="btn-shop">Lihat</a>
+                <button onclick='openProductPopup(${escapedProduct})' class="btn-shop">Lihat</button>
             </div>
         `;
         elements.oneSetContainer.innerHTML += setHtml;
@@ -472,6 +476,7 @@ function renderOneSet(sets, accs) {
         // Render hidden sets
         const hiddenSetsContainer = document.getElementById('hidden-sets-container');
         remainingSets.forEach((set, index) => {
+            const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
             const setHtml = `
                 <div class="item-row">
                     <img src="${set.image}" alt="${set.name}" onerror="this.src='https://via.placeholder.com/100'">
@@ -480,7 +485,7 @@ function renderOneSet(sets, accs) {
                         <p>Alternative Look</p>
                         <span class="price">Rp ${formatPrice(set.price)}</span>
                     </div>
-                    <a href="${set.shop_link}" target="_blank" class="btn-shop">Lihat</a>
+                    <button onclick='openProductPopup(${escapedProduct})' class="btn-shop">Lihat</button>
                 </div>
             `;
             hiddenSetsContainer.innerHTML += setHtml;
@@ -546,6 +551,54 @@ function renderOneSet(sets, accs) {
     }
 }
 
+// --- CLICK TO PREVIEW: Update main image saat klik item ---
+function attachSetClickHandlers(sets) {
+    // Delay sedikit untuk memastikan DOM sudah rendered
+    setTimeout(() => {
+        const itemRows = document.querySelectorAll('.item-row');
+
+        itemRows.forEach((row, index) => {
+            // Skip accessories (yang tidak punya data-set-index atau image dari sets)
+            const setIndex = row.getAttribute('data-set-index');
+            if (setIndex === null) return;
+
+            const actualIndex = parseInt(setIndex);
+            const clickedSet = sets[actualIndex];
+
+            if (!clickedSet) return;
+
+            // Add click handler
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', function (e) {
+                // Prevent jika klik button "Lihat"
+                if (e.target.classList.contains('btn-shop')) return;
+
+                // Update main image
+                const mainImage = document.getElementById('set-main-image');
+                if (mainImage) {
+                    mainImage.style.opacity = '0';
+
+                    setTimeout(() => {
+                        mainImage.src = clickedSet.image;
+                        mainImage.alt = clickedSet.name;
+                        mainImage.style.opacity = '1';
+                    }, 200);
+                }
+
+                // Visual feedback: highlight selected item
+                itemRows.forEach(r => r.classList.remove('active-preview'));
+                row.classList.add('active-preview');
+            });
+        });
+
+        // Set first item as active by default
+        if (itemRows.length > 0) {
+            itemRows[0].classList.add('active-preview');
+        }
+    }, 150);
+}
+
+
 function renderGrid(container, products) {
     if (!container) return;
     container.innerHTML = '';
@@ -557,8 +610,9 @@ function renderGrid(container, products) {
 
     const displayProducts = products.slice(0, 4);
     displayProducts.forEach(p => {
+        const escapedProduct = JSON.stringify(p).replace(/"/g, '&quot;');
         const cardHTML = `
-            <div class="product-card-simple" onclick="window.open('${p.shop_link}', '_blank')">
+            <div class="product-card-simple" onclick='openProductPopup(${escapedProduct})'>
                 <div class="img-wrapper">
                     <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
                 </div>
@@ -658,12 +712,150 @@ if (navbarHint) {
     });
 }
 
-
-// Show navbar saat page load pertama kali (3 detik), lalu hide
+// =========================================
+// MORPHING NAVBAR ANIMATION (Page Load)
+// =========================================
+// Trigger animasi saat page baru dimuat
 window.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('navbar-visible');
+    const navbar = document.getElementById('navbar');
 
+    // Delay 500ms biar user sempat lihat navbar dulu
     setTimeout(() => {
-        document.body.classList.remove('navbar-visible');
-    }, 3000);
+        document.body.classList.add('navbar-morph');
+    }, 500);
+
+    // After animation ends (4.0s total: 0.5s delay + 3.5s duration)
+    // Reset navbar to "hidden but full-size" state (Option B)
+    setTimeout(() => {
+        // Remove morph animation class
+        document.body.classList.remove('navbar-morph');
+
+        // Reset all inline styles from animation
+        navbar.style.cssText = '';
+
+        // Add post-morph hidden state
+        navbar.classList.add('navbar-post-morph');
+        navbar.classList.add('navbar-hidden'); // Start hidden!
+
+        // Show orange indicator since navbar is now hidden
+        const indicator = document.getElementById('navbar-indicator');
+        if (indicator) {
+            indicator.classList.add('indicator-visible');
+        }
+
+        // Enable hover detection only (no scroll behavior for Try Magic)
+        navbarHoverEnabled = true;
+        // scrollDetectionEnabled = true; // DISABLED: Only hover on Try Magic page
+    }, 4200);
 });
+
+// =========================================
+// NAVBAR HOVER DETECTION (Post-Morph)
+// =========================================
+let navbarHoverEnabled = false;
+let navbarVisible = false;
+let hideTimeout;
+
+// Show navbar when mouse enters top edge area (top 60px)
+document.addEventListener('mousemove', (e) => {
+    if (!navbarHoverEnabled) return;
+
+    const navbar = document.getElementById('navbar');
+    const indicator = document.getElementById('navbar-indicator');
+    if (!navbar) return;
+
+    // Get navbar bounding rect to check if mouse is inside
+    const navbarRect = navbar.getBoundingClientRect();
+    const isMouseOverNavbar = navbarVisible &&
+        e.clientX >= navbarRect.left &&
+        e.clientX <= navbarRect.right &&
+        e.clientY >= navbarRect.top &&
+        e.clientY <= navbarRect.bottom;
+
+    // Mouse in top edge zone (0-20px) OR mouse is over the navbar itself
+    if (e.clientY <= 20 || isMouseOverNavbar) {
+        // Clear any pending hide
+        clearTimeout(hideTimeout);
+
+        // Show navbar, hide indicator
+        if (!navbarVisible) {
+            navbar.classList.remove('navbar-hidden');
+            navbar.classList.add('navbar-visible');
+            if (indicator) indicator.classList.remove('indicator-visible');
+            navbarVisible = true;
+        }
+    } else {
+        // Mouse left both zones, delay hide
+        if (navbarVisible) {
+            hideTimeout = setTimeout(() => {
+                navbar.classList.remove('navbar-visible');
+                navbar.classList.add('navbar-hidden');
+                if (indicator) indicator.classList.add('indicator-visible');
+                navbarVisible = false;
+            }, 300); // 300ms delay before hiding
+        }
+    }
+});
+
+// =========================================
+// SCROLL BEHAVIOR (Post-Morph)
+// =========================================
+let lastScrollY = 0;
+let ticking = false;
+let scrollDetectionEnabled = false;
+
+function updateNavbar() {
+    if (!scrollDetectionEnabled) return;
+
+    const navbar = document.getElementById('navbar');
+    const indicator = document.getElementById('navbar-indicator');
+    if (!navbar) return;
+
+    const currentScrollY = window.scrollY;
+
+    // Scroll Up → Show navbar, hide indicator
+    if (currentScrollY < lastScrollY) {
+        navbar.classList.remove('navbar-hidden');
+        navbar.classList.add('navbar-visible');
+        if (indicator) indicator.classList.remove('indicator-visible');
+        navbarVisible = true;
+
+        // Auto-hide after 2s if user stops scrolling
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            if (currentScrollY > 100) {
+                navbar.classList.remove('navbar-visible');
+                navbar.classList.add('navbar-hidden');
+                if (indicator) indicator.classList.add('indicator-visible');
+                navbarVisible = false;
+            }
+        }, 2000);
+    }
+    // Scroll Down → Hide navbar, show indicator
+    else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        clearTimeout(hideTimeout);
+        navbar.classList.remove('navbar-visible');
+        navbar.classList.add('navbar-hidden');
+        if (indicator) indicator.classList.add('indicator-visible');
+        navbarVisible = false;
+    }
+
+    // At top of page → Always show navbar, hide indicator
+    if (currentScrollY <= 20) {
+        navbar.classList.remove('navbar-hidden');
+        navbar.classList.add('navbar-visible');
+        if (indicator) indicator.classList.remove('indicator-visible');
+        navbarVisible = true;
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(updateNavbar);
+        ticking = true;
+    }
+});
+

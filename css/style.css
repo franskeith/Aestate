@@ -4,7 +4,8 @@
 
 /* --- 1. RESET & VARIABLES --- */
 html {
-    overflow-y: scroll; /* Kunci Scrollbar biar layar ga goyang */
+    overflow-y: scroll;
+    /* Kunci Scrollbar biar layar ga goyang */
     scroll-behavior: smooth;
 }
 
@@ -14,12 +15,16 @@ html {
     --accent: #FFAF02;
     --font-head: 'Days One', sans-serif;
     --font-body: 'Inter', sans-serif;
-    
+
     /* Easing Animation (Rahasia biar smooth) */
     --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     background-color: var(--bg-primary);
@@ -29,41 +34,233 @@ body {
 }
 
 /* --- 2. HERO SECTION (TIDAK DIUBAH) --- */
-#hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
-.slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: all 1s ease-in-out; }
-.slide.active { opacity: 1; visibility: visible; }
-
-.layer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: center; align-items: center; }
-.layer-2-text h2 {
-    font-family: var(--font-head); font-size: 25vw; color: #fff; opacity: 0.8;
-    transform: translateY(50px); transition: transform 1.5s ease;
-    white-space: nowrap; writing-mode: vertical-rl; text-orientation: mixed;
-    position: absolute; left: 20%;
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
-.slide.active .layer-2-text h2 { transform: translateY(0); }
 
-.layer-1-model { z-index: 3; display: flex; justify-content: center; align-items: flex-end; }
-.layer-1-model img { height: 90vh; object-fit: cover; transform: scale(1.1); transition: transform 3s ease; }
-.slide.active .layer-1-model img { transform: scale(1); }
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+}
 
-.hero-content { position: absolute; z-index: 4; left: 10%; top: 40%; color: #333; }
-.hero-content h3 { font-family: var(--font-head); font-size: 3rem; line-height: 1.2; margin-bottom: 20px; }
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layer-2-text h2 {
+    font-family: var(--font-head);
+    font-size: 25vw;
+    color: #fff;
+    opacity: 0.8;
+    transform: translateY(50px);
+    transition: transform 1.5s ease;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    position: absolute;
+    left: 20%;
+}
+
+.slide.active .layer-2-text h2 {
+    transform: translateY(0);
+}
+
+.layer-1-model {
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.layer-1-model img {
+    height: 90vh;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 3s ease;
+}
+
+.slide.active .layer-1-model img {
+    transform: scale(1);
+}
+
+/* --- HERO ASSETS (DECORATION) --- */
+.layer-assets {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2;
+    /* Behind model (z-index 3) for depth */
+}
+
+/* 1. Top Left Small Particle */
+.asset-top-left {
+    position: absolute;
+    top: 120px;
+    left: 50px;
+    width: 60px;
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+/* Tagline Above Right Particle */
+.asset-tagline {
+    position: absolute;
+    top: 12%;
+    right: 0;
+    /* Flush right like secondary image */
+    width: 350px;
+    /* Match secondary image width */
+    max-width: 40vw;
+    text-align: left;
+    /* Left aligned */
+    opacity: 0;
+    transition: opacity 1s ease 0.6s;
+    z-index: 3;
+}
+
+.asset-tagline h4 {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    /* Smaller header */
+    color: #523F37;
+    margin: 0 0 5px 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+}
+
+.asset-tagline p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    /* Smaller paragraph */
+    color: #858280;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+.slide.active .asset-tagline {
+    opacity: 1;
+}
+
+/* 2. Right Center Particle */
+.asset-right-center {
+    position: absolute;
+    top: 20%;
+    /* Moved higher to avoid overlap */
+    right: 0;
+    transform: translateY(-50%);
+    width: 350px;
+    max-width: 30vw;
+    opacity: 0;
+    transition: opacity 1s ease 0.8s;
+}
+
+/* 3. Right Bottom Secondary Image */
+.asset-right-bottom {
+    position: absolute;
+    bottom: 80px;
+    /* Increased spacing from bottom */
+    right: 0;
+    width: 350px;
+    max-width: 40vw;
+    border-radius: 0;
+    opacity: 0;
+    transition: opacity 1s ease 1s;
+    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Show assets when slide is active with delay */
+.slide.active .asset-top-left,
+.slide.active .asset-right-center,
+.slide.active .asset-right-bottom {
+    opacity: 1;
+}
+
+/* Floating Animations */
+.floating {
+    animation: floatY 6s ease-in-out infinite;
+}
+
+.floating-slow {
+    animation: floatY 8s ease-in-out infinite reverse;
+}
+
+.floating-medium {
+    animation: floatY 7s ease-in-out infinite 1s;
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.hero-content {
+    position: absolute;
+    z-index: 4;
+    left: 10%;
+    top: 40%;
+    color: #333;
+}
+
+.hero-content h3 {
+    font-family: var(--font-head);
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
 
 /* --- 3. NEW ARRIVAL SECTION (UPDATED) --- */
-#new-arrival { 
-    padding: 80px 40px; 
-    background-color: var(--bg-primary); 
+#new-arrival {
+    padding: 80px 40px;
+    background-color: var(--bg-primary);
     min-height: 100vh;
 }
 
-.section-header { text-align: center; margin-bottom: 50px; }
-.section-header h2 { 
-    font-family: var(--font-head); 
-    font-size: 2.5rem; 
-    margin-bottom: 10px; 
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: -1px;
 }
+
 .section-header p {
     color: #666;
     letter-spacing: 1px;
@@ -74,98 +271,107 @@ body {
 .product-grid {
     display: grid;
     /* Desktop: 3 Kolom */
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     width: 100%;
-    max-width: 1200px; /* Batasi lebar biar ga terlalu melar di layar gede */
-    margin: 0 auto; /* Tengahin grid */
+    max-width: 1200px;
+    /* Batasi lebar biar ga terlalu melar di layar gede */
+    margin: 0 auto;
+    /* Tengahin grid */
 }
 
 /* PRODUCT CARD (UPDATED SIZE & ANIMATION) */
 .product-card {
     position: relative;
     /* REVISI UKURAN: Lebih pendek dari 700px biar pas */
-    height: 580px; 
+    height: 580px;
     overflow: hidden;
     cursor: pointer;
-    background: #eaeaea; /* Warna loading */
-    border: 1px solid rgba(0,0,0,0.05); /* Border tipis halus */
+    background: #eaeaea;
+    /* Warna loading */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Border tipis halus */
 }
 
 /* GAMBAR PRODUK */
-.product-card img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     /* Zoom effect yang smooth banget */
-    transition: transform 0.8s var(--ease-out-expo); 
+    transition: transform 0.8s var(--ease-out-expo);
 }
 
-.product-card:hover img { 
-    transform: scale(1.1); /* Zoom dikit pas hover */
+.product-card:hover img {
+    transform: scale(1.1);
+    /* Zoom dikit pas hover */
 }
 
 /* OVERLAY (INFORMASI PRODUK) */
 .overlay {
-    position: absolute; 
-    bottom: 0; left: 0; width: 100%; height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     /* Gradient Hitam Transparan halus dari bawah */
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
-    
-    display: flex; 
-    flex-direction: column; 
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+
+    display: flex;
+    flex-direction: column;
     justify-content: flex-end;
-    padding: 30px; 
-    
-    opacity: 0; 
-    transition: opacity 0.4s ease; 
+    padding: 30px;
+
+    opacity: 0;
+    transition: opacity 0.4s ease;
     color: white;
 }
 
-.product-card:hover .overlay { 
-    opacity: 1; 
+.product-card:hover .overlay {
+    opacity: 1;
 }
 
 /* TEXT ANIMATION (STAGGERED/BERURUTAN) */
 /* 1. Judul */
-.overlay h3 { 
-    font-family: var(--font-head); 
+.overlay h3 {
+    font-family: var(--font-head);
     font-size: 1.2rem;
-    margin-bottom: 5px; 
-    
+    margin-bottom: 5px;
+
     /* Posisi awal: agak di bawah & transparan */
-    transform: translateY(20px); 
+    transform: translateY(20px);
     opacity: 0;
     transition: all 0.5s var(--ease-out-expo);
 }
 
 /* 2. Harga/Kategori */
-.overlay p { 
-    font-size: 0.9rem; 
-    margin-bottom: 15px; 
-    opacity: 0; 
+.overlay p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    opacity: 0;
     transform: translateY(20px);
-    
+
     /* Delay dikit biar muncul setelah judul */
-    transition: all 0.5s var(--ease-out-expo) 0.1s; 
+    transition: all 0.5s var(--ease-out-expo) 0.1s;
 }
 
 /* 3. Tombol Shop */
 .btn-shopee {
-    display: inline-block; 
+    display: inline-block;
     padding: 10px 25px;
-    background: var(--accent); 
+    background: var(--accent);
     color: #000;
-    text-decoration: none; 
-    font-weight: 700; 
+    text-decoration: none;
+    font-weight: 700;
     font-size: 0.75rem;
     letter-spacing: 1px;
-    border-radius: 30px; 
+    border-radius: 30px;
     width: fit-content;
-    
+
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.5s var(--ease-out-expo) 0.2s; /* Delay paling akhir */
+    transition: all 0.5s var(--ease-out-expo) 0.2s;
+    /* Delay paling akhir */
 }
 
 .btn-shopee:hover {
@@ -188,16 +394,21 @@ body {
     border-top: 5px solid var(--text-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    
+
     /* Center positioning */
-    grid-column: 1 / -1; 
-    justify-self: center; 
+    grid-column: 1 / -1;
+    justify-self: center;
     margin: 80px 0;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* --- RESPONSIVE BREAKPOINTS --- */
@@ -211,14 +422,17 @@ body {
 
 /* Mobile (HP) -> Jadi 1 Kolom */
 @media (max-width: 768px) {
-    #new-arrival { padding: 60px 20px; }
-    
+    #new-arrival {
+        padding: 60px 20px;
+    }
+
     .product-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .product-card {
-        height: 400px; /* Di HP agak pendekan lagi biar ga scroll capek */
+        height: 400px;
+        /* Di HP agak pendekan lagi biar ga scroll capek */
     }
 }
 
@@ -229,7 +443,8 @@ body {
     padding: 100px 40px;
     /* Background Gradient agar lebih hidup */
     background: linear-gradient(135deg, var(--bg-primary) 0%, #f8eadd 100%);
-    overflow: hidden; /* Untuk floating elements */
+    overflow: hidden;
+    /* Untuk floating elements */
     position: relative;
 }
 
@@ -256,7 +471,7 @@ body {
     color: var(--text-primary);
     margin-bottom: 30px;
     /* Efek Teks Berbayang halus */
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
 }
 
 .promo-content p {
@@ -315,15 +530,23 @@ body {
     max-width: 100%;
     height: auto;
     /* Efek agar gambar terlihat 'pop-up' */
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
     /* Animasi floating halus */
     animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 /* FLOATING ELEMENTS (HIASAN) */
@@ -337,32 +560,65 @@ body {
 }
 
 .float-1 {
-    width: 300px; height: 300px;
-    top: -50px; right: -50px;
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    right: -50px;
     animation: float 8s ease-in-out infinite reverse;
 }
 
 .float-2 {
-    width: 200px; height: 200px;
-    bottom: -30px; left: 50px;
-    background: #FF8C00; /* Warna oranye lain */
+    width: 200px;
+    height: 200px;
+    bottom: -30px;
+    left: 50px;
+    background: #FF8C00;
+    /* Warna oranye lain */
     animation: float 7s ease-in-out infinite 1s;
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 1024px) {
-    .promo-content h2 { font-size: 2.8rem; }
-    .promo-container { gap: 40px; }
+    .promo-content h2 {
+        font-size: 2.8rem;
+    }
+
+    .promo-container {
+        gap: 40px;
+    }
 }
 
 @media (max-width: 768px) {
-    #try-magic-promo { padding: 60px 20px; }
-    .promo-container { flex-direction: column-reverse; text-align: center; }
-    .promo-content { max-width: 100%; }
-    .promo-content h2 { font-size: 2.5rem; }
-    .btn-try-magic { width: 100%; justify-content: center; }
-    .promo-visual { width: 100%; margin-bottom: 40px; }
-    .avatar-img { max-width: 80%; }
+    #try-magic-promo {
+        padding: 60px 20px;
+    }
+
+    .promo-container {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .promo-content {
+        max-width: 100%;
+    }
+
+    .promo-content h2 {
+        font-size: 2.5rem;
+    }
+
+    .btn-try-magic {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .promo-visual {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .avatar-img {
+        max-width: 80%;
+    }
 }
 
 /* =========================================
@@ -371,10 +627,11 @@ body {
 
 /* 1. HIGHLIGHT TEXT 'COOL' (GLOWING) */
 .cool-text {
-    color: var(--accent); /* Warna Kuning/Emas */
+    color: var(--accent);
+    /* Warna Kuning/Emas */
     position: relative;
     display: inline-block;
-    
+
     /* Efek Bloom Teks */
     text-shadow: 0 0 20px rgba(255, 175, 2, 0.6);
     animation: pulse-glow 2s infinite alternate;
@@ -394,22 +651,28 @@ body {
 }
 
 @keyframes pulse-glow {
-    0% { text-shadow: 0 0 10px rgba(255, 175, 2, 0.4); }
-    100% { text-shadow: 0 0 30px rgba(255, 175, 2, 0.9), 0 0 10px rgba(255, 255, 255, 0.8); }
+    0% {
+        text-shadow: 0 0 10px rgba(255, 175, 2, 0.4);
+    }
+
+    100% {
+        text-shadow: 0 0 30px rgba(255, 175, 2, 0.9), 0 0 10px rgba(255, 255, 255, 0.8);
+    }
 }
 
 /* 2. BUTTON BLOOM EFFECT */
 .btn-try-magic {
     position: relative;
-    overflow: hidden; /* Biar partikel ga keluar kotak tombol */
+    overflow: hidden;
+    /* Biar partikel ga keluar kotak tombol */
     z-index: 10;
 }
 
 /* Efek sinar pas hover */
 .btn-try-magic:hover {
     box-shadow: 0 0 30px var(--accent), 0 0 60px rgba(255, 175, 2, 0.4);
-    border: 1px solid rgba(255,255,255,0.5);
-    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 /* PARTICLE CSS (Dipake sama JS nanti) */
@@ -419,28 +682,41 @@ body {
     height: 8px;
     background: #fff;
     border-radius: 50%;
-    pointer-events: none; /* Biar ga ngehalangin klik */
+    pointer-events: none;
+    /* Biar ga ngehalangin klik */
     animation: pop 0.6s ease-out forwards;
 }
 
 @keyframes pop {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0) translate(var(--x), var(--y)); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0) translate(var(--x), var(--y));
+    }
 }
+
 /* =========================================
    CINEMATIC MAGIC TRANSITION (FIXED VERSION)
    ========================================= */
 
 /* 1. LAYAR HITAM (OVERLAY) */
 #magic-overlay {
-    position: fixed; /* Ubah jadi Fixed biar nutup satu layar penuh */
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.9), #000);
+    position: fixed;
+    /* Ubah jadi Fixed biar nutup satu layar penuh */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9), #000);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease;
-    z-index: 9998; /* Di bawah tombol, di atas konten lain */
+    z-index: 9998;
+    /* Di bawah tombol, di atas konten lain */
     pointer-events: none;
 }
 
@@ -451,9 +727,10 @@ body.magic-active #magic-overlay {
 
 /* 2. TOMBOL JADI SPOTLIGHT */
 body.magic-active #magic-btn {
-    position: relative; 
-    z-index: 9999; /* Paling atas */
-    transform: scale(1.1); 
+    position: relative;
+    z-index: 9999;
+    /* Paling atas */
+    transform: scale(1.1);
     box-shadow: 0 0 50px #FFAF02, 0 0 100px rgba(255, 175, 2, 0.5);
     transition: all 0.5s ease;
     cursor: default;
@@ -461,15 +738,18 @@ body.magic-active #magic-btn {
 
 /* 3. PARTIKEL MAGIC */
 .magic-particle {
-    position: fixed; /* PENTING: Fixed biar ga ikut scroll */
+    position: fixed;
+    /* PENTING: Fixed biar ga ikut scroll */
     width: 8px;
     height: 8px;
     background: #fff;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999; 
+    z-index: 9999;
     box-shadow: 0 0 10px #fff, 0 0 20px #FFAF02;
-    top: 0; left: 0; /* Reset posisi */
+    top: 0;
+    left: 0;
+    /* Reset posisi */
 }
 
 @keyframes explode {
@@ -477,6 +757,7 @@ body.magic-active #magic-btn {
         transform: translate(var(--start-x), var(--start-y)) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translate(var(--dest-x), var(--dest-y)) scale(0);
         opacity: 0;
@@ -488,13 +769,27 @@ body.magic-active #magic-btn {
    ========================================= */
 #full-catalog {
     padding: 80px 40px;
-    background-color: #fff; /* White background for clean look */
+    background-color: #fff;
+    /* White background for clean look */
     min-height: 100vh;
 }
 
-.catalog-header { text-align: center; margin-bottom: 40px; }
-.catalog-header h2 { font-family: var(--font-head); font-size: 2.5rem; margin-bottom: 10px; text-transform: uppercase; }
-.catalog-header p { color: #888; font-family: var(--font-body); }
+.catalog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.catalog-header h2 {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.catalog-header p {
+    color: #888;
+    font-family: var(--font-body);
+}
 
 /* --- TOOLBAR (FILTER & SEARCH) --- */
 .catalog-toolbar {
@@ -510,26 +805,46 @@ body.magic-active #magic-btn {
 }
 
 /* Filter Tabs */
-.filter-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
 .filter-btn {
-    background: none; border: none;
-    font-family: var(--font-body); font-size: 0.9rem;
-    cursor: pointer; padding: 8px 16px;
-    border-radius: 20px; color: #888;
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #888;
     transition: all 0.3s ease;
     white-space: nowrap;
 }
-.filter-btn:hover { color: var(--text-primary); background: #f5f5f5; }
-.filter-btn.active { background: var(--text-primary); color: #fff; }
+
+.filter-btn:hover {
+    color: var(--text-primary);
+    background: #f5f5f5;
+}
+
+.filter-btn.active {
+    background: var(--text-primary);
+    color: #fff;
+}
 
 /* Search Bar */
 .search-container {
     position: relative;
     width: 300px;
 }
+
 .search-container input {
     width: 100%;
-    padding: 12px 20px 12px 45px; /* Padding kiri buat icon */
+    padding: 12px 20px 12px 45px;
+    /* Padding kiri buat icon */
     border-radius: 30px;
     border: 1px solid #ddd;
     background: #f9f9f9;
@@ -537,17 +852,22 @@ body.magic-active #magic-btn {
     outline: none;
     transition: all 0.3s ease;
 }
+
 .search-container input:focus {
     background: #fff;
     border-color: var(--accent);
     box-shadow: 0 0 0 4px rgba(255, 175, 2, 0.1);
 }
+
 .search-icon {
-    position: absolute; left: 15px; top: 50%;
+    position: absolute;
+    left: 15px;
+    top: 50%;
     transform: translateY(-50%);
     color: #999;
     pointer-events: none;
 }
+
 /* =========================================
    CATALOG GRID STYLING (E-COMMERCE STYLE)
    ========================================= */
@@ -555,7 +875,7 @@ body.magic-active #magic-btn {
 .catalog-grid {
     display: grid;
     /* Responsive Grid: Minimal lebar 240px */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -564,28 +884,34 @@ body.magic-active #magic-btn {
 /* KARTU KATALOG (Khusus di dalam #full-catalog) */
 .catalog-card {
     background: #fff;
-    border-radius: 16px; /* Rounded banget */
+    border-radius: 16px;
+    /* Rounded banget */
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid #f0f0f0; /* Garis tepi halus */
-    box-shadow: 0 6px 20px rgba(0,0,0,0.06); /* Tambah bayangan lembut */
+    border: 1px solid #f0f0f0;
+    /* Garis tepi halus */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    /* Tambah bayangan lembut */
     display: flex;
-    flex-direction: column; /* Susun ke bawah */
-    height: 100%; /* Biar tinggi sama rata */
+    flex-direction: column;
+    /* Susun ke bawah */
+    height: 100%;
+    /* Biar tinggi sama rata */
 }
 
 /* EFEK HOVER: Naik dikit & Shadow */
 .catalog-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     border-color: var(--accent);
 }
 
 /* 1. BAGIAN GAMBAR (ATAS) */
 .catalog-card .img-wrapper {
     width: 100%;
-    height: 280px; /* Tinggi gambar fix */
+    height: 280px;
+    /* Tinggi gambar fix */
     overflow: hidden;
     background: #f9f9f9;
     position: relative;
@@ -609,7 +935,8 @@ body.magic-active #magic-btn {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    flex-grow: 1; /* Ngisi sisa ruang */
+    flex-grow: 1;
+    /* Ngisi sisa ruang */
 }
 
 .catalog-card h3 {
@@ -633,11 +960,15 @@ body.magic-active #magic-btn {
 }
 
 .catalog-card .price {
-    font-family: var(--font-body); /* Gunakan Inter */
+    font-family: var(--font-body);
+    /* Gunakan Inter */
     font-size: 1.1rem;
-    color: #C07A00; /* Warna amber lebih lembut, tidak terlalu kuning */
-    font-weight: 700; /* Bold */
-    margin-top: auto; /* Dorong harga ke paling bawah */
+    color: #C07A00;
+    /* Warna amber lebih lembut, tidak terlalu kuning */
+    font-weight: 700;
+    /* Bold */
+    margin-top: auto;
+    /* Dorong harga ke paling bawah */
     padding-top: 10px;
 }
 
@@ -645,11 +976,20 @@ body.magic-active #magic-btn {
 @media (max-width: 768px) {
     .catalog-grid {
         gap: 15px;
-        grid-template-columns: repeat(2, 1fr); /* HP tetep 2 kolom biar kaya Shopee */
+        grid-template-columns: repeat(2, 1fr);
+        /* HP tetep 2 kolom biar kaya Shopee */
     }
+
     .catalog-card .img-wrapper {
-        height: 200px; /* Gambar lebih kecil di HP */
+        height: 200px;
+        /* Gambar lebih kecil di HP */
     }
-    .catalog-card h3 { font-size: 0.9rem; }
-    .catalog-card .price { font-size: 1rem; }
+
+    .catalog-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .catalog-card .price {
+        font-size: 1rem;
+    }
 }
