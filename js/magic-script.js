@@ -455,8 +455,8 @@ function renderOneSet(sets, accs) {
     displayedSets.forEach((set, index) => {
         const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
         const setHtml = `
-            <div class="item-row" data-set-index="${index}">
-                <img src="${set.image}" alt="${set.name}" onerror="this.src='https://via.placeholder.com/100'">
+            <div class="item-row" data-set-index="${index}" style="animation-delay: ${index * 0.1}s">
+                <img src="${set.image}" alt="${set.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
                 <div class="item-info">
                     <h4>${set.name}</h4>
                     <p>${index === 0 ? 'Best Match Look' : 'Alternative Look'}</p>
@@ -478,8 +478,8 @@ function renderOneSet(sets, accs) {
         remainingSets.forEach((set, index) => {
             const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
             const setHtml = `
-                <div class="item-row">
-                    <img src="${set.image}" alt="${set.name}" onerror="this.src='https://via.placeholder.com/100'">
+                <div class="item-row" style="animation-delay: ${(index + 4) * 0.1}s">
+                    <img src="${set.image}" alt="${set.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
                     <div class="item-info">
                         <h4>${set.name}</h4>
                         <p>Alternative Look</p>
@@ -537,8 +537,8 @@ function renderOneSet(sets, accs) {
     const mainAcc = accs.length > 0 ? accs[0] : null;
     if (mainAcc) {
         const accHtml = `
-            <div class="item-row" style="border-top: 2px dashed #E6C4A8; margin-top: 20px; padding-top: 20px;">
-                <img src="${mainAcc.image}" alt="${mainAcc.name}" onerror="this.src='https://via.placeholder.com/100'">
+            <div class="item-row" style="border-top: 2px dashed #E6C4A8; margin-top: 20px; padding-top: 20px; animation-delay: ${(displayedSets.length + (remainingSets.length > 0 ? remainingSets.length : 0)) * 0.1 + 0.2}s">
+                <img src="${mainAcc.image}" alt="${mainAcc.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
                 <div class="item-info">
                     <h4>${mainAcc.name}</h4>
                     <p>Accessories</p>
@@ -614,7 +614,7 @@ function renderGrid(container, products) {
         const cardHTML = `
             <div class="product-card-simple" onclick='openProductPopup(${escapedProduct})'>
                 <div class="img-wrapper">
-                    <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
+                    <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
                 </div>
                 <div class="card-details">
                     <h4>${p.name}</h4>

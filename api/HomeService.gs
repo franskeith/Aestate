@@ -33,7 +33,8 @@ function getHomeData() {
       tags: row[4],
       image: row[5],
       shop_link: row[6],
-      date_added: finalDate
+      date_added: finalDate,
+      events: row[8] || '' // Kolom I = Events
     };
   });
 
@@ -89,15 +90,15 @@ function getCatalogData() {
       tags: row[4],
       image: row[5],
       shop_link: row[6],
-      date_added: finalDate
+      date_added: finalDate,
+      events: row[8] || '' // Kolom I = Events (valentine, new, hot, best_seller, dll)
     };
   });
 
-  // FILTER: Ambil SEMUA KECUALI 'Set'
+  // FILTER: Ambil SEMUA produk yang memiliki nama (tidak kosong)
+  // Note: Sekarang include 'Set' juga untuk New Model page
   var catalogItems = products.filter(function(p) {
-    var cat = String(p.category).toLowerCase().trim();
-    // Syarat: Bukan Set, dan Data tidak kosong
-    return cat !== 'set' && p.name !== '';
+    return p.name !== '' && p.name !== null && p.name !== undefined;
   });
 
   // Sorting: Opsional (Misal dari terbaru)

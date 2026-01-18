@@ -30,6 +30,11 @@ function openProductPopup(product) {
     if (image) {
         image.src = product.image || 'https://via.placeholder.com/500x600?text=No+Image';
         image.alt = product.name || 'Product';
+        // Prevent infinite loop if placeholder fails
+        image.onerror = function () {
+            this.onerror = null; // Prevent infinite loop
+            this.src = 'https://via.placeholder.com/500x600?text=No+Image';
+        };
     }
 
     // Populate category

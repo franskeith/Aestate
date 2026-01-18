@@ -9,6 +9,77 @@ html {
     scroll-behavior: smooth;
 }
 
+/* =========================================
+   SCROLL ANIMATIONS (Intersection Observer)
+   ========================================= */
+
+/* Base hidden state for elements */
+[data-scroll] {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Fade Up Animation */
+[data-scroll="fade-up"] {
+    transform: translateY(50px);
+}
+
+[data-scroll="fade-up"].scroll-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Left Animation */
+[data-scroll="fade-left"] {
+    transform: translateX(-50px);
+}
+
+[data-scroll="fade-left"].scroll-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Fade Right Animation */
+[data-scroll="fade-right"] {
+    transform: translateX(50px);
+}
+
+[data-scroll="fade-right"].scroll-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Scale Up Animation */
+[data-scroll="scale-up"] {
+    transform: scale(0.9);
+}
+
+[data-scroll="scale-up"].scroll-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger delays for multiple items */
+[data-scroll][data-delay="1"] {
+    transition-delay: 0.1s;
+}
+
+[data-scroll][data-delay="2"] {
+    transition-delay: 0.2s;
+}
+
+[data-scroll][data-delay="3"] {
+    transition-delay: 0.3s;
+}
+
+[data-scroll][data-delay="4"] {
+    transition-delay: 0.4s;
+}
+
+[data-scroll][data-delay="5"] {
+    transition-delay: 0.5s;
+}
+
 :root {
     --bg-primary: #FFF6E9;
     --text-primary: #523F37;
@@ -34,11 +105,24 @@ body {
 }
 
 /* --- 2. HERO SECTION (TIDAK DIUBAH) --- */
-#hero {
+/* =========================================
+   2. HERO SECTION REVAMP (4-LAYER SYSTEM)
+   ========================================= */
+
+#hero-revamp {
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    background: #FFF6E9;
+    /* Default Beige */
+}
+
+/* --- SLIDER STRUCTURE (RESTORED) --- */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .slide {
@@ -49,7 +133,7 @@ body {
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: all 1s ease-in-out;
+    transition: opacity 1s ease-in-out, visibility 1s;
 }
 
 .slide.active {
@@ -57,189 +141,317 @@ body {
     visibility: visible;
 }
 
-.layer {
+/* --- LAYER 1: Background & Big Date --- */
+.layer-1-bg {
+    z-index: 1;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
+    pointer-events: none;
+}
+
+.split-bg {
+    position: absolute;
     top: 0;
     left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-.layer-2-text h2 {
-    font-family: var(--font-head);
-    font-size: 25vw;
-    color: #fff;
-    opacity: 0.8;
-    transform: translateY(50px);
-    transition: transform 1.5s ease;
-    white-space: nowrap;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
+/* Slide 1 - Gradient Background */
+.slide:nth-child(1) .split-bg {
+    background: linear-gradient(-90deg, #D9D9D9 0%, #FFECD8 40%, #737373 100%);
+}
+
+/* Slide 2 - Gradient Background */
+.slide:nth-child(2) .split-bg {
+    background: linear-gradient(-90deg, #e7d2d2 0%, #d1b787 40%, #737373 100%);
+}
+
+.big-date {
     position: absolute;
-    left: 20%;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    font-family: var(--font-head);
+    font-size: 24vh;
+    color: #FFF;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0.9;
+    letter-spacing: -10px;
+    z-index: 2;
+    text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.05);
 }
 
-.slide.active .layer-2-text h2 {
-    transform: translateY(0);
+.deco-circle-top-right {
+    position: absolute;
+    top: -8px;
+    right: 7%;
+    width: 134px;
+    height: 129px;
+    border: 22px solid #B09C8D;
+    border-radius: 50%;
+    opacity: 0.8;
 }
 
-.layer-1-model {
+/* --- LAYER 2: Text Content --- */
+.layer-2-text {
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Let clicks pass through to search if needed */
+}
+
+.text-block-left {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-20%);
+    width: 20%;
+    z-index: 10;
+}
+
+.text-block-left h2 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    color: #FFF;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.text-block-left .text-sub {
+    padding: 0px;
+    color: #d3d3d3;
+}
+
+.text-block-left .text-sub p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #ffffff;
+    line-height: 1.4;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Hero Text Right - for h2 and p */
+.hero-text-right {
+    position: absolute;
+    top: 30%;
+    right: 3%;
+    width: 35%;
+    text-align: left;
+    z-index: 10;
+}
+
+.hero-text-right h2 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    color: #3e3e3ec9;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 10px;
+    margin-top: -30px;
+    margin-left: -46px;
+    letter-spacing: -1px;
+}
+
+.hero-text-right p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: #66666687;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: -46px;
+    margin-right: 160px;
+}
+
+/* Hero Images Right - for aesthetic elements */
+.hero-images-right {
+    position: absolute;
+    top: 49%;
+    right: -15%;
+    width: 35%;
+    z-index: 10;
+}
+
+/* Aesthetic Elements (Right Side) */
+.aesthetic-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.arch-shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid #333;
+    border-top-right-radius: 100px;
+    opacity: 0.5;
+}
+
+/* Also right border for arch */
+.arch-shape::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: #333;
+}
+
+
+.star-particle {
+    position: absolute;
+    top: 30px;
+    right: 180px;
+    width: 40px;
+    animation: floating 3s ease-in-out infinite;
+    filter: sepia(1) hue-rotate(-50deg);
+    /* Make it brownish like star */
+}
+
+/* Arch Shape Image - positioned above secondary-img-box, aligned left in container */
+.arch-shape-img {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    /* Left-aligned within container */
+    width: 280px;
+    height: auto;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.secondary-img-box {
+    position: absolute;
+    bottom: -21px;
+    left: 0;
+    /* Left-aligned within container */
+    width: 70%;
+    height: 103px;
+    overflow: hidden;
+}
+
+.secondary-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.2);
+}
+
+.fashion-life-text {
+    margin-top: 20px;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: -55px;
+}
+
+.fashion-life-text .line {
+    height: 1px;
+    background: #000;
+    width: 50px;
+    display: block;
+}
+
+
+/* --- LAYER 3: Model --- */
+.layer-3-model {
     z-index: 3;
+    position: absolute;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-}
-
-.layer-1-model img {
-    height: 90vh;
-    object-fit: cover;
-    transform: scale(1.1);
-    transition: transform 3s ease;
-}
-
-.slide.active .layer-1-model img {
-    transform: scale(1);
-}
-
-/* --- HERO ASSETS (DECORATION) --- */
-.layer-assets {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    /* Model at bottom */
     pointer-events: none;
-    z-index: 2;
-    /* Behind model (z-index 3) for depth */
 }
 
-/* 1. Top Left Small Particle */
-.asset-top-left {
-    position: absolute;
-    top: 120px;
-    left: 50px;
-    width: 60px;
-    opacity: 0;
-    transition: opacity 1s ease 0.5s;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+.hero-main-model {
+    height: 95vh;
+    /* Taller */
+    object-fit: contain;
+    transform: translateY(20px);
+    /* Push down slightly */
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
+    /* Shadow for pop */
 }
 
-/* Tagline Above Right Particle */
-.asset-tagline {
-    position: absolute;
-    top: 12%;
-    right: 0;
-    /* Flush right like secondary image */
-    width: 350px;
-    /* Match secondary image width */
-    max-width: 40vw;
-    text-align: left;
-    /* Left aligned */
-    opacity: 0;
-    transition: opacity 1s ease 0.6s;
-    z-index: 3;
-}
-
-.asset-tagline h4 {
-    font-family: var(--font-head);
-    font-size: 1.3rem;
-    /* Smaller header */
-    color: #523F37;
-    margin: 0 0 5px 0;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
-}
-
-.asset-tagline p {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    /* Smaller paragraph */
-    color: #858280;
-    margin: 0;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-}
-
-.slide.active .asset-tagline {
-    opacity: 1;
-}
-
-/* 2. Right Center Particle */
-.asset-right-center {
-    position: absolute;
-    top: 20%;
-    /* Moved higher to avoid overlap */
-    right: 0;
-    transform: translateY(-50%);
-    width: 350px;
-    max-width: 30vw;
-    opacity: 0;
-    transition: opacity 1s ease 0.8s;
-}
-
-/* 3. Right Bottom Secondary Image */
-.asset-right-bottom {
-    position: absolute;
-    bottom: 80px;
-    /* Increased spacing from bottom */
-    right: 0;
-    width: 350px;
-    max-width: 40vw;
-    border-radius: 0;
-    opacity: 0;
-    transition: opacity 1s ease 1s;
-    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-/* Show assets when slide is active with delay */
-.slide.active .asset-top-left,
-.slide.active .asset-right-center,
-.slide.active .asset-right-bottom {
-    opacity: 1;
-}
-
-/* Floating Animations */
-.floating {
-    animation: floatY 6s ease-in-out infinite;
-}
-
-.floating-slow {
-    animation: floatY 8s ease-in-out infinite reverse;
-}
-
-.floating-medium {
-    animation: floatY 7s ease-in-out infinite 1s;
-}
-
-@keyframes floatY {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-.hero-content {
-    position: absolute;
+/* --- LAYER 4: Search Bar --- */
+.layer-4-search {
     z-index: 4;
-    left: 10%;
-    top: 40%;
-    color: #333;
+    position: absolute;
+    bottom: 60px;
+    /* Floating at bottom */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+    /* Allow interaction */
 }
 
-.hero-content h3 {
-    font-family: var(--font-head);
-    font-size: 3rem;
-    line-height: 1.2;
-    margin-bottom: 20px;
+/* Override existing magic search wrapper margins for this layout */
+.hero-layer .magic-search-wrapper {
+    margin-top: 0;
+    margin-bottom: 0;
 }
+
+/* Responsive Tweaks for Hero */
+@media (max-width: 1024px) {
+    .split-bg {
+        background: linear-gradient(180deg, #8C8C8C 0%, #8C8C8C 40%, #FFF6E9 40%, #FFF6E9 100%);
+    }
+
+    .big-date {
+        transform: translate(-50%, -50%) rotate(0deg);
+        top: 20%;
+        left: 50%;
+        font-size: 15vh;
+    }
+
+    .text-block-left {
+        top: 15%;
+        left: 5%;
+        width: 90%;
+        text-align: center;
+    }
+
+    .text-block-left h2 {
+        display: none;
+        /* Hide big lorem ipsum on mobile for space */
+    }
+
+    .text-block-right {
+        display: none;
+        /* Simplify for tablet */
+    }
+
+    .hero-main-model {
+        height: 60vh;
+    }
+
+    .layer-4-search {
+        bottom: 100px;
+    }
+}
+
+
+
+
 
 /* --- 3. NEW ARRIVAL SECTION (UPDATED) --- */
 #new-arrival {
@@ -991,5 +1203,269 @@ body.magic-active #magic-btn {
 
     .catalog-card .price {
         font-size: 1rem;
+    }
+}
+
+/* =========================================
+   MAGIC SEARCH BAR (Animated Glass)
+   ========================================= */
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.magic-search-wrapper {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    margin-top: -120px;
+    /* Higher up - more overlap with hero */
+    margin-bottom: 80px;
+    padding: 0 20px;
+}
+
+.glass-wrapper {
+    position: relative;
+
+    /* Smaller & Chunky (same proportion) */
+    height: 70px;
+    padding: 14px;
+
+    /* Gradient background */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    /* Thin border moved here */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    /* Softer shadows */
+    box-shadow:
+        0 20px 50px -10px rgba(82, 63, 55, 0.1),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+
+    border-radius: 45px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* INITIAL STATE (Small circle at bottom) */
+    width: 70px;
+    transform: translateY(120px);
+    opacity: 0;
+
+    animation: searchEntrance 1.8s var(--ease-out-expo) forwards;
+    animation-delay: 0.3s;
+}
+
+/* Neon Runner Border */
+.neon-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    padding: 3px;
+    z-index: 10;
+    pointer-events: none;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    background: conic-gradient(from var(--angle),
+            transparent 0%,
+            transparent 70%,
+            var(--accent) 90%,
+            white 100%);
+
+    opacity: 0;
+    animation: neonSpin 1.5s linear forwards;
+    animation-delay: 1.6s;
+}
+
+/* Inner Search Container */
+.search-inner {
+    width: 100%;
+    height: 100%;
+    background: rgba(57, 53, 53, 0.107);
+    border-radius: 35px;
+    border: none;
+    /* Border moved to wrapper */
+
+    /* Inner shadow effect */
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+
+    position: relative;
+    z-index: 5;
+    overflow: hidden;
+
+    opacity: 0;
+    animation: fadeInInner 0.5s ease forwards;
+    animation-delay: 1.1s;
+}
+
+/* Search Input */
+.magic-search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-primary);
+
+    margin: 0 15px;
+
+    width: 0;
+    opacity: 0;
+    white-space: nowrap;
+    animation: revealText 0.8s var(--ease-out-expo) forwards;
+    animation-delay: 1.4s;
+}
+
+.magic-search-input::placeholder {
+    color: rgba(15, 11, 10, 0.5);
+}
+
+/* Icons */
+.glass-wrapper .icon {
+    color: #523f379c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glass-wrapper .icon svg {
+    stroke-width: 2px;
+    width: 22px;
+    height: 22px;
+}
+
+.glass-wrapper .icon-mic svg {
+    width: 20px;
+    height: 20px;
+}
+
+.icon-mic {
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: revealMic 0.5s var(--ease-out-expo) forwards;
+    animation-delay: 1.6s;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background 0.3s, color 0.3s;
+}
+
+.icon-mic:hover {
+    background: rgba(255, 175, 2, 0.15);
+    color: var(--accent);
+}
+
+/* =========================================
+   KEYFRAMES FOR MAGIC SEARCH
+   ========================================= */
+
+@keyframes searchEntrance {
+
+    /* Phase 1: Small circle at bottom */
+    0% {
+        opacity: 0;
+        width: 70px;
+        border-radius: 50%;
+        transform: translateY(120px) scale(0.8);
+    }
+
+    /* Phase 2: Float up as circle */
+    40% {
+        opacity: 1;
+        width: 70px;
+        border-radius: 50%;
+        transform: translateY(0) scale(1.1);
+    }
+
+    50% {
+        width: 70px;
+        border-radius: 50%;
+        transform: translateY(0) scale(1);
+    }
+
+    /* Phase 3: Expand to pill */
+    100% {
+        opacity: 1;
+        width: min(620px, 85vw);
+        border-radius: 45px;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes neonSpin {
+    0% {
+        opacity: 1;
+        --angle: 0deg;
+    }
+
+    100% {
+        opacity: 0;
+        --angle: 360deg;
+    }
+}
+
+@keyframes fadeInInner {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes revealText {
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes revealMic {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .magic-search-wrapper {
+        margin-top: -60px;
+    }
+
+    .glass-wrapper {
+        height: 70px;
+        padding: 12px;
+    }
+
+    .magic-search-input {
+        font-size: 1rem;
+    }
+
+    .glass-wrapper .icon-search svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .glass-wrapper .icon-mic svg {
+        width: 22px;
+        height: 22px;
     }
 }

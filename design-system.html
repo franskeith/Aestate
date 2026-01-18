@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aestate Design System</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           DESIGN TOKENS
+           ========================================= */
+        :root {
+            /* Colors */
+            --bg-primary: #FFF6E9;
+            --bg-panel: #FFEBD8;
+            --text-primary: #523F37;
+            /* Also used as text-dark */
+            --accent: #FFAF02;
+            --accent-blue: #6366f1;
+            --white: #FFFFFF;
+
+            /* Gradients */
+            --btn-gradient-start: #523F37;
+            --btn-gradient-end: #8B5E3C;
+
+            /* Typography */
+            --font-head: 'Days One', sans-serif;
+            --font-body: 'Inter', sans-serif;
+
+            /* Transitions */
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-base: all 0.3s var(--ease-out-expo);
+        }
+
+        /* =========================================
+           RESET & BASE STYLES
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 100px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-head);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        /* =========================================
+           LAYOUT UTILITIES
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .ds-section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .ds-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px dashed rgb(82 63 55 / 10%);
+        }
+
+        .ds-header h1 {
+            font-size: 3rem;
+            color: var(--text-primary);
+        }
+
+        .ds-section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ds-section-title::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* =========================================
+           COLOR PALETTE
+           ========================================= */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .color-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition-base);
+        }
+
+        .color-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-swatch {
+            height: 120px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-swatch::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+        }
+
+        .color-info h4 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .color-info code {
+            font-family: monospace;
+            color: #888;
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        /* =========================================
+           TYPOGRAPHY
+           ========================================= */
+        .type-scale {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .type-row {
+            display: flex;
+            align-items: baseline;
+            gap: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .type-label {
+            width: 150px;
+            color: #999;
+            font-family: monospace;
+            flex-shrink: 0;
+        }
+
+        .type-preview {
+            color: var(--text-primary);
+        }
+
+        /* =========================================
+           COMPONENTS: BUTTONS
+           ========================================= */
+        .btn-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* 1. Shopee/Secondary Style */
+        .btn-pill {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--accent);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            transition: var(--transition-base);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-pill:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 2. Primary/Try Magic Style */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background-color: var(--text-primary);
+            color: #fff;
+            text-decoration: none;
+            font-family: var(--font-head);
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: var(--transition-base);
+            box-shadow: 0 10px 20px rgba(82, 63, 55, 0.2);
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 175, 2, 0.3);
+        }
+
+        /* 3. Gradient Button */
+        .btn-gradient {
+            padding: 18px 40px;
+            background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end));
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: var(--font-head);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(82, 63, 55, 0.4);
+            transition: var(--transition-base);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(82, 63, 55, 0.6);
+        }
+
+        /* =========================================
+           COMPONENTS: CARDS
+           ========================================= */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(82, 63, 55, 0.1);
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(82, 63, 55, 0.15);
+        }
+
+        .card-image-wrapper {
+            height: 250px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-out-expo);
+        }
+
+        .card:hover .card-image-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        /* =========================================
+           INTERACTIVE DEMOS
+           ========================================= */
+        .demo-box {
+            padding: 40px;
+            background: var(--bg-panel);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cool-text {
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+            font-family: var(--font-head);
+            font-size: 2rem;
+            text-shadow: 0 0 20px rgba(255, 175, 2, 0.6);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        .cool-text::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 175, 2, 0.3);
+            z-index: -1;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 175, 2, 0.4);
+            }
+
+            100% {
+                text-shadow: 0 0 30px rgba(255, 175, 2, 0.9), 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        /* Floating Animation */
+        .floater {
+            animation: float 6s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="ds-header">
+            <h1 class="floater">AESTATE</h1>
+            <p>Design System & Brand Guidelines</p>
+            <div style="margin-top: 20px;">
+                <span
+                    style="padding: 5px 15px; background: var(--accent); border-radius: 20px; font-size: 0.8rem; font-weight: bold;">v1.0</span>
+            </div>
+        </header>
+
+        <!-- Colors -->
+        <section class="ds-section">
+            <div class="ds-section-title">Color Palette</div>
+            <div class="color-grid">
+                <!-- Primary Background -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--bg-primary);"></div>
+                    <div class="color-info">
+                        <h4>Cream Background</h4>
+                        <code>var(--bg-primary)</code>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">#FFF6E9</p>
+                    </div>
+                </div>
+
+                <!-- Primary Text -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--text-primary);"></div>
+                    <div class="color-info">
+                        <h4>Dark Coffee</h4>
+                        <code>var(--text-primary)</code>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">#523F37</p>
+                    </div>
+                </div>
+
+                <!-- Accent -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent);"></div>
+                    <div class="color-info">
+                        <h4>Golden Accent</h4>
+                        <code>var(--accent)</code>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">#FFAF02</p>
+                    </div>
+                </div>
+
+                <!-- Secondary Panel -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--bg-panel);"></div>
+                    <div class="color-info">
+                        <h4>Panel Beige</h4>
+                        <code>var(--bg-panel)</code>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">#FFEBD8</p>
+                    </div>
+                </div>
+
+                <!-- Accent Blue -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-blue);"></div>
+                    <div class="color-info">
+                        <h4>Selection Blue</h4>
+                        <code>var(--accent-blue)</code>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">#6366f1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="ds-section">
+            <div class="ds-section-title">Typography</div>
+            <div class="type-scale">
+                <div class="type-row">
+                    <div class="type-label">Heading 1</div>
+                    <div class="type-preview">
+                        <h1 style="margin: 0;">The Quick Brown Fox</h1>
+                        <code>font-family: 'Days One', sans-serif;</code>
+                    </div>
+                </div>
+                <div class="type-row">
+                    <div class="type-label">Heading 2</div>
+                    <div class="type-preview">
+                        <h2 style="margin: 0;">Jumps Over The Lazy Dog</h2>
+                        <code>font-size: 2.5rem;</code>
+                    </div>
+                </div>
+                <div class="type-row">
+                    <div class="type-label">Body Text</div>
+                    <div class="type-preview">
+                        <p style="margin: 0; max-width: 600px;">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                        </p>
+                        <code style="display: block; margin-top: 10px;">font-family: 'Inter', sans-serif;</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="ds-section">
+            <div class="ds-section-title">Buttons & Actions</div>
+            <div class="btn-wrapper">
+
+                <!-- Pill Button -->
+                <div style="text-align: center;">
+                    <a href="#" class="btn-pill">Shop Now</a>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">.btn-pill (Accent)</p>
+                </div>
+
+                <!-- Primary Button -->
+                <div style="text-align: center;">
+                    <a href="#" class="btn-primary">
+                        Try Magic
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">.btn-primary (Dark)</p>
+                </div>
+
+                <!-- Gradient Button -->
+                <div style="text-align: center;">
+                    <button class="btn-gradient">Generate Style</button>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">.btn-gradient</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- UI Components -->
+        <section class="ds-section">
+            <div class="ds-section-title">UI Components</div>
+
+            <div class="card-grid">
+                <!-- Product Card Style -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <span
+                            style="color: #666; font-family: var(--font-head); font-size: 3rem; opacity: 0.2;">IMG</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Product Card</h3>
+                        <p>Standard card with hover lift effect and smooth shadow transition. Used for listings.</p>
+                        <a href="#" class="btn-pill">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Option Card Style -->
+                <div class="card"
+                    style="align-items: center; justify-content: center; text-align: center; padding: 40px;">
+                    <div
+                        style="width: 80px; height: 80px; border-radius: 50%; background: var(--bg-panel); margin-bottom: 20px; display: flex; alignItems: center; justify-content: center;">
+                        <span style="font-size: 2rem;">✨</span>
+                    </div>
+                    <h3>Feature Card</h3>
+                    <p>Centered layout for features or options.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Effects -->
+        <section class="ds-section">
+            <div class="ds-section-title">Magic Effects</div>
+            <div class="demo-box">
+                <p style="margin-bottom: 20px;">Text Glow & Floating Animation</p>
+                <div class="cool-text floater">Magic Aestate Effect</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Script for simple interactions if needed in the future -->
+    <script>
+        console.log('Aestate Design System Loaded');
+
+        // Example: Add simple click effect to buttons for demo
+        const buttons = document.querySelectorAll('a, button');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (btn.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    // Simple pulse effect could go here
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

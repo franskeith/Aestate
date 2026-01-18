@@ -11,8 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Design System (Colors, Fonts) -->
-    <!-- Note: CSS is embedded here for 'new-model.css' equivalent, based on newmodelinspiration.html -->
     <style>
         /* =========================================
            1. DESIGN TOKENS & RESET
@@ -547,39 +545,9 @@
         }
 
         .product-card {
+            group: product;
             background: transparent;
             cursor: pointer;
-        }
-
-        /* Product Badges (NEW, HOT, BEST) for Just Landed */
-        .product-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-family: var(--font-head);
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            z-index: 5;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .badge-new {
-            background: var(--accent);
-            color: var(--text-primary);
-        }
-
-        .badge-hot {
-            background: var(--accent-pink);
-            color: white;
-        }
-
-        .badge-best {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: var(--text-primary);
         }
 
         .p-img-box {
@@ -784,49 +752,6 @@
             animation-delay: 1s;
         }
 
-        /* Event Badges (NEW, HOT, BEST SELLER) */
-        .evt-badge {
-            position: absolute;
-            right: 15px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-family: var(--font-head);
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            z-index: 10;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            animation: badgePulse 2s ease-in-out infinite;
-        }
-
-        .evt-badge-new {
-            background: var(--accent);
-            color: var(--text-primary);
-        }
-
-        .evt-badge-hot {
-            background: var(--accent-pink);
-            color: white;
-        }
-
-        .evt-badge-best {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: var(--text-primary);
-        }
-
-        @keyframes badgePulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
         .evt-tag {
             display: inline-block;
             padding: 6px 16px;
@@ -979,9 +904,9 @@
 <body>
 
     <nav class="navbar">
-        <a href="../index.html" class="brand">AESTATE</a>
+        <a href="#" class="brand">AESTATE</a>
         <div class="nav-links">
-            <a href="../index.html" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Home</a>
             <a href="#" class="nav-link">Magic</a>
             <a href="#" class="nav-link active">New Model</a>
         </div>
@@ -1004,7 +929,6 @@
         <div class="stack-wrapper">
             <div class="stack-scroll-container">
 
-                <!-- STATIC HERO CARDS (Performance) -->
                 <div class="photocard">
                     <div class="sticker new">NEW</div>
                     <div class="pc-image">
@@ -1076,6 +1000,84 @@
 
     </section>
 
+    <section class="container mb-4">
+        <div class="section-header">
+            <div class="sh-text">
+                <h2>Just Landed</h2>
+                <p>Fresh additions to our database this month.</p>
+            </div>
+            <a href="#" class="view-all-btn">View Full Catalog</a>
+        </div>
+
+        <div class="landing-grid">
+
+            <div class="product-card">
+                <div class="p-img-box">
+                    <img src="https://images.unsplash.com/photo-1550614000-4b9519e02a48?q=80&w=1000&auto=format&fit=crop"
+                        alt="Item 1">
+                    <div class="p-actions">
+                        <button class="action-btn">Add</button>
+                        <button class="action-btn">Try</button>
+                    </div>
+                </div>
+                <div class="p-info">
+                    <span class="price">IDR 299K</span>
+                    <span class="cat">Blouse</span>
+                    <h4>Silk Ivory Top</h4>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="p-img-box">
+                    <img src="https://images.unsplash.com/photo-1582142327242-0b2626b605a2?q=80&w=1000&auto=format&fit=crop"
+                        alt="Item 2">
+                    <div class="p-actions">
+                        <button class="action-btn">Add</button>
+                        <button class="action-btn">Try</button>
+                    </div>
+                </div>
+                <div class="p-info">
+                    <span class="price">IDR 450K</span>
+                    <span class="cat">Bottom</span>
+                    <h4>Pleated Midi Skirt</h4>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="p-img-box">
+                    <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?q=80&w=1000&auto=format&fit=crop"
+                        alt="Item 3">
+                    <div class="p-actions">
+                        <button class="action-btn">Add</button>
+                        <button class="action-btn">Try</button>
+                    </div>
+                </div>
+                <div class="p-info">
+                    <span class="price">IDR 890K</span>
+                    <span class="cat">Outer</span>
+                    <h4>Trench Coat Beige</h4>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="p-img-box">
+                    <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1000&auto=format&fit=crop"
+                        alt="Item 4">
+                    <div class="p-actions">
+                        <button class="action-btn">Add</button>
+                        <button class="action-btn">Try</button>
+                    </div>
+                </div>
+                <div class="p-info">
+                    <span class="price">IDR 1.2M</span>
+                    <span class="cat">Shoes</span>
+                    <h4>Blue Suede Heels</h4>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <div class="events-wrapper">
         <div class="container">
             <div class="text-center mb-2">
@@ -1083,34 +1085,79 @@
                 <p>Curated sets for your upcoming calendar events.</p>
             </div>
 
-            <!-- DYNAMIC SLIDER TRACK -->
-            <!-- This will be populated by js/new-model.js based on loaded events -->
-            <div id="events-slider-track" class="event-slider-track">
-                <!-- Javascript will render cards here... -->
-                <div style="width: 100%; text-align: center; padding: 50px;">
-                    <p>Loading curated events...</p>
+            <div class="event-slider-track">
+
+                <div class="event-card valentine">
+                    <div class="evt-content">
+                        <span class="evt-tag t-pink">Feb 14</span>
+                        <h3 class="evt-title">Romantic<br>Date Night</h3>
+                        <p class="evt-desc">Soft pinks, elegant reds, and delicate jewelry for the perfect evening.</p>
+                        <a href="#" class="btn-pill pink-hover">Shop Valentine &rarr;</a>
+                    </div>
+                    <div class="evt-visual">
+                        <img src="https://images.unsplash.com/photo-1516575150278-77136aed6920?q=80&w=1000&auto=format&fit=crop"
+                            class="main-img" alt="Valentine">
+                        <div class="evt-sticker s-1" style="--r: 5deg;">
+                            <img src="https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=200&fit=crop"
+                                alt="Acc">
+                        </div>
+                        <div class="evt-sticker s-2" style="--r: -5deg;">
+                            <img src="https://images.unsplash.com/photo-1551803091-e20673f15770?w=200&fit=crop"
+                                alt="Shoes">
+                        </div>
+                    </div>
                 </div>
+
+                <div class="event-card summer">
+                    <div class="evt-content">
+                        <span class="evt-tag t-yellow">Summer</span>
+                        <h3 class="evt-title">Garden<br>Party Glow</h3>
+                        <p class="evt-desc">Breathable fabrics and floral prints for sunny afternoon gatherings.</p>
+                        <a href="#" class="btn-pill">Shop Summer &rarr;</a>
+                    </div>
+                    <div class="evt-visual">
+                        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000&auto=format&fit=crop"
+                            class="main-img" alt="Summer">
+                        <div class="evt-sticker s-1" style="--r: 10deg;">
+                            <img src="https://images.unsplash.com/photo-1521335629791-ce4aec6cdd81?w=200&fit=crop"
+                                alt="Hat">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card office">
+                    <div class="evt-content">
+                        <span class="evt-tag t-dark">Work</span>
+                        <h3 class="evt-title">Monday<br>Meeting</h3>
+                        <p class="evt-desc">Sharp blazers and comfortable trousers to dominate the boardroom.</p>
+                        <a href="#" class="btn-pill blue-hover">Shop Workwear &rarr;</a>
+                    </div>
+                    <div class="evt-visual">
+                        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?q=80&w=1000&auto=format&fit=crop"
+                            class="main-img" alt="Office">
+                        <div class="evt-sticker s-2" style="--r: -3deg;">
+                            <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?w=200&fit=crop"
+                                alt="Bag">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="evt-content">
+                        <span class="evt-tag t-dark">Weekend</span>
+                        <h3 class="evt-title">Coffee<br>Run Fit</h3>
+                        <p class="evt-desc">Effortless layering for those lazy Sunday mornings.</p>
+                        <a href="#" class="btn-pill">Shop Casual &rarr;</a>
+                    </div>
+                    <div class="evt-visual">
+                        <img src="https://images.unsplash.com/photo-1515347619252-60a6bf4fffce?q=80&w=1000&auto=format&fit=crop"
+                            class="main-img" alt="Weekend">
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-
-    <!-- Just Landed Section (Dynamic - 10 Sets from last 30 days) -->
-    <section class="container mb-4">
-        <div class="section-header">
-            <div class="sh-text">
-                <h2>Just Landed</h2>
-                <p>Fresh Sets added in the last 30 days.</p>
-            </div>
-            <a href="#" class="view-all-btn">View Full Catalog</a>
-        </div>
-
-        <!-- Dynamic Grid - Populated by JavaScript -->
-        <div id="just-landed-grid" class="landing-grid">
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <p>Loading new arrivals...</p>
-            </div>
-        </div>
-    </section>
 
     <footer class="simple-footer">
         <div class="sf-brand">AESTATE</div>
@@ -1122,15 +1169,6 @@
         </div>
         <div class="sf-copy">&copy; 2025 Aestate Design System. All Rights Reserved.</div>
     </footer>
-
-    <!-- SCRIPTS -->
-
-    <!-- 1. Include specific Event Configs first (File-per-event approach) -->
-    <!-- You can add <script src="../js/events/summer.js"></script> here in the future -->
-    <script src="../js/events/valentine.js"></script>
-
-    <!-- 2. Main Logic Script -->
-    <script src="../js/new-model.js"></script>
 
 </body>
 

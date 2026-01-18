@@ -16,15 +16,18 @@ window.addEventListener('scroll', () => {
 // Hero Slider Logic
 const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
-const slideInterval = 4000; // 4 detik biar agak lamaan dikit bacanya
+const slideInterval = 5000;
 
 function nextSlide() {
+    if (slides.length === 0) return;
     slides[currentSlide].classList.remove('active');
     currentSlide = (currentSlide + 1) % slides.length;
     slides[currentSlide].classList.add('active');
 }
 
-setInterval(nextSlide, slideInterval);
+if (slides.length > 0) {
+    setInterval(nextSlide, slideInterval);
+}
 // ==========================================
 // 2. DATA FETCHING (GOOGLE SHEETS)
 // ==========================================
@@ -33,7 +36,7 @@ setInterval(nextSlide, slideInterval);
 // ==========================================
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxbPkvjyWrnKeiIr9unaPwWLgqrZv7AnWyP4roAgvMgpA6f_e8u6u1FZazoqgSurV0D/exec";
-                                
+
 const katalogArea = document.getElementById('katalog-area');
 const loadingIndicator = document.getElementById('loading-indicator');
 
@@ -51,8 +54,8 @@ async function loadNewArrivals() {
         // Cek Error dari Google Sheet
         if (data.status === 'error') {
             // Tampilkan pesan error ASLI dari backend biar ketahuan salahnya
-            console.error("Backend Error:", data.message); 
-            showError("Error: " + data.message); 
+            console.error("Backend Error:", data.message);
+            showError("Error: " + data.message);
             return;
         }
 
@@ -64,7 +67,7 @@ async function loadNewArrivals() {
         // Render Data (Gak perlu slice lagi karena backend udah kasih 3)
         renderGrid(data);
 
-        if(loadingIndicator) loadingIndicator.style.display = 'none';
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
 
     } catch (error) {
         console.error("Fetch Error:", error);
@@ -73,7 +76,7 @@ async function loadNewArrivals() {
 }
 
 function renderGrid(products) {
-    katalogArea.innerHTML = ''; 
+    katalogArea.innerHTML = '';
 
     if (products.length === 0) {
         katalogArea.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">Belum ada koleksi Set terbaru.</p>';
@@ -86,7 +89,7 @@ function renderGrid(products) {
 
         const cardHTML = `
             <div class="product-card" onclick="window.open('${shopLink}', '_blank')">
-                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300?text=No+Image'">
                 
                 <div class="overlay">
                     <h3>${p.name}</h3>
@@ -103,7 +106,7 @@ function renderGrid(products) {
 }
 
 function showError(msg) {
-    if(loadingIndicator) {
+    if (loadingIndicator) {
         loadingIndicator.innerHTML = `<span style="color:red;">⚠️ ${msg}</span>`;
     }
 }
@@ -130,8 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("✅ Magic Button Ready!");
     }
 
-    magicBtn.addEventListener('click', function(e) {
-        e.preventDefault(); 
+    magicBtn.addEventListener('click', function (e) {
+        e.preventDefault();
         console.log("✨ Magic Clicked!");
 
         // 1. AKTIFKAN MODE BIOSKOP
@@ -160,18 +163,18 @@ function createMagicParticle(x, y) {
     document.body.appendChild(particle);
 
     // Matematika Ledakan
-    const angle = Math.random() * Math.PI * 2; 
+    const angle = Math.random() * Math.PI * 2;
     const velocity = Math.random() * 500 + 100; // Jarak ledakan lebih jauh
-    
+
     // Tujuan akhir relatif terhadap posisi awal
     const moveX = Math.cos(angle) * velocity;
     const moveY = Math.sin(angle) * velocity;
-    
+
     // Set Posisi Awal & Tujuan di CSS Variable
     // Kita set posisi awal di X,Y tombol
     particle.style.setProperty('--start-x', x + 'px');
     particle.style.setProperty('--start-y', y + 'px');
-    
+
     // Posisi tujuan adalah Awal + Pergerakan
     particle.style.setProperty('--dest-x', (x + moveX) + 'px');
     particle.style.setProperty('--dest-y', (y + moveY) + 'px');
@@ -179,7 +182,7 @@ function createMagicParticle(x, y) {
     // Warna Random
     const colors = ['#ff02eaff', '#FFFFFF', '#FFD700'];
     particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-    
+
     // Jalankan Animasi
     particle.style.animation = `explode ${Math.random() * 0.8 + 0.4}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
 
@@ -198,7 +201,7 @@ const searchInput = document.getElementById('search-input');
 const filterBtns = document.querySelectorAll('.filter-btn');
 
 // Simpan data mentah disini biar bisa di-filter tanpa fetch ulang
-let allCatalogData = []; 
+let allCatalogData = [];
 
 async function loadCatalog() {
     try {
@@ -230,14 +233,14 @@ function renderCatalog(products) {
     products.forEach(p => {
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
-        
+
         // --- TEMPLATE BARU (E-COMMERCE STYLE) ---
         // Perhatikan class-nya sekarang "catalog-card" bukan "product-card"
         // Biar CSS-nya kepisah sama New Arrival
         const html = `
             <div class="catalog-card" onclick="window.open('${shopLink}', '_blank')">
                 <div class="img-wrapper">
-                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300'">
+                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
                 </div>
                 
                 <div class="card-info">
@@ -260,7 +263,7 @@ function filterHandler() {
     const filtered = allCatalogData.filter(p => {
         const pName = p.name.toLowerCase();
         const pCat = p.category.toLowerCase();
-        
+
         // 1. Cek Keyword Search
         const matchSearch = pName.includes(keyword) || pCat.includes(keyword);
 
@@ -286,7 +289,7 @@ filterBtns.forEach(btn => {
         // Pindah class active
         document.querySelector('.filter-btn.active').classList.remove('active');
         btn.classList.add('active');
-        
+
         // Jalankan filter
         filterHandler();
     });
