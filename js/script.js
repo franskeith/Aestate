@@ -144,6 +144,7 @@ async function loadNewArrivals() {
     }
 }
 
+// Render Grid with Stacked Logic for Mobile
 function renderGrid(products) {
     katalogArea.innerHTML = '';
 
@@ -152,19 +153,32 @@ function renderGrid(products) {
         return;
     }
 
-    products.forEach(p => {
+    // Container click handler for expanding stack on mobile
+    katalogArea.onclick = function (e) {
+        if (window.innerWidth <= 768) {
+            // Check if already expanded
+            if (!this.classList.contains('expanded')) {
+                this.classList.add('expanded');
+                // Prevent link clicks during expansion
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+    };
+
+    products.forEach((p, index) => {
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
 
         const cardHTML = `
-            <div class="product-card" onclick="window.open('${shopLink}', '_blank')">
+            <div class="product-card" style="--i: ${index}" onclick="handleCardClick(event, '${shopLink}')">
                 <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300?text=No+Image'">
                 
                 <div class="overlay">
                     <h3>${p.name}</h3>
                     <p>Full Set • IDR ${priceFormatted}</p>
                     
-                    <a href="${shopLink}" target="_blank" class="btn-shopee">
+                    <a href="${shopLink}" target="_blank" class="btn-shopee" onclick="event.stopPropagation()">
                         SHOP LOOK
                     </a>
                 </div>
@@ -172,6 +186,23 @@ function renderGrid(products) {
         `;
         katalogArea.innerHTML += cardHTML;
     });
+}
+
+// Handle card click separately to manage navigation vs expansion
+function handleCardClick(event, url) {
+    const container = document.getElementById('katalog-area');
+    if (window.innerWidth <= 768) {
+        if (container.classList.contains('expanded')) {
+            window.open(url, '_blank');
+        } else {
+            // If collapsed, the container click handler will trigger expansion
+            // We just need to stop this click from navigating immediately
+            event.preventDefault();
+        }
+    } else {
+        // Desktop behavior - direct open
+        window.open(url, '_blank');
+    }
 }
 
 function showError(msg) {

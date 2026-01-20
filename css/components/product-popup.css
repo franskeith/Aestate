@@ -382,9 +382,12 @@ body.no-scroll {
 
 /* Visit Store Button */
 .btn-visit-store {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    padding: 16px;
+    padding: 22px;
+    /* Increased height */
     background: linear-gradient(135deg, #523F37, #8B5E3C);
     color: white;
     text-align: center;

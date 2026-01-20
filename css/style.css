@@ -193,14 +193,28 @@ body {
     transform: translate(-50%, -50%) rotate(-90deg);
     font-family: var(--font-head);
     font-size: 24vh;
-    color: #FFF;
+    color: #ffc445;
     font-weight: 500;
     line-height: 1;
     white-space: nowrap;
     opacity: 0.9;
     letter-spacing: -10px;
-    z-index: 2;
+    z-index: 1;
     text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.05);
+    /* Smooth floating up-down animation */
+    animation: float-updown 2.5s ease-in-out infinite;
+}
+
+@keyframes float-updown {
+
+    0%,
+    100% {
+        transform: translate(-50%, -35%) rotate(-90deg);
+    }
+
+    50% {
+        transform: translate(-50%, -65%) rotate(-90deg);
+    }
 }
 
 .deco-circle-top-right {
@@ -476,7 +490,7 @@ body {
     }
 
     .hero-main-model {
-        height: 55vh;
+        height: 68vh;
         transform: translateY(50px);
     }
 
@@ -491,53 +505,76 @@ body {
 
 @media (max-width: 768px) {
     .hero-main-model {
-        height: 50vh;
+        height: 68vh;
         transform: translateY(60px);
     }
 
     .big-date {
-        font-size: 18vw;
-        top: 12%;
+        font-size: 25vh;
+        /* Use vh for vertical text on mobile like desktop */
+        top: 50%;
+        left: 50%;
+        color: #ffc445;
+        /* MOBILE ONLY: Orange Color */
+        /* Smooth floating up-down animation (Vertical for Mobile) */
+        animation: float-updown-mobile 4s ease-in-out infinite;
+        white-space: nowrap;
+        width: max-content;
+        transform: translate(-50%, -50%) rotate(-90deg);
+        z-index: 1;
     }
 
-    .text-block-left {
-        bottom: 22%;
-    }
+    @keyframes float-updown-mobile {
 
-    .text-block-left h2 {
-        font-size: 1.8rem;
-        /* Visible on mobile */
-        display: block;
-        color: #333;
-    }
-
-    .layer-4-search {
-        bottom: 30px;
-        padding: 0 10px;
-    }
-
-    /* Adjust search animation end width */
-    @keyframes searchEntrance {
-        0% {
-            width: 60px;
-            transform: translateY(100px) scale(0.8);
-        }
-
-        40% {
-            width: 60px;
-            transform: translateY(0) scale(1.1);
+        0%,
+        100% {
+            transform: translate(-50%, -45%) rotate(-90deg);
         }
 
         50% {
-            width: 60px;
-            transform: translateY(0) scale(1);
+            transform: translate(-50%, -55%) rotate(-90deg);
         }
+    }
+}
 
-        100% {
-            width: 90vw;
-            border-radius: 40px;
-            transform: translateY(0) scale(1);
-        }
+.text-block-left {
+    top: 20%;
+    bottom: 22%;
+}
+
+.text-block-left h2 {
+    font-size: 1.8rem;
+    /* Visible on mobile */
+    display: block;
+    color: #333;
+}
+
+.layer-4-search {
+    bottom: 30px;
+    padding: 0 10px;
+}
+
+/* Adjust search animation end width */
+@keyframes searchEntrance {
+    0% {
+        width: 60px;
+        transform: translateY(100px) scale(0.8);
+    }
+
+    40% {
+        width: 60px;
+        transform: translateY(0) scale(1.1);
+    }
+
+    50% {
+        width: 60px;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        width: 90vw;
+        border-radius: 40px;
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -549,7 +586,7 @@ body {
 #new-arrival {
     padding: 80px 40px;
     background-color: var(--bg-primary);
-    min-height: 100vh;
+    min-height: 78vh;
 }
 
 .section-header {
@@ -576,7 +613,7 @@ body {
     display: grid;
     /* Desktop: 3 Kolom */
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 15px;
     width: 100%;
     max-width: 1200px;
     /* Batasi lebar biar ga terlalu melar di layar gede */
@@ -921,19 +958,118 @@ body {
     }
 }
 
-/* Mobile (HP) -> Jadi 1 Kolom */
+/* Mobile (HP) -> Stacked Photocard Layout */
 @media (max-width: 768px) {
     #new-arrival {
         padding: 60px 20px;
     }
 
     .product-grid {
-        grid-template-columns: 1fr;
+        /* Container jadi stack area */
+        display: block;
+        position: relative;
+        height: 480px;
+        /* Tinggi tumpukan */
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+        transition: height 0.5s ease;
     }
 
+    /* Saat expanded, container memanjang */
+    .product-grid.expanded {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* KARTU DALAM POSISI TUMPUK (DEFAULT) */
     .product-card {
-        height: 400px;
-        /* Di HP agak pendekan lagi biar ga scroll capek */
+        width: 100%;
+        height: 450px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transform-origin: center bottom;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+    }
+
+    /* Rotasi acak untuk efek tumpukan berantakan */
+    .product-grid:not(.expanded) .product-card:nth-child(1) {
+        transform: rotate(-5deg) translateY(0) scale(0.95);
+        z-index: 1;
+    }
+
+    .product-grid:not(.expanded) .product-card:nth-child(2) {
+        transform: rotate(3deg) translateY(-10px) scale(0.98);
+        z-index: 2;
+    }
+
+    .product-grid:not(.expanded) .product-card:nth-child(3) {
+        transform: rotate(-2deg) translateY(-20px) scale(1);
+        z-index: 3;
+    }
+
+    /* Efek hover sebelum klik (ada feedback dikit) */
+    .product-grid:not(.expanded):active .product-card:nth-child(3) {
+        transform: rotate(0deg) translateY(-30px) scale(1.05);
+    }
+
+    /* SAAT EXPANDED (MENYEBAR) */
+    .product-grid.expanded .product-card {
+        position: relative;
+        top: auto;
+        left: auto;
+        /* Reset semua transform */
+        transform: none !important;
+        z-index: 1;
+        opacity: 0;
+        animation: card-enter 0.6s forwards;
+    }
+
+    /* Staggered animation saat expand */
+    .product-grid.expanded .product-card:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .product-grid.expanded .product-card:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .product-grid.expanded .product-card:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    @keyframes card-enter {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Overlay selalu visible dikit di mobile biar tau kontennya apa */
+    .product-card .overlay {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
+    }
+
+    .product-card .overlay h3,
+    .product-card .overlay p {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .product-card .btn-shopee {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -1269,7 +1405,7 @@ body.magic-active #magic-btn {
    FULL CATALOG SECTION
    ========================================= */
 #full-catalog {
-    padding: 80px 40px;
+    padding: 80px 10px;
     background-color: #fff;
     /* White background for clean look */
     min-height: 100vh;
@@ -1395,7 +1531,7 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
     display: grid;
     /* Responsive Grid: Minimal lebar 280px */
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 30px;
+    gap: 15px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -1547,6 +1683,10 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
 
 /* NAMA PRODUK (LEBIH WOW & POP UP) */
 .card-title {
+    flex: 1;
+    /* Allow title to take available space */
+    min-width: 0;
+    /* Allow wrapping */
     font-family: var(--font-head);
     /* Pake font Days One */
     font-size: 1rem;
@@ -1567,6 +1707,8 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
 /* HARGA (WARNA COKLAT) */
 /* HARGA (WARNA COKLAT - 2 LINES) */
 .card-price {
+    flex-shrink: 0;
+    /* Never shrink price */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -1952,5 +2094,65 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
     .glass-wrapper .icon-mic svg {
         width: 22px;
         height: 22px;
+    }
+}
+
+/* =========================================
+   MOBILE CATALOG (THE COLLECTION) STYLING
+   Force 2 Columns & Compact Info
+   ========================================= */
+@media (max-width: 768px) {
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    /* Adjust Card Height */
+    .catalog-grid .card-final {
+        height: auto;
+        min-height: 0;
+    }
+
+    .catalog-grid .img-box {
+        height: 180px;
+        margin: 5px 5px 0 5px;
+    }
+
+    .catalog-grid .card-info {
+        padding: 10px 12px;
+    }
+
+    /* Stack Title & Price */
+    .catalog-grid .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .catalog-grid .card-title {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+
+    /* Price Single Line */
+    .catalog-grid .card-price {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 4px;
+        margin-top: 2px;
+        text-align: left;
+    }
+
+    .catalog-grid .card-price .value {
+        font-size: 0.95rem;
+    }
+
+    .catalog-grid .card-price .currency {
+        font-size: 0.7rem;
+    }
+
+    .catalog-grid .btn-card-action {
+        padding: 8px 14px;
+        font-size: 0.75rem;
     }
 }

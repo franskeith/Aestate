@@ -739,10 +739,16 @@ body {
 }
 
 /* Landing Grid */
+/* Landing Grid (Standardized to match Home Catalog) */
 .landing-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
+    gap: 15px;
+    /* Standardized gap */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+    /* Match horizontal padding of #full-catalog */
 }
 
 /* =========================================
@@ -1031,5 +1037,137 @@ body {
 
     .event-card.expanded {
         border-radius: 25px 25px 0 0;
+    }
+}
+
+/* Mobile (HP) -> Force 2 Columns for Just Landed */
+@media (max-width: 768px) {
+    .landing-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        /* Match Home Page Catalog Gap */
+    }
+
+    /* Adjust Card Height for 2 Cols */
+    .landing-grid .product-card,
+    .landing-grid .card-final {
+        height: auto;
+        /* Let content dictate height */
+        min-height: 0;
+        /* Remove forced height */
+    }
+
+    .landing-grid .img-box {
+        height: 180px;
+        /* Shorter image for better proportion */
+        margin: 5px 5px 0 5px;
+        /* Tighter margins */
+    }
+
+    .landing-grid .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        /* Stack spacing */
+    }
+
+    .landing-grid .card-title {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+
+    .landing-grid .card-price {
+        flex-direction: row;
+        /* IDR & Price side-by-side */
+        align-items: baseline;
+        gap: 4px;
+        margin-top: 2px;
+    }
+
+    .landing-grid .card-price .value {
+        font-size: 0.95rem;
+        /* Restore readable size */
+    }
+
+    .landing-grid .card-price .currency {
+        font-size: 0.7rem;
+    }
+
+    .landing-grid .btn-card-action {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+    }
+
+    /* Valentine Event Horizontal Scroll (Mobile) */
+    .event-products-grid {
+        display: flex !important;
+        grid-template-columns: none !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 20px 20px 40px 20px !important;
+        gap: 15px !important;
+        width: 100%;
+        /* Hide scrollbar for clean look */
+        scrollbar-width: none;
+    }
+
+    .event-products-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Items in scroll */
+    .event-products-grid .card-final {
+        flex: 0 0 180px;
+        /* Fixed width for scroll items */
+        width: 180px;
+        min-width: 180px;
+        scroll-snap-align: center;
+        margin: 0;
+        height: auto;
+        min-height: 0;
+    }
+
+    /* Apply Standard Styling (Same as Landing Grid) */
+    .event-products-grid .img-box {
+        height: 180px;
+        margin: 5px 5px 0 5px;
+    }
+
+    .event-products-grid .card-info {
+        padding: 10px 12px;
+    }
+
+    /* Info Column Layout */
+    .event-products-grid .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .event-products-grid .card-title {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+
+    /* Price Single Line */
+    .event-products-grid .card-price {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 4px;
+        margin-top: 2px;
+        text-align: left;
+    }
+
+    .event-products-grid .card-price .value {
+        font-size: 0.95rem;
+    }
+
+    .event-products-grid .card-price .currency {
+        font-size: 0.7rem;
+    }
+
+    .event-products-grid .btn-card-action {
+        padding: 8px 14px;
+        font-size: 0.75rem;
     }
 }
