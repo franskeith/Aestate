@@ -698,7 +698,8 @@ body #navbar {
 
     .gender-switch-container {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
+        /* Left aligned on mobile */
     }
 
     .option-label-card {
@@ -719,7 +720,8 @@ body #navbar {
         width: 100%;
         overflow-x: auto;
         padding-bottom: 10px;
-        justify-content: flex-start;
+        justify-content: center;
+        /* Centered on mobile */
     }
 
     /* Make look-book stack */
@@ -739,8 +741,157 @@ body #navbar {
     .look-items {
         width: 100%;
         max-height: none;
-        /* Let it expand */
-        overflow-y: visible;
+        /* === MOBILE HORIZONTAL SWIPE === */
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 12px;
+        padding: 10px 5px 15px 5px;
+        scroll-padding-left: 5px;
+    }
+
+    /* Hide title "The Breakdown" on mobile swipe view */
+    .look-items h3 {
+        display: none;
+    }
+
+    /* === MOBILE SWIPE CARD STYLE - VERTICAL CATALOG DESIGN === */
+    .look-items .item-row {
+        /* Card dimensions - compact vertical card */
+        flex: 0 0 140px;
+        min-width: 140px;
+        /* Vertical card layout (image top, text bottom) */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        gap: 10px;
+        scroll-snap-align: start;
+        /* Premium card styling */
+        background: linear-gradient(145deg, #ffffff 0%, #fefcf9 100%);
+        border-radius: 16px;
+        border: 1.5px solid rgba(186, 128, 52, 0.15);
+        box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.06),
+            0 1px 3px rgba(186, 128, 52, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .look-items .item-row:active {
+        transform: scale(0.98);
+    }
+
+    .look-items .item-row.active-preview {
+        border-color: var(--accent);
+        background: linear-gradient(145deg, rgba(255, 246, 233, 0.9), rgba(255, 238, 210, 0.9));
+        box-shadow:
+            0 6px 20px rgba(255, 175, 2, 0.25),
+            0 2px 6px rgba(186, 128, 52, 0.15);
+    }
+
+    /* Accessory card with dashed border */
+    .look-items .item-row.accessory-card {
+        border: 2px dashed #D4A574;
+        background: linear-gradient(145deg, rgba(255, 251, 245, 1), rgba(255, 246, 233, 0.8));
+    }
+
+    .look-items .item-row.accessory-card.active-preview {
+        border-color: var(--accent);
+        background: linear-gradient(145deg, rgba(255, 246, 233, 1), rgba(255, 230, 195, 0.9));
+    }
+
+    /* Card image - full width, square */
+    .look-items .item-row img {
+        width: 100%;
+        height: 100px;
+        border-radius: 10px;
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Card info section - centered */
+    .look-items .item-info {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .look-items .item-info h4 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 0;
+        color: #3D2B1F;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .look-items .item-info p {
+        font-size: 0.6rem;
+        margin-bottom: 0;
+        color: #8B7355;
+        font-weight: 500;
+        display: none;
+        /* Hide subtitle to save space */
+    }
+
+    .look-items .item-info .price {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #964B00;
+    }
+
+    /* Compact "Lihat" button */
+    .look-items .btn-shop {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        border-radius: 8px;
+        width: 100%;
+        background: linear-gradient(135deg, #3D2B1F 0%, #523F37 100%);
+        color: #fff;
+        border: none;
+        box-shadow: 0 2px 6px rgba(61, 43, 31, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .look-items .btn-shop:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 3px rgba(61, 43, 31, 0.15);
+    }
+
+    /* Hide "Show More" button on mobile horizontal view */
+    #show-more-sets-btn {
+        display: none !important;
+    }
+
+    /* Hidden sets container should display inline for horizontal scroll */
+    #hidden-sets-container {
+        display: contents !important;
+    }
+
+    /* Custom scrollbar for mobile horizontal swipe */
+    .look-items::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .look-items::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 2px;
+    }
+
+    .look-items::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 2px;
     }
 }
 
@@ -748,7 +899,7 @@ body #navbar {
 
 /* Wrapper Section */
 .result-section {
-    padding: 80px 40px;
+    padding: 60px 20px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -761,7 +912,10 @@ body #navbar {
 
 .container-result {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
+    /* Wider container for fuller content */
+    padding: 0 10px;
+    /* Minimal inner padding for symmetry */
 }
 
 /* Titles */
@@ -1052,6 +1206,21 @@ body #navbar {
     box-shadow: 0 4px 15px rgba(255, 175, 2, 0.15);
 }
 
+/* Accessory Card - Desktop Dashed Border Style */
+.item-row.accessory-card {
+    border: 2px dashed #E6C4A8;
+    margin-top: 15px;
+    background: rgba(255, 246, 233, 0.3);
+}
+
+.item-row.accessory-card:hover {
+    border-color: var(--accent);
+}
+
+.item-row.accessory-card.active-preview {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(255, 175, 2, 0.08), rgba(255, 175, 2, 0.15));
+}
 
 .item-row img {
     width: 70px;
@@ -1212,16 +1381,7 @@ body #navbar {
     border-color: var(--text-dark);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .look-book-wrapper {
-        flex-direction: column;
-    }
-
-    .look-items {
-        flex: auto;
-    }
-}
+/* Mobile responsive adjustments are in main 768px media query block */
 
 
 .btn-gender {
@@ -1407,16 +1567,7 @@ body #navbar {
     border-color: var(--text-dark);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .look-book-wrapper {
-        flex-direction: column;
-    }
-
-    .look-items {
-        flex: auto;
-    }
-}
+/* Mobile responsive adjustments are in main 768px media query block */
 
 
 .btn-gender {
@@ -1436,190 +1587,16 @@ body #navbar {
 }
 
 /* =========================================
-   CARD FINAL STYLE (Consistent with Homepage)
+   CARD FINAL STYLE 
+   =========================================
+   NOTE: card-final styles are now inherited from style.css
+   which is loaded before magic-style.css in try-magic.html.
+   This ensures visual consistency with homepage and new-model pages.
+   
+   The following are ONLY Try Magic specific overrides if needed:
    ========================================= */
-.card-final {
-    background: var(--card-white);
-    border-radius: 24px;
-    overflow: hidden;
-    border: 1px solid rgba(82, 63, 55, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-}
 
-.card-final:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(82, 63, 55, 0.1);
-}
-
-/* --- IMAGE AREA --- */
-.img-box {
-    height: 320px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    margin: 10px 10px 0 10px;
-}
-
-.img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-    transition: transform 0.6s var(--ease-out-expo);
-}
-
-.card-final:hover .img-box img {
-    transform: scale(1.08);
-}
-
-/* Badge Status */
-.badge-status {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    padding: 6px 14px;
-    border-radius: 12px;
-    font-family: var(--font-head);
-    font-size: 0.75rem;
-    color: var(--text-primary);
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.bg-new {
-    background: var(--accent);
-}
-
-.bg-hot {
-    background: #E91E63;
-    color: white;
-}
-
-/* Action Buttons Container */
-.card-actions {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    transform: translateY(60px);
-    opacity: 0;
-    transition: all 0.4s var(--ease-out-expo);
-    z-index: 20;
-    padding: 0 15px;
-}
-
-.card-final:hover .card-actions {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-/* Base Button Style */
-.btn-action {
-    flex: 1;
-    padding: 12px 0;
-    border-radius: 30px;
-    border: none;
-    font-family: var(--font-head);
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-action:hover {
-    transform: translateY(-3px);
-}
-
-/* Shop Button (Direct Link) */
-.btn-shop {
-    background: var(--text-primary);
-    color: white;
-}
-
-.btn-shop:hover {
-    background: #3E2F29;
-}
-
-/* View/Detail Button (Popup) */
-.btn-view {
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--text-primary);
-}
-
-.btn-view:hover {
-    background: white;
-    color: var(--accent);
-}
-
-/* --- INFO AREA --- */
-.card-info {
-    padding: 20px 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-}
-
-.category-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-/* Info Row: Title & Price side-by-side */
-.info-row {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: auto;
-}
-
-.card-title {
-    font-family: var(--font-head);
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.3;
-    max-width: 65%;
-
-    /* Pop Up Effect */
-    transition: transform 0.3s ease, text-shadow 0.3s ease;
-    transform-origin: left bottom;
-}
-
-.card-final:hover .card-title {
-    transform: scale(1.05) translateY(-2px);
-    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Price Styling - Brown */
-.card-price {
-    font-family: var(--font-body);
-    font-weight: 800;
-    font-size: 1rem;
-    color: #964B00;
-    /* Request User: Brown Price */
-    text-align: right;
-    white-space: nowrap;
-}
+/* Try Magic uses catalog-grid from style.css, no overrides needed */
 
 /* =========================================
    FIX: WHITE OVERLAY BUG SAFEGUARDS
@@ -1663,4 +1640,104 @@ body {
 .popup-overlay.active {
     display: flex;
     opacity: 1;
+}
+
+/* =========================================
+   6. MOBILE: DISABLE MORPH ANIMATION & FIX OVERLAY
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* === COMPLETE DISABLE OF MORPH ANIMATION ON MOBILE === */
+
+    /* Disable all morph animation on mobile */
+    body.navbar-morph #navbar {
+        animation: none !important;
+        /* Reset to default navbar styling */
+        width: 100% !important;
+        height: auto !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        border-radius: 0 !important;
+        padding: 15px 20px !important;
+        background: rgba(255, 246, 233, 0.15) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    }
+
+    /* Fix logo visibility during and after morph */
+    body.navbar-morph #navbar .logo,
+    body.navbar-morph #navbar .logo * {
+        animation: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* === CRITICAL FIX: Hide nav-links completely on mobile === */
+    /* This prevents the backdrop blur overlay bug */
+    nav#navbar .nav-links {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* Only show when explicitly opened via hamburger menu */
+    nav#navbar .nav-links.mobile-active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* Disable morph fadeout animation on nav-links */
+    body.navbar-morph #navbar .nav-links {
+        animation: none !important;
+    }
+
+    /* === TOUCH & INTERACTION FIXES === */
+
+    /* Disable hover-disabled class on mobile to prevent touch issues */
+    body.hover-disabled * {
+        pointer-events: auto !important;
+    }
+
+    /* === POPUP OVERLAY FIXES === */
+
+    /* Ensure popup overlay works correctly on mobile */
+    .popup-overlay.active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 10000 !important;
+    }
+
+    /* Ensure magic overlay doesn't interfere */
+    #magic-overlay {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Ensure navbar indicator line doesn't cause issues */
+    .navbar-indicator {
+        display: none !important;
+    }
+
+    /* === FINAL OVERRIDE: MOBILE HORIZONTAL SWIPE FOR LOOK-ITEMS === */
+    .look-items {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        max-height: none !important;
+    }
+
+    .look-items .item-row {
+        flex: 0 0 140px !important;
+        min-width: 140px !important;
+        flex-direction: column !important;
+    }
 }

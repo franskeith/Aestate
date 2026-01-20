@@ -195,3 +195,41 @@ nav#navbar.navbar-post-morph .nav-links {
     opacity: 1;
     pointer-events: auto;
 }
+
+/* =========================================
+   5. DISABLE MORPH ANIMATION ON MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* Completely disable morph animation on mobile */
+    body.navbar-morph nav#navbar {
+        animation: none !important;
+    }
+
+    /* Only fix logo - DON'T touch nav-links as it needs to stay hidden (mobile menu) */
+    body.navbar-morph nav#navbar .logo {
+        animation: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Nav-links: disable animation but keep hidden (let translateX(100%) work) */
+    body.navbar-morph nav#navbar .nav-links {
+        animation: none !important;
+        /* DON'T set opacity or visibility - let navbar-base.css control it */
+    }
+
+    /* Hide the orange indicator on mobile */
+    .navbar-indicator {
+        display: none !important;
+    }
+
+    /* Ensure navbar stays visible and normal on mobile */
+    nav#navbar.navbar-post-morph,
+    nav#navbar.navbar-post-morph.navbar-hidden {
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}

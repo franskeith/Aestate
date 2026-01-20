@@ -465,8 +465,9 @@ function renderOneSet(sets, accs) {
     const remainingSets = sets.slice(initialDisplay);
 
     // 3. Render displayed sets
+    // 3. Render displayed sets
     displayedSets.forEach((set, index) => {
-        const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
+        const escapedProduct = escapeProductData(set);
         const setHtml = `
             <div class="item-row" data-set-index="${index}" style="animation-delay: ${index * 0.1}s">
                 <img src="${set.image}" alt="${set.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
@@ -489,7 +490,7 @@ function renderOneSet(sets, accs) {
         // Render hidden sets
         const hiddenSetsContainer = document.getElementById('hidden-sets-container');
         remainingSets.forEach((set, index) => {
-            const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
+            const escapedProduct = escapeProductData(set);
             const actualIndex = initialDisplay + index; // Index dari array sets asli
             const setHtml = `
                 <div class="item-row" data-set-index="${actualIndex}" style="animation-delay: ${(index + 4) * 0.1}s">
@@ -555,9 +556,10 @@ function renderOneSet(sets, accs) {
     // 7. Render main accessory (tetap hanya 1)
     const mainAcc = accs.length > 0 ? accs[0] : null;
     if (mainAcc) {
-        const escapedAcc = JSON.stringify(mainAcc).replace(/"/g, '&quot;');
+        const escapedAcc = escapeProductData(mainAcc);
+        // Added accessory-card class for mobile dashed border styling
         const accHtml = `
-            <div class="item-row" style="border-top: 2px dashed #E6C4A8; margin-top: 20px; padding-top: 20px; animation-delay: ${(displayedSets.length + (remainingSets.length > 0 ? remainingSets.length : 0)) * 0.1 + 0.2}s">
+            <div class="item-row accessory-card" data-acc-index="0" style="animation-delay: ${(displayedSets.length + (remainingSets.length > 0 ? remainingSets.length : 0)) * 0.1 + 0.2}s">
                 <img src="${mainAcc.image}" alt="${mainAcc.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
                 <div class="item-info">
                     <h4>${mainAcc.name}</h4>
@@ -630,7 +632,7 @@ function renderGrid(container, products) {
 
     const displayProducts = products.slice(0, 4);
     displayProducts.forEach(p => {
-        const escapedProduct = JSON.stringify(p).replace(/"/g, '&quot;');
+        const escapedProduct = escapeProductData(p);
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
 
@@ -664,6 +666,17 @@ function renderGrid(container, products) {
 function formatPrice(num) {
     if (!num) return "0";
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+/**
+ * Escape product data for HTML attribute usage
+ * Handles both double quotes (") and single quotes (')
+ */
+function escapeProductData(product) {
+    if (!product) return '{}';
+    return JSON.stringify(product)
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, "\\'");
 }
 
 // =========================================
