@@ -9,6 +9,25 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Custom Scrollbar - Consistent across all pages */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFF6E9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D4C5B5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8B5E3C;
+}
+
 /* =========================================
    SCROLL ANIMATIONS (Intersection Observer)
    ========================================= */
@@ -418,34 +437,107 @@ body {
 
     .big-date {
         transform: translate(-50%, -50%) rotate(0deg);
-        top: 20%;
-        left: 50%;
-        font-size: 15vh;
-    }
-
-    .text-block-left {
         top: 15%;
-        left: 5%;
-        width: 90%;
+        left: 50%;
+        font-size: 15vw;
+        width: 100%;
         text-align: center;
     }
 
-    .text-block-left h2 {
-        display: none;
-        /* Hide big lorem ipsum on mobile for space */
+    .text-block-left {
+        top: auto;
+        bottom: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        text-align: center;
+        z-index: 20;
     }
 
-    .text-block-right {
+    .text-block-left h2 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .text-block-left .text-sub p {
+        color: #333;
+        font-weight: 500;
+    }
+
+    .text-sub {
+        display: block !important;
+    }
+
+    .hero-text-right,
+    .hero-images-right {
         display: none;
-        /* Simplify for tablet */
+        /* Simplify for mobile/tablet */
     }
 
     .hero-main-model {
-        height: 60vh;
+        height: 55vh;
+        transform: translateY(50px);
     }
 
     .layer-4-search {
-        bottom: 100px;
+        bottom: 80px;
+    }
+
+    .magic-search-wrapper {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-main-model {
+        height: 50vh;
+        transform: translateY(60px);
+    }
+
+    .big-date {
+        font-size: 18vw;
+        top: 12%;
+    }
+
+    .text-block-left {
+        bottom: 22%;
+    }
+
+    .text-block-left h2 {
+        font-size: 1.8rem;
+        /* Visible on mobile */
+        display: block;
+        color: #333;
+    }
+
+    .layer-4-search {
+        bottom: 30px;
+        padding: 0 10px;
+    }
+
+    /* Adjust search animation end width */
+    @keyframes searchEntrance {
+        0% {
+            width: 60px;
+            transform: translateY(100px) scale(0.8);
+        }
+
+        40% {
+            width: 60px;
+            transform: translateY(0) scale(1.1);
+        }
+
+        50% {
+            width: 60px;
+            transform: translateY(0) scale(1);
+        }
+
+        100% {
+            width: 90vw;
+            border-radius: 40px;
+            transform: translateY(0) scale(1);
+        }
     }
 }
 
@@ -1006,14 +1098,32 @@ body.magic-active #magic-btn {
 /* --- TOOLBAR (FILTER & SEARCH) --- */
 .catalog-toolbar {
     max-width: 1200px;
-    margin: 0 auto 50px auto;
+    margin: 0 auto 30px auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
     border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
+    padding: 20px 40px;
+    background: #ffffff;
+    z-index: 90;
+    transition: box-shadow 0.3s ease, top 0.3s ease;
+}
+
+/* Fixed positioning when scrolled (controlled by JS) */
+.catalog-toolbar.is-stuck {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar shifts down when navbar is visible */
+body.is-navbar-visible .catalog-toolbar.is-stuck {
+    top: 60px;
 }
 
 /* Filter Tabs */
@@ -1068,7 +1178,7 @@ body.magic-active #magic-btn {
 .search-container input:focus {
     background: #fff;
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(255, 175, 2, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 175, 2, 0.1);
 }
 
 .search-icon {
@@ -1086,123 +1196,277 @@ body.magic-active #magic-btn {
 
 .catalog-grid {
     display: grid;
-    /* Responsive Grid: Minimal lebar 240px */
+    /* Responsive Grid: Minimal lebar 280px */
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* KARTU KATALOG (Khusus di dalam #full-catalog) */
-.catalog-card {
-    background: #fff;
-    border-radius: 16px;
-    /* Rounded banget */
+/* =========================================
+   CARD STYLE: POP UP TITLE & BROWN PRICE
+   ========================================= */
+.card-final {
+    background: var(--card-white);
+    border-radius: 24px;
     overflow: hidden;
+    border: 1px solid rgba(186, 128, 52, 0.201);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
-    /* Garis tepi halus */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    /* Tambah bayangan lembut */
     display: flex;
     flex-direction: column;
-    /* Susun ke bawah */
-    height: 100%;
-    /* Biar tinggi sama rata */
+    box-shadow: 0 15px 40px rgba(61, 39, 30, 0.139);
 }
 
-/* EFEK HOVER: Naik dikit & Shadow */
-.catalog-card:hover {
+.card-final:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border-color: var(--accent);
+    box-shadow: 0 15px 40px rgba(78, 59, 51, 0.139);
 }
 
-/* 1. BAGIAN GAMBAR (ATAS) */
-.catalog-card .img-wrapper {
-    width: 100%;
-    height: 280px;
-    /* Tinggi gambar fix */
-    overflow: hidden;
-    background: #f9f9f9;
+/* --- IMAGE AREA --- */
+.img-box {
+    height: 300px;
     position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    margin: 10px 10px 0 10px;
 }
 
-.catalog-card img {
+.img-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    border-radius: 18px;
+    transition: transform 0.6s var(--ease-out-expo);
 }
 
-/* Zoom halus pas hover */
-.catalog-card:hover img {
+.card-final:hover .img-box img {
     transform: scale(1.08);
 }
 
-/* 2. BAGIAN INFO (BAWAH) */
-.catalog-card .card-info {
-    padding: 15px;
+/* Badge Status */
+.badge-status {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-family: var(--font-head);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bg-new {
+    background: var(--accent);
+}
+
+.bg-hot {
+    background: #E91E63;
+    color: white;
+}
+
+/* Button Container & Dual Buttons */
+.card-actions {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 60px);
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: all 0.4s var(--ease-out-expo);
+    z-index: 10;
+}
+
+.card-final:hover .card-actions {
+    transform: translate(-50%, 0);
+    opacity: 1;
+}
+
+.btn-card-action {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    color: var(--text-primary);
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-card-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-shop:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-detail:hover {
+    background: var(--text-primary);
+    color: white;
+}
+
+/* --- INFO AREA (UPDATED) --- */
+.card-info {
+    padding: 15px 20px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    flex-grow: 1;
-    /* Ngisi sisa ruang */
+    gap: 8px;
+    /* Jarak antar elemen */
 }
 
-.catalog-card h3 {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-    /* Batasi jadi 2 baris kalau kepanjangan */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.catalog-card .category {
-    font-size: 0.8rem;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.catalog-card .price {
-    font-family: var(--font-body);
-    /* Gunakan Inter */
-    font-size: 1.1rem;
-    color: #C07A00;
-    /* Warna amber lebih lembut, tidak terlalu kuning */
+/* 1. BADGE KATEGORI */
+.category-badge {
+    align-self: flex-start;
+    background: #F4EBE2;
+    color: #8B7E75;
+    font-size: 0.7rem;
     font-weight: 700;
-    /* Bold */
-    margin-top: auto;
-    /* Dorong harga ke paling bawah */
-    padding-top: 10px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-/* RESPONSIVE */
+/* 2. ROW NAMA & HARGA */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* Sejajar atas */
+    gap: 10px;
+    width: 100%;
+}
+
+/* NAMA PRODUK (LEBIH WOW & POP UP) */
+.card-title {
+    font-family: var(--font-head);
+    /* Pake font Days One */
+    font-size: 1rem;
+    /* Lebih Gede */
+    text-transform: uppercase;
+    /* Huruf Kapital Semua */
+    margin: 0;
+    color: var(--text-primary);
+    text-align: left;
+    line-height: 1.1;
+    /* Rapat biar padat */
+    letter-spacing: -0.5px;
+
+    /* EFEK POP UP (Shadow Timbul) */
+    text-shadow: 2px 2px 0px rgba(230, 230, 230, 1);
+}
+
+/* HARGA (WARNA COKLAT) */
+/* HARGA (WARNA COKLAT - 2 LINES) */
+.card-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Rata Kanan */
+    text-align: right;
+}
+
+.card-price .currency {
+    font-family: var(--font-head);
+    font-size: 0.75rem;
+    color: #B08D55;
+    /* Gold/Brown mute */
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.card-price .value {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: #964B00;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* RESPONSIVE CATALOG */
 @media (max-width: 768px) {
     .catalog-grid {
         gap: 15px;
         grid-template-columns: repeat(2, 1fr);
-        /* HP tetep 2 kolom biar kaya Shopee */
+        /* Tetap 2 kolom di HP */
+        padding: 0 10px;
     }
 
-    .catalog-card .img-wrapper {
-        height: 200px;
-        /* Gambar lebih kecil di HP */
+    .card-final {
+        border-radius: 16px;
     }
 
-    .catalog-card h3 {
-        font-size: 0.9rem;
+    .img-box {
+        height: 180px;
+        /* Lebih pendek utk HP */
+        margin: 8px 8px 0 8px;
+        border-radius: 12px;
     }
 
-    .catalog-card .price {
-        font-size: 1rem;
+    .badge-status {
+        padding: 4px 10px;
+        font-size: 0.6rem;
+        top: 10px;
+        left: 10px;
+    }
+
+    .card-info {
+        padding: 12px;
+        gap: 5px;
+    }
+
+    .card-title {
+        font-size: 0.85rem;
+    }
+
+    .category-badge {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+    }
+
+    .card-price .currency {
+        font-size: 0.65rem;
+    }
+
+    .card-price .value {
+        font-size: 0.95rem;
+    }
+
+    /* Buttons always visible on mobile/tablet or simpler interaction */
+    .card-actions {
+        position: static;
+        transform: none;
+        opacity: 1;
+        margin-top: 10px;
+        justify-content: center;
+        padding-bottom: 15px;
+    }
+
+    .btn-card-action {
+        padding: 8px 16px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalog-grid {
+        gap: 10px;
+    }
+
+    .img-box {
+        height: 150px;
     }
 }
 
@@ -1275,6 +1539,9 @@ body.magic-active #magic-btn {
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
     mask-composite: exclude;
 
     background: conic-gradient(from var(--angle),
@@ -1322,9 +1589,11 @@ body.magic-active #magic-btn {
     outline: none;
 
     font-family: var(--font-body);
-    font-size: 1.3rem;
-    font-weight: 300;
-    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: normal;
+    /* Remove italic */
+    letter-spacing: 0.5px;
     color: var(--text-primary);
 
     margin: 0 15px;
@@ -1336,8 +1605,15 @@ body.magic-active #magic-btn {
     animation-delay: 1.4s;
 }
 
+/* Typing cursor effect */
+.magic-search-input.typing::after {
+    content: '|';
+    animation: blink 0.7s step-end infinite;
+}
+
 .magic-search-input::placeholder {
-    color: rgba(15, 11, 10, 0.5);
+    color: rgba(15, 11, 10, 0.4);
+    font-weight: 300;
 }
 
 /* Icons */
@@ -1441,6 +1717,18 @@ body.magic-active #magic-btn {
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
     }
 }
 

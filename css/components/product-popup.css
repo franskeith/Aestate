@@ -27,7 +27,8 @@
 /* Utility to lock body scroll */
 body.no-scroll {
     overflow: hidden !important;
-    height: 100vh;
+    position: fixed;
+    width: 100%;
     touch-action: none;
     /* Prevent touch scroll on mobile */
 }

@@ -77,7 +77,8 @@ function switchGender(gender) {
     // 2. Update Visual Tombol Gender (Highlight)
     const btns = document.querySelectorAll('.btn-gender');
     btns.forEach(btn => {
-        if (btn.innerText.toLowerCase().includes(gender)) {
+        const btnText = btn.innerText.toLowerCase().trim();
+        if (btnText === gender) {
             btn.classList.add('active');
         } else {
             btn.classList.remove('active');
@@ -274,9 +275,17 @@ if (elements.generateBtn) {
             elements.skinAdvice.innerText = `Tone "${userState.tone}" cocok dengan warna ${toneTag.replace('-tone', '')}. Untuk tinggi "${userState.height}", kami pilihkan sepatu yang proporsional!`;
         }
 
-        // 5. Scroll Effect
+        // 7. Disable hover effects temporarily to prevent UX issues during scroll
+        document.body.classList.add('hover-disabled');
+
+        // 8. Scroll Effect
         elements.resultSection.style.display = 'block';
         slowScrollTo(elements.resultSection, 1500);
+
+        // 9. Re-enable hover after scroll completes + buffer time
+        setTimeout(() => {
+            document.body.classList.remove('hover-disabled');
+        }, 2000); // 1500ms scroll + 500ms buffer
     });
 }
 
@@ -292,13 +301,17 @@ function filterProducts(category, toneTag, shapeTag, genderTag) {
         // 1. Cek Kategori
         if (prodCat !== category) return false;
 
-        // 2. Cek Gender (STRICT MODE)
+        // 2. Cek Gender (STRICT MODE - FIXED)
+        // Produk HARUS punya gender tag yang sesuai
         let isGenderMatch = false;
+
         if (genderTag === 'men') {
+            // Cowok: harus ada tag 'men' atau 'unisex'
             isGenderMatch = tags.includes('men') || tags.includes('unisex');
         } else {
-            const isExplicitMen = tags.includes('men');
-            isGenderMatch = tags.includes('women') || tags.includes('unisex') || !isExplicitMen;
+            // Cewek: harus ada tag 'women' atau 'unisex'
+            // FIXED: Tidak lagi fallback ke semua produk tanpa tag 'men'
+            isGenderMatch = tags.includes('women') || tags.includes('unisex');
         }
 
         // 3. Cek Tone
@@ -447,7 +460,7 @@ function renderOneSet(sets, accs) {
     // TIDAK pakai shuffle agar best match tetap di atas
 
     // 2. Ambil 3-4 set pertama (atau semua jika kurang dari 4)
-    const initialDisplay = 4;
+    const initialDisplay = 3;
     const displayedSets = sets.slice(0, initialDisplay);
     const remainingSets = sets.slice(initialDisplay);
 
@@ -462,7 +475,7 @@ function renderOneSet(sets, accs) {
                     <p>${index === 0 ? 'Best Match Look' : 'Alternative Look'}</p>
                     <span class="price">Rp ${formatPrice(set.price)}</span>
                 </div>
-                <button onclick='openProductPopup(${escapedProduct})' class="btn-shop">Lihat</button>
+                <button type="button" onclick='openProductPopup(${escapedProduct}, event)' class="btn-shop">Lihat</button>
             </div>
         `;
         elements.oneSetContainer.innerHTML += setHtml;
@@ -477,15 +490,16 @@ function renderOneSet(sets, accs) {
         const hiddenSetsContainer = document.getElementById('hidden-sets-container');
         remainingSets.forEach((set, index) => {
             const escapedProduct = JSON.stringify(set).replace(/"/g, '&quot;');
+            const actualIndex = initialDisplay + index; // Index dari array sets asli
             const setHtml = `
-                <div class="item-row" style="animation-delay: ${(index + 4) * 0.1}s">
+                <div class="item-row" data-set-index="${actualIndex}" style="animation-delay: ${(index + 4) * 0.1}s">
                     <img src="${set.image}" alt="${set.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
                     <div class="item-info">
                         <h4>${set.name}</h4>
                         <p>Alternative Look</p>
                         <span class="price">Rp ${formatPrice(set.price)}</span>
                     </div>
-                    <button onclick='openProductPopup(${escapedProduct})' class="btn-shop">Lihat</button>
+                    <button type="button" onclick='openProductPopup(${escapedProduct}, event)' class="btn-shop">Lihat</button>
                 </div>
             `;
             hiddenSetsContainer.innerHTML += setHtml;
@@ -524,6 +538,11 @@ function renderOneSet(sets, accs) {
                     if (hiddenContainer.style.display === 'none') {
                         hiddenContainer.style.display = 'block';
                         btn.innerHTML = 'Sembunyikan Pilihan Lainnya ▲';
+
+                        // Re-attach click handlers untuk hidden sets yang baru muncul
+                        setTimeout(() => {
+                            attachSetClickHandlers(sets);
+                        }, 100);
                     } else {
                         hiddenContainer.style.display = 'none';
                         btn.innerHTML = `Tampilkan ${remainingSets.length} Pilihan Set Lainnya ▼`;
@@ -536,6 +555,7 @@ function renderOneSet(sets, accs) {
     // 7. Render main accessory (tetap hanya 1)
     const mainAcc = accs.length > 0 ? accs[0] : null;
     if (mainAcc) {
+        const escapedAcc = JSON.stringify(mainAcc).replace(/"/g, '&quot;');
         const accHtml = `
             <div class="item-row" style="border-top: 2px dashed #E6C4A8; margin-top: 20px; padding-top: 20px; animation-delay: ${(displayedSets.length + (remainingSets.length > 0 ? remainingSets.length : 0)) * 0.1 + 0.2}s">
                 <img src="${mainAcc.image}" alt="${mainAcc.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
@@ -544,7 +564,7 @@ function renderOneSet(sets, accs) {
                     <p>Accessories</p>
                     <span class="price">Rp ${formatPrice(mainAcc.price)}</span>
                 </div>
-                <a href="${mainAcc.shop_link}" target="_blank" class="btn-shop">Lihat</a>
+                <button type="button" onclick='openProductPopup(${escapedAcc}, event)' class="btn-shop">Lihat</button>
             </div>
         `;
         elements.oneSetContainer.innerHTML += accHtml;
@@ -611,17 +631,28 @@ function renderGrid(container, products) {
     const displayProducts = products.slice(0, 4);
     displayProducts.forEach(p => {
         const escapedProduct = JSON.stringify(p).replace(/"/g, '&quot;');
+        const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
+        const shopLink = p.shop_link || '#';
+
+        // Use standardized card-final structure (matching home page)
         const cardHTML = `
-            <div class="product-card-simple" onclick='openProductPopup(${escapedProduct})'>
-                <div class="img-wrapper">
-                    <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
+            <div class="card-final" onclick='openProductPopup(${escapedProduct}, event)'>
+                <div class="img-box">
+                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
+                    <div class="card-actions">
+                        <a href="${shopLink}" target="_blank" class="btn-card-action btn-shop" onclick="event.stopPropagation()">Shop</a>
+                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopup(${escapedProduct}, event)">Detail</button>
+                    </div>
                 </div>
-                <div class="card-details">
-                    <h4>${p.name}</h4>
-                    <p class="category">${p.category}</p>
-                    <div class="card-footer">
-                        <span class="price">Rp ${formatPrice(p.price)}</span>
-                        <button class="btn-arrow">→</button>
+                
+                <div class="card-info">
+                    <span class="category-badge">${p.category}</span>
+                    <div class="info-row">
+                        <h3 class="card-title">${p.name}</h3>
+                        <div class="card-price">
+                            <span class="currency">IDR</span>
+                            <span class="value">${priceFormatted}</span>
+                        </div>
                     </div>
                 </div>
             </div>

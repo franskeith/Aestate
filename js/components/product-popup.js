@@ -9,11 +9,21 @@ const DUMMY_CONTENT = {
     size_notes: "Ukuran tersedia sesuai ketersediaan di toko"
 };
 
+// Store scroll position
+let savedScrollPosition = 0;
+
 /**
  * Open product detail pop-up
  * @param {Object} product - Product data object
+ * @param {Event} [event] - Optional click event to prevent default behavior
  */
-function openProductPopup(product) {
+function openProductPopup(product, event) {
+    // Prevent default behavior (e.g., anchor scroll to top)
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
     if (!product) return;
 
     const popup = document.getElementById('product-popup');
@@ -23,7 +33,10 @@ function openProductPopup(product) {
     }
 
     // Prevent body scroll using class
+    savedScrollPosition = window.scrollY; // Save current scroll
     document.body.classList.add('no-scroll');
+    document.body.style.top = `-${savedScrollPosition}px`; // Optional: for fixed body technique if needed
+
 
     // Populate image
     const image = document.getElementById('popup-product-image');
@@ -113,6 +126,11 @@ function closeProductPopup() {
 
     // Restore body scroll
     document.body.classList.remove('no-scroll');
+    document.body.style.top = '';
+
+    // Restore scroll position immediately
+    window.scrollTo(0, savedScrollPosition);
+
 }
 
 /**
@@ -178,12 +196,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Close button
     const closeBtn = popup.querySelector('.popup-close');
     if (closeBtn) {
-        closeBtn.addEventListener('click', closeProductPopup);
+        closeBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeProductPopup();
+        });
     }
 
     // Click overlay to close
     popup.addEventListener('click', function (e) {
         if (e.target === popup) {
+            e.preventDefault();
+            e.stopPropagation();
             closeProductPopup();
         }
     });
@@ -191,7 +215,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // ESC key to close
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && popup.classList.contains('active')) {
+            e.preventDefault();
             closeProductPopup();
+        }
+    });
+
+    // Prevent Visit Store link from scrolling when href="#"
+    const shopLink = document.getElementById('popup-shop-link');
+    if (shopLink) {
+        shopLink.addEventListener('click', function (e) {
+            if (this.href.endsWith('#') || this.href === '#') {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Global: Prevent scroll for any .btn-shop anchor links with href="#"
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('a.btn-shop');
+        if (link) {
+            const href = link.getAttribute('href');
+            if (!href || href === '#' || href === 'javascript:void(0)') {
+                e.preventDefault();
+            }
         }
     });
 });

@@ -167,35 +167,45 @@ function renderJustLanded(allProducts) {
         return;
     }
 
-    // Render each product card
+    // Render each product card with standardized card-final structure
     topTen.forEach(product => {
         // Check for badges in events field
         const events = (product.events || '').toLowerCase();
         let badgeHTML = '';
         if (events.includes('new')) {
-            badgeHTML = '<div class="product-badge badge-new">NEW</div>';
+            badgeHTML = '<div class="badge-status bg-new">NEW</div>';
         } else if (events.includes('hot')) {
-            badgeHTML = '<div class="product-badge badge-hot">HOT</div>';
+            badgeHTML = '<div class="badge-status bg-hot">HOT</div>';
         } else if (events.includes('best_seller') || events.includes('bestseller')) {
-            badgeHTML = '<div class="product-badge badge-best">BEST</div>';
+            badgeHTML = '<div class="badge-status bg-new">BEST</div>';
         }
 
         // Format price
-        const formattedPrice = formatPrice(product.price);
+        const priceFormatted = parseInt(product.price).toLocaleString('id-ID');
+        const shopLink = product.shop_link || '#';
+        const escapedProduct = JSON.stringify(product).replace(/"/g, '&quot;');
 
+        // Use standardized card-final structure (matching home page)
         const cardHTML = `
-            <div class="product-card">
-                <div class="p-img-box">
+            <div class="card-final" onclick='openProductPopup(${escapedProduct}, event)'>
+                <div class="img-box">
                     ${badgeHTML}
-                    <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
-                    <div class="p-actions">
-                        <a href="${product.shop_link || '#'}" target="_blank" class="action-btn">Shop</a>
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                    <div class="card-actions">
+                        <a href="${shopLink}" target="_blank" class="btn-card-action btn-shop" onclick="event.stopPropagation()">Shop</a>
+                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopup(${escapedProduct}, event)">Detail</button>
                     </div>
                 </div>
-                <div class="p-info">
-                    <span class="price">${formattedPrice}</span>
-                    <span class="cat">${product.category}</span>
-                    <h4>${product.name}</h4>
+                
+                <div class="card-info">
+                    <span class="category-badge">${product.category}</span>
+                    <div class="info-row">
+                        <h3 class="card-title">${product.name}</h3>
+                        <div class="card-price">
+                            <span class="currency">IDR</span>
+                            <span class="value">${priceFormatted}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -269,7 +279,6 @@ function renderEventSlider(allProducts, eventsConfig) {
 
         const cardHTML = `
             <div class="event-card ${config.theme}">
-                ${badgesHTML}
                 <div class="evt-content">
                     <span class="evt-tag t-${config.tagColor}">${config.tag}</span>
                     <h3 class="evt-title">${config.title}</h3>

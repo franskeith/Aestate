@@ -9,119 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="../css/components/navbar.css">
+    <!-- Unified Navbar Styling -->
+    <link rel="stylesheet" href="../css/components/navbar-base.css">
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        body {
-            background-color: #FFF6E9;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .contact-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 40px 60px;
-        }
-
-        .contact-container {
-            max-width: 800px;
-            width: 100%;
-            background: white;
-            padding: 60px;
-            border-radius: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .contact-container h1 {
-            font-family: 'Days One', sans-serif;
-            font-size: 3rem;
-            color: #523F37;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .contact-container .subtitle {
-            text-align: center;
-            color: #858280;
-            font-size: 1.1rem;
-            margin-bottom: 50px;
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-
-        .info-card {
-            text-align: center;
-            padding: 30px;
-            background: #FFF6E9;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .info-card .icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .info-card h3 {
-            font-family: 'Days One', sans-serif;
-            color: #523F37;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .info-card p {
-            color: #858280;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        .info-card a {
-            color: #FFAF02;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .info-card a:hover {
-            text-decoration: underline;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: #FFAF02;
-            color: white;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.1);
-            background: #523F37;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/contact.css">
 </head>
 
 <body>
@@ -144,33 +35,115 @@
             <h1>Get in Touch</h1>
             <p class="subtitle">Punya pertanyaan? Kami siap membantu Anda!</p>
 
-            <div class="contact-info">
-                <div class="info-card">
-                    <div class="icon">📧</div>
-                    <h3>Email</h3>
-                    <p><a href="mailto:hello@aestate.com">hello@aestate.com</a></p>
+            <!-- Official Aestate Contact -->
+            <div class="official-contact-grid">
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <h3>General Inquiries</h3>
+                    <p><a href="mailto:official@aestate.com">official@aestate.com</a></p>
                 </div>
 
-                <div class="info-card">
-                    <div class="icon">💬</div>
-                    <h3>WhatsApp</h3>
-                    <p><a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a></p>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Office (HQ)</h3>
+                    <p>+62 21 555-0199</p>
                 </div>
 
-                <div class="info-card">
-                    <div class="icon">📍</div>
-                    <h3>Location</h3>
-                    <p>Jakarta, Indonesia</p>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>Headquarters</h3>
+                    <p>SCBD Lot 28, Jakarta</p>
                 </div>
             </div>
 
-            <div style="text-align: center; padding: 30px 0; border-top: 1px solid #E6C4A8;">
-                <h3 style="font-family: 'Days One', sans-serif; color: #523F37; margin-bottom: 20px;">Follow Us</h3>
-                <div class="social-links">
-                    <a href="#" title="Instagram">📷</a>
-                    <a href="#" title="Facebook">👤</a>
-                    <a href="#" title="Twitter">🐦</a>
-                    <a href="#" title="TikTok">🎵</a>
+            <!-- Creator Profile Section -->
+            <div class="creator-profile">
+                <div class="creator-header">
+                    <p class="creator-role">DEVELOPER PROFILE</p>
+                    <h2>Meet the Creator</h2>
+                </div>
+
+                <div class="profile-card">
+                    <span class="profile-name">Frans Keith</span>
+
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>franskeith22@gmail.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>Bandung, Indonesia</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-links">
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/fran-sumawijaya-FK" target="_blank"
+                            class="social-btn linkedin" title="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                </path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+
+                        <!-- GitHub -->
+                        <a href="https://github.com/franskeith" target="_blank" class="social-btn github"
+                            title="GitHub">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/frans.keith?igsh=Z2F6cnJmMmRjbzN1" target="_blank"
+                            class="social-btn instagram" title="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <p class="contact-note">Feel free to connect or ask any questions!</p>
                 </div>
             </div>
         </div>

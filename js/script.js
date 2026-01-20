@@ -1,17 +1,9 @@
 // ==========================================
-// 1. VISUAL EFFECT (NAVBAR & SLIDER)
+// 1. VISUAL EFFECT (SLIDER ONLY)
 // ==========================================
 
-const navbar = document.getElementById('navbar');
-
-// Navbar Blur Effect saat Scroll
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+// NOTE: Navbar scroll behavior is handled by navbar.js
+// This file now focuses on homepage-specific features only
 
 // Hero Slider Logic
 const slides = document.querySelectorAll('.slide');
@@ -27,6 +19,71 @@ function nextSlide() {
 
 if (slides.length > 0) {
     setInterval(nextSlide, slideInterval);
+}
+
+// ==========================================
+// MAGIC SEARCH - TYPING ANIMATION
+// ==========================================
+const magicSearchInput = document.getElementById('magic-search');
+
+if (magicSearchInput) {
+    const placeholderTexts = [
+        "Valentine 2025",
+        "Summer Collection",
+        "Minimalist Style",
+        "Build Your Identity"
+    ];
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    function typeEffect() {
+        const currentText = placeholderTexts[textIndex];
+
+        if (isDeleting) {
+            // Deleting: reduce charIndex first, then update display
+            charIndex--;
+            magicSearchInput.setAttribute('placeholder', currentText.substring(0, charIndex));
+            typingSpeed = 50;
+        } else {
+            // Typing: update display, then increase charIndex
+            magicSearchInput.setAttribute('placeholder', currentText.substring(0, charIndex));
+            charIndex++;
+            typingSpeed = 100;
+        }
+
+        // Keep cursor visible throughout
+        if (!magicSearchInput.classList.contains('typing')) {
+            magicSearchInput.classList.add('typing');
+        }
+
+        // When word is complete (charIndex reached text length)
+        if (!isDeleting && charIndex > currentText.length) {
+            typingSpeed = 2000; // Pause at end
+            isDeleting = true;
+            charIndex = currentText.length; // Reset to exact length
+        }
+        // When deletion is complete (charIndex reached 0)
+        else if (isDeleting && charIndex <= 0) {
+            isDeleting = false;
+            charIndex = 0; // Ensure it's exactly 0
+            textIndex = (textIndex + 1) % placeholderTexts.length;
+            typingSpeed = 500; // Pause before next word
+        }
+
+        setTimeout(typeEffect, typingSpeed);
+    }
+
+    // Clear initial placeholder and start typing effect after search bar animation completes
+    setTimeout(() => {
+        magicSearchInput.setAttribute('placeholder', ''); // Clear any initial placeholder
+        charIndex = 0; // Ensure we start from 0
+        isDeleting = false; // Ensure we start typing
+        magicSearchInput.classList.add('typing'); // Show cursor immediately
+        typeEffect(); // Start typing
+    }, 2500);
 }
 // ==========================================
 // 2. DATA FETCHING (GOOGLE SHEETS)
@@ -55,12 +112,20 @@ async function loadNewArrivals() {
         if (data.status === 'error') {
             // Tampilkan pesan error ASLI dari backend biar ketahuan salahnya
             console.error("Backend Error:", data.message);
-            showError("Error: " + data.message);
+            showError(
+                "⚠️ Gagal memuat produk terbaru",
+                data.message || "Terjadi kesalahan pada server",
+                true
+            );
             return;
         }
 
         if (!Array.isArray(data)) {
-            showError("Format data salah (Bukan Array).");
+            showError(
+                "⚠️ Format data tidak valid",
+                "Silakan coba beberapa saat lagi",
+                true
+            );
             return;
         }
 
@@ -71,7 +136,11 @@ async function loadNewArrivals() {
 
     } catch (error) {
         console.error("Fetch Error:", error);
-        showError("Koneksi bermasalah.");
+        showError(
+            "🔌 Koneksi terputus",
+            "Periksa koneksi internet Anda dan coba lagi",
+            true
+        );
     }
 }
 
@@ -234,19 +303,30 @@ function renderCatalog(products) {
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
 
-        // --- TEMPLATE BARU (E-COMMERCE STYLE) ---
-        // Perhatikan class-nya sekarang "catalog-card" bukan "product-card"
-        // Biar CSS-nya kepisah sama New Arrival
+        // Escape product object for onclick
+        const escapedProduct = JSON.stringify(p).replace(/"/g, '&quot;');
+
+        // --- TEMPLATE BARU (Pop Up Title & Brown Price SC) ---
+        // Menggunakan style .card-final sesuai request user
         const html = `
-            <div class="catalog-card" onclick="window.open('${shopLink}', '_blank')">
-                <div class="img-wrapper">
+            <div class="card-final" onclick='openProductPopup(${escapedProduct}, event)'>
+                <div class="img-box">
                     <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
+                    <div class="card-actions">
+                        <a href="${shopLink}" target="_blank" class="btn-card-action btn-shop" onclick="event.stopPropagation()">Shop</a>
+                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopup(${escapedProduct}, event)">Detail</button>
+                    </div>
                 </div>
                 
                 <div class="card-info">
-                    <p class="category">${p.category}</p>
-                    <h3>${p.name}</h3>
-                    <p class="price">IDR ${priceFormatted}</p>
+                    <span class="category-badge">${p.category}</span>
+                    <div class="info-row">
+                        <h3 class="card-title">${p.name}</h3>
+                        <div class="card-price">
+                            <span class="currency">IDR</span>
+                            <span class="value">${priceFormatted}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -299,4 +379,67 @@ filterBtns.forEach(btn => {
 document.addEventListener('DOMContentLoaded', () => {
     // loadNewArrivals(); // <-- Yang lama tetep ada
     loadCatalog();       // <-- Tambahan baru
+
+    // =========================================
+    // STICKY TOOLBAR - Only within Catalog Section
+    // =========================================
+    const toolbar = document.querySelector('.catalog-toolbar');
+    const catalogSection = document.getElementById('full-catalog');
+
+    if (toolbar && catalogSection) {
+        // Create a sentinel element to detect when toolbar should stick
+        const sentinel = document.createElement('div');
+        sentinel.className = 'toolbar-sentinel';
+        sentinel.style.cssText = 'position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none;';
+        toolbar.parentElement.insertBefore(sentinel, toolbar);
+
+        // Store original position
+        let toolbarHeight = toolbar.offsetHeight;
+
+        // Create placeholder to prevent content jump
+        const placeholder = document.createElement('div');
+        placeholder.className = 'toolbar-placeholder';
+        placeholder.style.cssText = `display: none; height: ${toolbarHeight}px;`;
+        toolbar.parentElement.insertBefore(placeholder, toolbar.nextSibling);
+
+        // Use scroll event for more precise control
+        function handleScroll() {
+            const sentinelRect = sentinel.getBoundingClientRect();
+            const catalogRect = catalogSection.getBoundingClientRect();
+            const navbarVisible = document.body.classList.contains('is-navbar-visible');
+            const topOffset = navbarVisible ? 60 : 0;
+
+            // Check if we're within the catalog section
+            // Toolbar should be sticky only when:
+            // 1. Catalog section TOP has scrolled past viewport top (we've entered the section)
+            // 2. Sentinel is above viewport top (meaning we scrolled past toolbar original position)
+            // 3. Catalog section bottom is still below viewport (we haven't left the section)
+            const catalogTopReached = catalogRect.top <= topOffset;
+            const toolbarPassedTop = sentinelRect.top <= topOffset;
+            const stillInCatalog = catalogRect.bottom > (toolbarHeight + topOffset + 100);
+
+            const shouldBeSticky = catalogTopReached && toolbarPassedTop && stillInCatalog;
+
+            if (shouldBeSticky) {
+                if (!toolbar.classList.contains('is-stuck')) {
+                    toolbar.classList.add('is-stuck');
+                    placeholder.style.display = 'block';
+                }
+            } else {
+                if (toolbar.classList.contains('is-stuck')) {
+                    toolbar.classList.remove('is-stuck');
+                    placeholder.style.display = 'none';
+                }
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', () => {
+            toolbarHeight = toolbar.offsetHeight;
+            placeholder.style.height = `${toolbarHeight}px`;
+        });
+
+        // Initial check
+        handleScroll();
+    }
 });

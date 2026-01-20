@@ -9,83 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="../css/components/navbar.css">
+    <!-- Unified Navbar Styling -->
+    <link rel="stylesheet" href="../css/components/navbar-base.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/components/product-popup.css">
-    <style>
-        body {
-            background-color: #FFF6E9;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .culture-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 40px 60px;
-        }
-
-        .culture-container {
-            max-width: 900px;
-            text-align: center;
-        }
-
-        .culture-container h1 {
-            font-family: 'Days One', sans-serif;
-            font-size: 4.5rem;
-            color: #523F37;
-            margin-bottom: 30px;
-            letter-spacing: -3px;
-            line-height: 1.1;
-        }
-
-        .culture-container .subtitle {
-            font-size: 1.5rem;
-            color: #FFAF02;
-            font-weight: 600;
-            margin-bottom: 40px;
-            font-style: italic;
-        }
-
-        .culture-container p {
-            font-size: 1.1rem;
-            color: #858280;
-            line-height: 1.9;
-            margin-bottom: 30px;
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-top: 80px;
-        }
-
-        .value-item {
-            padding: 30px;
-            background: linear-gradient(135deg, #FFEBD8 0%, #E6C4A8 100%);
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .value-item:hover {
-            transform: scale(1.05);
-        }
-
-        .value-item h3 {
-            font-family: 'Days One', sans-serif;
-            color: #523F37;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .value-item p {
-            color: #523F37;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/culture.css">
 </head>
 
 <body>
@@ -108,16 +36,19 @@
             <h1>Our Culture</h1>
             <p class="subtitle">"Less is More, Quality over Quantity"</p>
 
-            <p>
-                AESTATE percaya pada filosofi <strong>Capsule Wardrobe</strong> – sebuah pendekatan minimalis dalam
-                berpakaian yang mengutamakan kualitas, keserbagunaan, dan keberlanjutan. Kami membantu Anda membangun
-                koleksi pakaian yang timeless, mudah dipadukan, dan mencerminkan identitas personal Anda.
-            </p>
+            <div class="philosophy-text">
+                <p>
+                    AESTATE percaya pada filosofi <strong>Capsule Wardrobe</strong> – sebuah pendekatan minimalis dalam
+                    berpakaian yang mengutamakan kualitas, keserbagunaan, dan keberlanjutan. Kami membantu Anda
+                    membangun
+                    koleksi pakaian yang timeless, mudah dipadukan, dan mencerminkan identitas personal Anda.
+                </p>
 
-            <p>
-                Dengan AESTATE, Anda tidak perlu lemari yang penuh sesak. Cukup dengan item-item esensial yang
-                dipilih dengan cermat, Anda sudah bisa tampil percaya diri di berbagai kesempatan.
-            </p>
+                <p>
+                    Dengan AESTATE, Anda tidak perlu lemari yang penuh sesak. Cukup dengan item-item esensial yang
+                    dipilih dengan cermat, Anda sudah bisa tampil percaya diri di berbagai kesempatan.
+                </p>
+            </div>
 
             <div class="values-grid">
                 <div class="value-item">
