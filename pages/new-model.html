@@ -138,9 +138,9 @@
             <!-- DYNAMIC SLIDER TRACK -->
             <!-- This will be populated by js/new-model.js based on loaded events -->
             <div id="events-slider-track" class="event-slider-track">
-                <!-- Javascript will render cards here... -->
-                <div style="width: 100%; text-align: center; padding: 50px;">
-                    <p>Loading curated events...</p>
+                <div class="aestate-loader">
+                    <div class="loader-spinner-elegant"></div>
+                    <span class="loader-message">Curating your events...</span>
                 </div>
             </div>
         </div>
@@ -158,8 +158,20 @@
 
         <!-- Dynamic Grid - Populated by JavaScript -->
         <div id="just-landed-grid" class="landing-grid">
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <p>Loading new arrivals...</p>
+            <div class="aestate-loader">
+                <div class="loader-hanger">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2L12 6M12 6C10 6 8 8 8 10C8 11.5 9 12 10 12M12 6C14 6 16 8 16 10C16 11.5 15 12 14 12M4 12H20M10 12L10 22M14 12L14 22M10 22H14" />
+                    </svg>
+                </div>
+                <div class="loader-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <span class="loader-message">Loading fresh arrivals...</span>
             </div>
         </div>
     </section>

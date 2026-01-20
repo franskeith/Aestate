@@ -690,7 +690,206 @@ body {
     opacity: 1;
 }
 
-/* --- LOADING SPINNER (Gede di tengah) --- */
+/* =========================================
+   CUTE LOADING ANIMATION (REUSABLE)
+   ========================================= */
+
+/* Main Loading Container */
+.aestate-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+/* Brand Text with Shimmer */
+.aestate-loader .loader-brand {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.aestate-loader .loader-brand::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Bouncing Dots Container */
+.loader-dots {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.loader-dots .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    animation: bounce 1.4s ease-in-out infinite;
+}
+
+.loader-dots .dot:nth-child(1) {
+    background: linear-gradient(135deg, #8B5E3C 0%, #523F37 100%);
+    animation-delay: 0s;
+}
+
+.loader-dots .dot:nth-child(2) {
+    background: linear-gradient(135deg, #FFAF02 0%, #E09900 100%);
+    animation-delay: 0.2s;
+}
+
+.loader-dots .dot:nth-child(3) {
+    background: linear-gradient(135deg, #D4A574 0%, #B08D5B 100%);
+    animation-delay: 0.4s;
+}
+
+.loader-dots .dot:nth-child(4) {
+    background: linear-gradient(135deg, #523F37 0%, #3E2F29 100%);
+    animation-delay: 0.6s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+    }
+
+    40% {
+        transform: translateY(-20px) scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Loading Message */
+.aestate-loader .loader-message {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: #888;
+    letter-spacing: 1px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Cute Hanger Icon Animation */
+.loader-hanger {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+    position: relative;
+    animation: swing 2s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.loader-hanger svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--text-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+@keyframes swing {
+
+    0%,
+    100% {
+        transform: rotate(-8deg);
+    }
+
+    50% {
+        transform: rotate(8deg);
+    }
+}
+
+/* Alternative: Simple Elegant Spinner */
+.loader-spinner-elegant {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f0e6db;
+    border-top: 3px solid var(--text-primary);
+    border-right: 3px solid var(--accent);
+    border-radius: 50%;
+    animation: spin-elegant 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin-elegant {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mini Loader (for inline/small spaces) */
+.aestate-loader-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+}
+
+.aestate-loader-mini .mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    animation: bounce 1.4s ease-in-out infinite;
+}
+
+.aestate-loader-mini .mini-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.aestate-loader-mini .mini-dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.aestate-loader-mini .mini-dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* Legacy .loader support (fallback) */
 .loader {
     width: 60px;
     height: 60px;
@@ -698,8 +897,6 @@ body {
     border-top: 5px solid var(--text-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-
-    /* Center positioning */
     grid-column: 1 / -1;
     justify-self: center;
     margin: 80px 0;

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AESTATE - Timeless Essentials</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/icon.png">
 
@@ -168,9 +168,14 @@
             <h2>Just Landed</h2>
             <p>Curated fresh picks for your capsule wardrobe.</p>
 
-            <div id="loading-indicator">
-                <div class="spinner"></div>
-                <span>Syncing Database...</span>
+            <div id="loading-indicator" class="aestate-loader">
+                <div class="loader-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <span class="loader-message">Syncing Database...</span>
             </div>
         </div>
 
@@ -234,7 +239,10 @@
         </div>
 
         <div class="catalog-grid" id="main-catalog-grid">
-            <div class="loader-catalog"></div>
+            <div class="aestate-loader">
+                <div class="loader-spinner-elegant"></div>
+                <span class="loader-message">Loading catalog...</span>
+            </div>
         </div>
     </section>
 
