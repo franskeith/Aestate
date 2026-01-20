@@ -1737,10 +1737,10 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
 /* RESPONSIVE CATALOG */
 @media (max-width: 768px) {
     .catalog-grid {
-        gap: 15px;
+        gap: 10px;
         grid-template-columns: repeat(2, 1fr);
         /* Tetap 2 kolom di HP */
-        padding: 0 10px;
+        padding: 0 8px;
     }
 
     .card-final {
@@ -2104,7 +2104,8 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
 @media (max-width: 768px) {
     .catalog-grid {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px !important;
+        gap: 10px !important;
+        padding: 0 8px !important;
     }
 
     /* Adjust Card Height */
@@ -2154,5 +2155,67 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
     .catalog-grid .btn-card-action {
         padding: 8px 14px;
         font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   MOBILE HORIZONTAL SWIPE CAROUSEL
+   For Just Landed / New Arrival Section
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Just Landed Section - Horizontal Swipe */
+    #new-arrival .product-grid,
+    #katalog-area.product-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 15px;
+        padding: 10px 15px 20px 15px;
+        /* Reset grid */
+        grid-template-columns: none;
+    }
+
+    #new-arrival .product-grid .product-card,
+    #katalog-area.product-grid .product-card {
+        /* Card sizing for swipe */
+        flex: 0 0 85%;
+        min-width: 85%;
+        max-width: 85%;
+        height: 450px;
+        scroll-snap-align: center;
+        /* Uno-like 3D depth effect */
+        transform-origin: center center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Scrollbar styling */
+    #new-arrival .product-grid::-webkit-scrollbar,
+    #katalog-area.product-grid::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    #new-arrival .product-grid::-webkit-scrollbar-track,
+    #katalog-area.product-grid::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 2px;
+    }
+
+    #new-arrival .product-grid::-webkit-scrollbar-thumb,
+    #katalog-area.product-grid::-webkit-scrollbar-thumb {
+        background: #BA8034;
+        border-radius: 2px;
+    }
+
+    /* Visual hint for more cards */
+    #new-arrival .product-grid::after,
+    #katalog-area.product-grid::after {
+        content: '';
+        flex: 0 0 5px;
+        min-width: 5px;
     }
 }

@@ -124,13 +124,19 @@ function closeProductPopup() {
     // Remove active class
     popup.classList.remove('active');
 
-    // Restore body scroll
+    // Get the saved scroll position before resetting styles
+    const scrollY = savedScrollPosition;
+
+    // Remove no-scroll class and reset body position
     document.body.classList.remove('no-scroll');
     document.body.style.top = '';
 
-    // Restore scroll position immediately
-    window.scrollTo(0, savedScrollPosition);
-
+    // Immediately restore scroll position (no animation)
+    window.scrollTo({
+        top: scrollY,
+        left: 0,
+        behavior: 'instant' // Prevent smooth scroll jump
+    });
 }
 
 /**
