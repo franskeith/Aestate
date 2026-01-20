@@ -226,19 +226,22 @@ function formatPrice(price) {
     return 'IDR ' + num;
 }
 
+// Store products globally for expand functionality
+let globalProducts = [];
+
 function renderEventSlider(allProducts, eventsConfig) {
     const container = document.getElementById('events-slider-track');
     if (!container) return;
+
+    // Store globally for expand functionality
+    globalProducts = allProducts;
 
     container.innerHTML = ''; // Clear loading state
 
     eventsConfig.forEach(config => {
         // Filter products for this event
-        // Logic: Check if product.events string contains the config.id (e.g. "valentine")
         const eventProducts = allProducts.filter(p => {
             if (!p.events) return false;
-            // Simple string check, can be improved with regex or split
-            // "valentine, new" -> includes "valentine" ? Yes.
             return p.events.toLowerCase().includes(config.id.toLowerCase());
         });
 
@@ -252,10 +255,6 @@ function renderEventSlider(allProducts, eventsConfig) {
         const badgesHTML = renderBadgesHTML(badges);
 
         // --- RENDER CARD ---
-        // We pick:
-        // - Main Image: From the 1st product found (or a specific cover if we had one)
-        // - Stickers: From 2nd and 3rd products (if available)
-
         const mainImg = eventProducts[0].image;
         const sticker1 = eventProducts[1]?.image || null;
         const sticker2 = eventProducts[2]?.image || null;
@@ -277,17 +276,148 @@ function renderEventSlider(allProducts, eventsConfig) {
             `;
         }
 
+        // Create unique ID for this event card
+        const eventCardId = `event-card-${config.id}`;
+        const productGridId = `event-products-${config.id}`;
+
         const cardHTML = `
-            <div class="event-card ${config.theme}">
-                <div class="evt-content">
-                    <span class="evt-tag t-${config.tagColor}">${config.tag}</span>
-                    <h3 class="evt-title">${config.title}</h3>
-                    <p class="evt-desc">${config.desc}</p>
-                    <a href="${config.btnLink}" class="btn-pill ${config.btnClass}">${config.btnText}</a>
+            <div class="event-card-container" id="${eventCardId}-container">
+                <div class="event-card ${config.theme}" id="${eventCardId}">
+                    <div class="evt-content">
+                        <span class="evt-tag t-${config.tagColor}">${config.tag}</span>
+                        <h3 class="evt-title">${config.title}</h3>
+                        <p class="evt-desc">${config.desc}</p>
+                        <button type="button" class="btn-pill ${config.btnClass} btn-expand-event" 
+                                onclick="toggleEventProducts('${config.id}')" 
+                                data-event-id="${config.id}">
+                            <span class="btn-text">${config.btnText}</span>
+                            <span class="btn-icon">▼</span>
+                        </button>
+                    </div>
+                    <div class="evt-visual">
+                        <img src="${mainImg}" class="main-img" alt="${config.title}">
+                        ${stickersHTML}
+                    </div>
                 </div>
-                <div class="evt-visual">
-                    <img src="${mainImg}" class="main-img" alt="${config.title}">
-                    ${stickersHTML}
+                
+                <!-- Expandable Product Grid -->
+                <div class="event-products-wrapper" id="${productGridId}" style="display: none;">
+                    <div class="event-products-header">
+                        <h4>Products for ${config.title.replace('<br>', ' ')}</h4>
+                        <span class="product-count">${eventProducts.length} items</span>
+                    </div>
+                    <div class="event-products-grid">
+                        <!-- Products will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.insertAdjacentHTML('beforeend', cardHTML);
+    });
+}
+
+// Toggle expand/collapse for event products
+function toggleEventProducts(eventId) {
+    const productGridWrapper = document.getElementById(`event-products-${eventId}`);
+    const eventCard = document.getElementById(`event-card-${eventId}`);
+    const button = document.querySelector(`[data-event-id="${eventId}"]`);
+
+    if (!productGridWrapper || !eventCard) return;
+
+    const isExpanded = productGridWrapper.style.display !== 'none';
+
+    if (isExpanded) {
+        // Collapse
+        productGridWrapper.style.maxHeight = productGridWrapper.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+            productGridWrapper.style.maxHeight = '0px';
+        });
+        setTimeout(() => {
+            productGridWrapper.style.display = 'none';
+        }, 400);
+
+        eventCard.classList.remove('expanded');
+        if (button) {
+            button.querySelector('.btn-icon').textContent = '▼';
+            button.querySelector('.btn-text').textContent = button.querySelector('.btn-text').textContent.replace('Hide', 'Shop');
+        }
+    } else {
+        // Expand - first render products if not already done
+        const grid = productGridWrapper.querySelector('.event-products-grid');
+        if (grid && grid.children.length === 0) {
+            renderEventProducts(eventId, grid);
+        }
+
+        productGridWrapper.style.display = 'block';
+        productGridWrapper.style.maxHeight = '0px';
+        requestAnimationFrame(() => {
+            productGridWrapper.style.maxHeight = productGridWrapper.scrollHeight + 'px';
+        });
+        setTimeout(() => {
+            productGridWrapper.style.maxHeight = 'none';
+        }, 400);
+
+        eventCard.classList.add('expanded');
+        if (button) {
+            button.querySelector('.btn-icon').textContent = '▲';
+            button.querySelector('.btn-text').textContent = button.querySelector('.btn-text').textContent.replace('Shop', 'Hide');
+        }
+
+        // Smooth scroll to show products
+        setTimeout(() => {
+            productGridWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+}
+
+// Render products for a specific event
+function renderEventProducts(eventId, container) {
+    const eventProducts = globalProducts.filter(p => {
+        if (!p.events) return false;
+        return p.events.toLowerCase().includes(eventId.toLowerCase());
+    });
+
+    if (eventProducts.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#888; padding: 40px;">No products found for this event.</p>';
+        return;
+    }
+
+    eventProducts.forEach(product => {
+        const events = (product.events || '').toLowerCase();
+        let badgeHTML = '';
+        if (events.includes('new')) {
+            badgeHTML = '<div class="badge-status bg-new">NEW</div>';
+        } else if (events.includes('hot')) {
+            badgeHTML = '<div class="badge-status bg-hot">HOT</div>';
+        } else if (events.includes('best_seller') || events.includes('bestseller')) {
+            badgeHTML = '<div class="badge-status bg-new">BEST</div>';
+        }
+
+        const priceFormatted = parseInt(product.price).toLocaleString('id-ID');
+        const shopLink = product.shop_link || '#';
+        const escapedProduct = JSON.stringify(product).replace(/"/g, '&quot;');
+
+        const cardHTML = `
+            <div class="card-final" onclick='openProductPopup(${escapedProduct}, event)'>
+                <div class="img-box">
+                    ${badgeHTML}
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                    <div class="card-actions">
+                        <a href="${shopLink}" target="_blank" class="btn-card-action btn-shop" onclick="event.stopPropagation()">Shop</a>
+                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopup(${escapedProduct}, event)">Detail</button>
+                    </div>
+                </div>
+                
+                <div class="card-info">
+                    <span class="category-badge">${product.category}</span>
+                    <div class="info-row">
+                        <h3 class="card-title">${product.name}</h3>
+                        <div class="card-price">
+                            <span class="currency">IDR</span>
+                            <span class="value">${priceFormatted}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;

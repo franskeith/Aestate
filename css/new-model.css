@@ -891,3 +891,145 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================
+   EVENT PRODUCT EXPANSION STYLES
+   ========================================= */
+
+/* Container for event card + expandable products */
+.event-card-container {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+}
+
+/* Expanded state visual indicator */
+.event-card.expanded {
+    border-radius: 40px 40px 0 0;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Expand button styles */
+.btn-expand-event {
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-expand-event .btn-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.event-card.expanded+.event-products-wrapper .btn-icon,
+.btn-expand-event:hover .btn-icon {
+    transform: translateY(2px);
+}
+
+/* Product Grid Wrapper */
+.event-products-wrapper {
+    background: linear-gradient(135deg, #FFF6E9 0%, #FFEBD8 100%);
+    border-radius: 0 0 40px 40px;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 0;
+    box-shadow: var(--shadow-md);
+}
+
+/* Header inside expanded section */
+.event-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px 20px;
+    border-bottom: 1px solid rgba(82, 63, 55, 0.1);
+}
+
+.event-products-header h4 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.event-products-header .product-count {
+    background: rgba(82, 63, 55, 0.1);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Product Grid */
+.event-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 30px 40px 40px;
+}
+
+/* Valentine theme specific colors for expanded section */
+.event-card.valentine.expanded+.event-products-wrapper {
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFE4EC 100%);
+}
+
+.event-card.valentine.expanded+.event-products-wrapper .event-products-header {
+    border-bottom-color: rgba(233, 30, 99, 0.15);
+}
+
+.event-card.valentine.expanded+.event-products-wrapper .product-count {
+    background: rgba(233, 30, 99, 0.1);
+    color: #C2185B;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .event-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .event-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 25px 30px 35px;
+    }
+
+    .event-products-header {
+        padding: 25px 30px 15px;
+    }
+
+    .event-products-header h4 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .event-products-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .event-products-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .event-products-header h4 {
+        font-size: 1.2rem;
+    }
+
+    .event-products-wrapper {
+        border-radius: 0 0 25px 25px;
+    }
+
+    .event-card.expanded {
+        border-radius: 25px 25px 0 0;
+    }
+}
