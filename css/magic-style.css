@@ -1236,7 +1236,7 @@ body #navbar {
 .item-info h4 {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .item-info p {
@@ -1253,7 +1253,7 @@ body #navbar {
 
 .btn-shop {
     text-decoration: none;
-    background: var(--text-dark);
+    background: linear-gradient(135deg, #523F37 0%, #8B5E3C 100%);
     color: #fff;
     padding: 8px 15px;
     border-radius: 8px;
@@ -1261,12 +1261,15 @@ body #navbar {
     border: none;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(82, 63, 55, 0.3);
+    display: inline-block;
 }
 
 .btn-shop:hover {
-    background: #8B5E3C;
+    background: linear-gradient(135deg, #8B5E3C 0%, #523F37 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(139, 94, 60, 0.4);
 }
 
 /* SECTION 3, 4, 5: GRID CATALOG */
@@ -1413,46 +1416,6 @@ body #navbar {
     height: 70px;
     border-radius: 10px;
     object-fit: cover;
-}
-
-.item-info {
-    flex: 1;
-}
-
-.item-info h4 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-dark);
-}
-
-.item-info p {
-    font-size: 0.8rem;
-    color: #888;
-    margin-bottom: 5px;
-}
-
-.item-info .price {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--btn-gradient-end);
-}
-
-.btn-shop {
-    text-decoration: none;
-    background: var(--text-dark);
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    border: none;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    transition: all 0.2s ease;
-}
-
-.btn-shop:hover {
-    background: #8B5E3C;
-    transform: translateY(-2px);
 }
 
 /* SECTION 3, 4, 5: GRID CATALOG */

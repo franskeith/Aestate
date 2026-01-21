@@ -219,11 +219,21 @@ nav#navbar .nav-links a.active::after {
 
 @media (max-width: 768px) {
     nav#navbar {
-        padding: 15px 20px;
+        padding: 10px 15px;
+    }
+
+    /* Smaller Logo on Mobile */
+    nav#navbar .logo h1 {
+        font-size: 18px;
+    }
+
+    nav#navbar .logo span {
+        font-size: 9px;
     }
 
     .menu-toggle {
         display: flex;
+        transform: scale(0.85);
     }
 
     nav#navbar .nav-links {

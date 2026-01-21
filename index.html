@@ -71,7 +71,7 @@
 
                         <!-- Secondary Image (Right Bottom) -->
                         <div class="secondary-img-box">
-                            <img src="assets/images/home/Hero/Image-secondary-hero.png" alt="Fashion Detail">
+                            <img src="assets/images/home/Hero/Image-secondary-hero.png" alt="Fashion Detail" loading="lazy">
                         </div>
                         <div class="fashion-life-text">FASHION LIFE <span class="line"></span></div>
                     </div>
@@ -79,7 +79,7 @@
 
                 <!-- LAYER 3: Main Model -->
                 <div class="hero-layer layer-3-model">
-                    <img src="assets/images/home/Model.png" alt="Main Model" class="hero-main-model">
+                    <img src="assets/images/home/Model.png" alt="Main Model" class="hero-main-model" loading="lazy">
                 </div>
             </div>
 
@@ -117,7 +117,7 @@
 
                         <!-- Secondary Image (Right Bottom) -->
                         <div class="secondary-img-box">
-                            <img src="https://i.ibb.co.com/XxPWQV2M/image-19.png" alt="Secondary Image">
+                            <img src="https://i.ibb.co.com/XxPWQV2M/image-19.png" alt="Secondary Image" loading="lazy">
                         </div>
                         <div class="fashion-life-text">FASHION LIFE <span class="line"></span></div>
                     </div>
@@ -125,7 +125,7 @@
 
                 <!-- LAYER 3: Main Model -->
                 <div class="hero-layer layer-3-model">
-                    <img src="assets/images/home/Model cowo.png" alt="Model 2" class="hero-main-model"
+                    <img src="assets/images/home/Model cowo.png" alt="Model 2" class="hero-main-model" loading="lazy"
                         onerror="this.src='assets/images/home/Model.png'">
                 </div>
             </div>
@@ -170,6 +170,10 @@
             <h2>Just Landed</h2>
             <p>Curated fresh picks for your capsule wardrobe.</p>
 
+
+        </div>
+
+        <div class="product-grid" id="katalog-area">
             <div id="loading-indicator" class="aestate-loader">
                 <div class="loader-dots">
                     <div class="dot"></div>
@@ -179,9 +183,6 @@
                 </div>
                 <span class="loader-message">Syncing Database...</span>
             </div>
-        </div>
-
-        <div class="product-grid" id="katalog-area">
         </div>
     </section>
     <section id="try-magic-promo">
@@ -208,7 +209,7 @@
             </div>
 
             <div class="promo-visual" data-aos="fade-left">
-                <img src="assets/images/home/try magic.png" alt="Try Magic Avatar Preview" class="avatar-img">
+                <img src="assets/images/home/try magic.png" alt="Try Magic Avatar Preview" class="avatar-img" loading="lazy">
 
                 <div class="floating-element float-1"></div>
                 <div class="floating-element float-2"></div>
@@ -324,9 +325,21 @@
     </div>
 
     <div id="magic-overlay"></div>
+    <script src="js/utils/image-cache.js"></script>
     <script src="js/components/product-popup.js"></script>
     <script src="js/script.js"></script>
     <script src="js/scroll-animations.js"></script>
+    
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('✅ Service Worker registered'))
+                    .catch(err => console.log('❌ SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 
 </html>

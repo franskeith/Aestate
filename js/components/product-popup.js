@@ -13,6 +13,38 @@ const DUMMY_CONTENT = {
 let savedScrollPosition = 0;
 
 /**
+ * SECURE: Open product popup using data-pid attribute
+ * Retrieves product data from secure Map instead of exposing in HTML
+ */
+function openProductPopupSecure(element, event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    const secureId = element.getAttribute('data-pid');
+    if (!secureId) {
+        console.error('No product ID found');
+        return;
+    }
+
+    // Access productStore from script.js (global scope)
+    if (typeof productStore === 'undefined') {
+        console.error('Product store not initialized');
+        return;
+    }
+
+    const product = productStore.get(secureId);
+    if (!product) {
+        console.error('Product not found in store');
+        return;
+    }
+
+    // Call original function with retrieved product
+    openProductPopup(product, event);
+}
+
+/**
  * Open product detail pop-up
  * @param {Object} product - Product data object
  * @param {Event} [event] - Optional click event to prevent default behavior

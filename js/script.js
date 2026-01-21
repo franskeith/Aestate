@@ -1,4 +1,39 @@
 // ==========================================
+// 0. IMAGE PRE-CACHING (Service Worker)
+// ==========================================
+
+// Security warning in console
+if (typeof console !== 'undefined') {
+    const style = 'font-size: 24px; color: #ff0000; font-weight: bold; text-shadow: 2px 2px 4px #000;';
+    const style2 = 'font-size: 16px; color: #ff6600;';
+    console.log('%c⚠️ PERINGATAN KEAMANAN', style);
+    console.log('%cJangan paste kode apapun di console ini!', style2);
+    console.log('%cIni bisa membahayakan akun Anda.', style2);
+}
+
+// Pre-cache critical images AFTER page load (non-blocking)
+window.addEventListener('load', () => {
+    // Tunggu imageCache dari image-cache.js tersedia
+    if (typeof imageCache !== 'undefined') {
+        // Delay pre-caching agar tidak mengganggu page load
+        setTimeout(() => {
+            const criticalImages = [
+                'assets/images/home/Model.png',
+                'assets/images/home/try magic.png'
+            ];
+
+            // Non-blocking - tidak pakai await
+            imageCache.preloadThumbnails(criticalImages);
+        }, 1000); // Cache after 1 second
+
+        // Check cache size periodically (every 10 minutes)
+        setInterval(() => {
+            imageCache.clearIfOverLimit();
+        }, 600000);
+    }
+});
+
+// ==========================================
 // 1. VISUAL EFFECT (SLIDER ONLY)
 // ==========================================
 
@@ -89,6 +124,50 @@ if (magicSearchInput) {
 // 2. DATA FETCHING (GOOGLE SHEETS)
 // ==========================================
 // ==========================================
+// IMAGE LOADING HELPER WITH RETRY & CACHE
+// ==========================================
+
+// Cache untuk menyimpan URL gambar yang sudah berhasil load
+const imageUrlCache = new Map();
+
+// Fungsi untuk load image dengan retry mechanism
+function loadImageWithRetry(imgElement, url, retries = 3, delay = 1000) {
+    // Cek cache dulu
+    if (imageUrlCache.has(url)) {
+        imgElement.src = imageUrlCache.get(url);
+        return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+        const attempt = (retriesLeft) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                imgElement.src = url;
+                imageUrlCache.set(url, url); // Simpan ke cache
+                resolve();
+            };
+            
+            img.onerror = () => {
+                if (retriesLeft > 0) {
+                    console.log(`Retry loading image (${retriesLeft} left): ${url}`);
+                    setTimeout(() => attempt(retriesLeft - 1), delay);
+                } else {
+                    console.error(`Failed to load image after retries: ${url}`);
+                    // Gunakan placeholder lokal
+                    imgElement.src = 'assets/images/placeholder.svg';
+                    reject(new Error('Image load failed'));
+                }
+            };
+            
+            img.src = url;
+        };
+        
+        attempt(retries);
+    });
+}
+
+// ==========================================
 // 2. DATA FETCHING (NEW ARRIVAL - SETS ONLY)
 // ==========================================
 
@@ -170,9 +249,13 @@ function renderGrid(products) {
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
 
+        // Generate secure ID
+        const secureId = 'na_' + Date.now() + '_' + index + '_' + Math.random().toString(36).substr(2, 9);
+        productStore.set(secureId, { ...p, shop_link: shopLink });
+
         const cardHTML = `
-            <div class="product-card" style="--i: ${index}" onclick="handleCardClick(event, '${shopLink}')">
-                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300?text=No+Image'">
+            <div class="product-card" style="--i: ${index}" data-shop="${shopLink}" onclick="handleCardClickSecure(event, this)">
+                <img class="lazy-img" data-src="${p.image}" alt="${p.name}" src="assets/images/placeholder.svg">
                 
                 <div class="overlay">
                     <h3>${p.name}</h3>
@@ -186,9 +269,39 @@ function renderGrid(products) {
         `;
         katalogArea.innerHTML += cardHTML;
     });
+    
+    // Load images dengan delay untuk avoid rate limit
+    const lazyImages = katalogArea.querySelectorAll('.lazy-img');
+    lazyImages.forEach((img, index) => {
+        setTimeout(() => {
+            loadImageWithRetry(img, img.dataset.src);
+        }, index * 200); // Delay 200ms per gambar
+    });
 }
 
 // Handle card click separately to manage navigation vs expansion
+function handleCardClickSecure(event, element) {
+    const url = element.getAttribute('data-shop');
+    const container = document.getElementById('katalog-area');
+    if (window.innerWidth <= 768) {
+        if (container.classList.contains('expanded')) {
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            }
+        } else {
+            // If collapsed, the container click handler will trigger expansion
+            // We just need to stop this click from navigating immediately
+            event.preventDefault();
+        }
+    } else {
+        // Desktop behavior - direct open
+        if (url && url !== '#') {
+            window.open(url, '_blank');
+        }
+    }
+}
+
+// Legacy function - kept for backwards compatibility
 function handleCardClick(event, url) {
     const container = document.getElementById('katalog-area');
     if (window.innerWidth <= 768) {
@@ -302,6 +415,8 @@ const filterBtns = document.querySelectorAll('.filter-btn');
 
 // Simpan data mentah disini biar bisa di-filter tanpa fetch ulang
 let allCatalogData = [];
+// Secure storage untuk product data - tidak exposed di HTML
+const productStore = new Map();
 
 async function loadCatalog() {
     try {
@@ -317,6 +432,9 @@ async function loadCatalog() {
         allCatalogData = data; // Simpan ke memori
         renderCatalog(allCatalogData); // Tampilkan semua di awal
 
+        // Freeze data untuk prevent tampering
+        Object.freeze(allCatalogData);
+
     } catch (error) {
         console.error(error);
         catalogGrid.innerHTML = '<p class="error-msg">Koneksi bermasalah.</p>';
@@ -330,22 +448,24 @@ function renderCatalog(products) {
         return;
     }
 
-    products.forEach(p => {
+    products.forEach((p, index) => {
         const priceFormatted = parseInt(p.price).toLocaleString('id-ID');
         const shopLink = p.shop_link || '#';
 
-        // Escape product object for onclick
-        const escapedProduct = JSON.stringify(p).replace(/"/g, '&quot;');
+        // Generate secure ID untuk product
+        const secureId = 'p_' + Date.now() + '_' + index + '_' + Math.random().toString(36).substr(2, 9);
+        
+        // Store product securely di Map (tidak exposed di HTML)
+        productStore.set(secureId, p);
 
-        // --- TEMPLATE BARU (Pop Up Title & Brown Price SC) ---
-        // Menggunakan style .card-final sesuai request user
+        // --- TEMPLATE AMAN (Hanya ID yang di-expose) ---
         const html = `
-            <div class="card-final" onclick='openProductPopup(${escapedProduct}, event)'>
+            <div class="card-final" data-pid="${secureId}" onclick="openProductPopupSecure(this, event)">
                 <div class="img-box">
-                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300'">
+                    <img class="lazy-catalog-img" data-src="${p.image}" alt="${p.name}" src="assets/images/placeholder.svg">
                     <div class="card-actions">
                         <a href="${shopLink}" target="_blank" class="btn-card-action btn-shop" onclick="event.stopPropagation()">Shop</a>
-                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopup(${escapedProduct}, event)">Detail</button>
+                        <button type="button" class="btn-card-action btn-detail" onclick="event.stopPropagation(); openProductPopupSecure(this.closest('[data-pid]'), event)">Detail</button>
                     </div>
                 </div>
                 
@@ -362,6 +482,14 @@ function renderCatalog(products) {
             </div>
         `;
         catalogGrid.innerHTML += html;
+    });
+    
+    // Load images dengan staggered delay
+    const lazyImages = catalogGrid.querySelectorAll('.lazy-catalog-img');
+    lazyImages.forEach((img, index) => {
+        setTimeout(() => {
+            loadImageWithRetry(img, img.dataset.src);
+        }, index * 150); // Delay 150ms per gambar
     });
 }
 

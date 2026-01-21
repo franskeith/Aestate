@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Configuration for Intersection Observer
     const observerOptions = {
         root: null, // viewport
-        rootMargin: '0px 0px -100px 0px', // Trigger 100px before element enters viewport
-        threshold: 0.1 // Trigger when 10% of element is visible
+        rootMargin: '0px 0px -50px 0px', // Trigger earlier - 50px before bottom of viewport
+        threshold: 0.05 // Trigger when just 5% of element is visible
     };
 
     // Callback function when element intersects

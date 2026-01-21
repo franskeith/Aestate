@@ -35,12 +35,12 @@ html {
 /* Base hidden state for elements */
 [data-scroll] {
     opacity: 0;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 /* Fade Up Animation */
 [data-scroll="fade-up"] {
-    transform: translateY(50px);
+    transform: translateY(30px);
 }
 
 [data-scroll="fade-up"].scroll-visible {
@@ -80,23 +80,23 @@ html {
 
 /* Stagger delays for multiple items */
 [data-scroll][data-delay="1"] {
-    transition-delay: 0.1s;
+    transition-delay: 0.05s;
 }
 
 [data-scroll][data-delay="2"] {
-    transition-delay: 0.2s;
+    transition-delay: 0.1s;
 }
 
 [data-scroll][data-delay="3"] {
-    transition-delay: 0.3s;
+    transition-delay: 0.15s;
 }
 
 [data-scroll][data-delay="4"] {
-    transition-delay: 0.4s;
+    transition-delay: 0.2s;
 }
 
 [data-scroll][data-delay="5"] {
-    transition-delay: 0.5s;
+    transition-delay: 0.25s;
 }
 
 :root {
@@ -584,14 +584,18 @@ body {
 
 /* --- 3. NEW ARRIVAL SECTION (UPDATED) --- */
 #new-arrival {
-    padding: 80px 40px;
+    padding: 80px 20px;
     background-color: var(--bg-primary);
     min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .section-header {
     text-align: center;
     margin-bottom: 50px;
+    width: 100%;
 }
 
 .section-header h2 {
@@ -619,6 +623,8 @@ body {
     /* Batasi lebar biar ga terlalu melar di layar gede */
     margin: 0 auto;
     /* Tengahin grid */
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 /* PRODUCT CARD (UPDATED SIZE & ANIMATION) */
@@ -955,121 +961,6 @@ body {
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
         max-width: 700px;
-    }
-}
-
-/* Mobile (HP) -> Stacked Photocard Layout */
-@media (max-width: 768px) {
-    #new-arrival {
-        padding: 60px 20px;
-    }
-
-    .product-grid {
-        /* Container jadi stack area */
-        display: block;
-        position: relative;
-        height: 480px;
-        /* Tinggi tumpukan */
-        width: 100%;
-        max-width: 320px;
-        margin: 0 auto;
-        transition: height 0.5s ease;
-    }
-
-    /* Saat expanded, container memanjang */
-    .product-grid.expanded {
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    /* KARTU DALAM POSISI TUMPUK (DEFAULT) */
-    .product-card {
-        width: 100%;
-        height: 450px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-        transform-origin: center bottom;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-    }
-
-    /* Rotasi acak untuk efek tumpukan berantakan */
-    .product-grid:not(.expanded) .product-card:nth-child(1) {
-        transform: rotate(-5deg) translateY(0) scale(0.95);
-        z-index: 1;
-    }
-
-    .product-grid:not(.expanded) .product-card:nth-child(2) {
-        transform: rotate(3deg) translateY(-10px) scale(0.98);
-        z-index: 2;
-    }
-
-    .product-grid:not(.expanded) .product-card:nth-child(3) {
-        transform: rotate(-2deg) translateY(-20px) scale(1);
-        z-index: 3;
-    }
-
-    /* Efek hover sebelum klik (ada feedback dikit) */
-    .product-grid:not(.expanded):active .product-card:nth-child(3) {
-        transform: rotate(0deg) translateY(-30px) scale(1.05);
-    }
-
-    /* SAAT EXPANDED (MENYEBAR) */
-    .product-grid.expanded .product-card {
-        position: relative;
-        top: auto;
-        left: auto;
-        /* Reset semua transform */
-        transform: none !important;
-        z-index: 1;
-        opacity: 0;
-        animation: card-enter 0.6s forwards;
-    }
-
-    /* Staggered animation saat expand */
-    .product-grid.expanded .product-card:nth-child(1) {
-        animation-delay: 0s;
-    }
-
-    .product-grid.expanded .product-card:nth-child(2) {
-        animation-delay: 0.1s;
-    }
-
-    .product-grid.expanded .product-card:nth-child(3) {
-        animation-delay: 0.2s;
-    }
-
-    @keyframes card-enter {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Overlay selalu visible dikit di mobile biar tau kontennya apa */
-    .product-card .overlay {
-        opacity: 1;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
-    }
-
-    .product-card .overlay h3,
-    .product-card .overlay p {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    .product-card .btn-shopee {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 
@@ -1704,6 +1595,7 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
     text-shadow: 2px 2px 0px rgba(230, 230, 230, 1);
 }
 
+
 /* HARGA (WARNA COKLAT) */
 /* HARGA (WARNA COKLAT - 2 LINES) */
 .card-price {
@@ -2164,20 +2056,28 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
    ============================================ */
 @media (max-width: 768px) {
 
+    #new-arrival {
+        padding: 60px 0;
+        overflow-x: visible;
+    }
+
     /* Just Landed Section - Horizontal Swipe */
     #new-arrival .product-grid,
     #katalog-area.product-grid {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        overflow-x: auto;
+        overflow-x: scroll;
         overflow-y: hidden;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         gap: 15px;
-        padding: 10px 15px 20px 15px;
+        padding: 10px 0 20px 0;
         /* Reset grid */
         grid-template-columns: none;
+        max-width: none;
+        width: 100vw;
+        margin: 0;
     }
 
     #new-arrival .product-grid .product-card,
@@ -2186,7 +2086,7 @@ body.is-navbar-visible .catalog-toolbar.is-stuck {
         flex: 0 0 85%;
         min-width: 85%;
         max-width: 85%;
-        height: 450px;
+        height: 550px;
         scroll-snap-align: center;
         /* Uno-like 3D depth effect */
         transform-origin: center center;
