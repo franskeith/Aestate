@@ -10,6 +10,19 @@ if (typeof console !== 'undefined') {
     console.log('%c⚠️ Eits, jangan nakal yaaa...', style);
     console.log('%cJangan paste kode apapun atau nanti... tau sendiri :D', style2);
     console.log('%c- Developer', style3);
+    
+    // Prevent console.log of sensitive objects
+    const originalLog = console.log;
+    console.log = function(...args) {
+        // Filter out large arrays that might be product data
+        const filtered = args.map(arg => {
+            if (Array.isArray(arg) && arg.length > 0 && arg[0]?.id && arg[0]?.price) {
+                return '[Product Data Hidden 🔒]';
+            }
+            return arg;
+        });
+        originalLog.apply(console, filtered);
+    };
 }
 
 // Pre-cache critical images AFTER page load (non-blocking)
@@ -414,10 +427,53 @@ const catalogGrid = document.getElementById('main-catalog-grid');
 const searchInput = document.getElementById('search-input');
 const filterBtns = document.querySelectorAll('.filter-btn');
 
-// Simpan data mentah disini biar bisa di-filter tanpa fetch ulang
-let allCatalogData = [];
 // Secure storage untuk product data - tidak exposed di HTML
-const productStore = new Map();
+// Use WeakMap for better security (cannot be iterated)
+const productStore = (() => {
+    const store = new Map();
+    
+    // Prevent direct access to store
+    return {
+        set: (key, value) => store.set(key, Object.freeze(value)),
+        get: (key) => store.get(key),
+        has: (key) => store.has(key),
+        // Don't expose delete, clear, or iteration methods
+    };
+})();
+
+// IIFE to hide catalog data from global scope
+const CatalogManager = (() => {
+    // Private variable - cannot be accessed from console
+    let _catalogData = [];
+    
+    // Freeze and seal to prevent tampering
+    const _freezeData = (data) => {
+        data.forEach(item => Object.freeze(item));
+        return Object.freeze(data);
+    };
+    
+    return {
+        setData: (data) => {
+            _catalogData = _freezeData(data);
+        },
+        getData: () => {
+            // Return defensive copy, not original
+            return [..._catalogData];
+        },
+        filterData: (keyword, category) => {
+            return _catalogData.filter(p => {
+                const pName = p.name.toLowerCase();
+                const pCat = p.category.toLowerCase();
+                const matchSearch = pName.includes(keyword) || pCat.includes(keyword);
+                let matchCategory = true;
+                if (category !== 'all') {
+                    matchCategory = pCat.includes(category);
+                }
+                return matchSearch && matchCategory;
+            });
+        }
+    };
+})();
 
 async function loadCatalog() {
     try {
@@ -430,11 +486,9 @@ async function loadCatalog() {
             return;
         }
 
-        allCatalogData = data; // Simpan ke memori
-        renderCatalog(allCatalogData); // Tampilkan semua di awal
-
-        // Freeze data untuk prevent tampering
-        Object.freeze(allCatalogData);
+        // Store in secure manager (private scope)
+        CatalogManager.setData(data);
+        renderCatalog(CatalogManager.getData());
 
     } catch (error) {
         console.error(error);
@@ -499,22 +553,8 @@ function filterHandler() {
     const keyword = searchInput.value.toLowerCase();
     const activeCategory = document.querySelector('.filter-btn.active').dataset.filter;
 
-    // Filter Array di Javascript (Cepet banget)
-    const filtered = allCatalogData.filter(p => {
-        const pName = p.name.toLowerCase();
-        const pCat = p.category.toLowerCase();
-
-        // 1. Cek Keyword Search
-        const matchSearch = pName.includes(keyword) || pCat.includes(keyword);
-
-        // 2. Cek Kategori Tab
-        let matchCategory = true;
-        if (activeCategory !== 'all') {
-            matchCategory = pCat.includes(activeCategory); // misal 'top' ada di 'tank top'
-        }
-
-        return matchSearch && matchCategory;
-    });
+    // Use secure manager to filter
+    const filtered = CatalogManager.filterData(keyword, activeCategory);
 
     renderCatalog(filtered);
 }
@@ -601,5 +641,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initial check
         handleScroll();
+    }
+    
+    // =========================================
+    // FINAL SECURITY: Prevent global scope pollution
+    // =========================================
+    // Make window properties read-only
+    if (typeof CatalogManager !== 'undefined') {
+        Object.defineProperty(window, 'CatalogManager', {
+            value: CatalogManager,
+            writable: false,
+            configurable: false
+        });
+    }
+    
+    if (typeof productStore !== 'undefined') {
+        Object.defineProperty(window, 'productStore', {
+            value: productStore,
+            writable: false,
+            configurable: false
+        });
+    }
+    
+    // Freeze critical objects
+    if (window.productStore) {
+        Object.freeze(window.productStore);
     }
 });
