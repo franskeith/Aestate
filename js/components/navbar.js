@@ -1,11 +1,19 @@
 // Initialize navbar immediately when script loads
 // Use requestAnimationFrame to ensure DOM is ready without blocking
 (function initNavbar() {
+    let retryCount = 0;
+    const MAX_RETRIES = 50; // Prevent infinite loop - max ~3 seconds at 60fps
+    
     function setupNavbar() {
         const navbar = document.querySelector('nav');
         if (!navbar) {
             // Navbar not ready yet, retry on next frame
-            requestAnimationFrame(setupNavbar);
+            retryCount++;
+            if (retryCount < MAX_RETRIES) {
+                requestAnimationFrame(setupNavbar);
+            } else {
+                console.warn('⚠️ Navbar element not found after maximum retries');
+            }
             return;
         }
 

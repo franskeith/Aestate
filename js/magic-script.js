@@ -723,27 +723,53 @@ function slowScrollTo(target, duration) {
 // =========================================
 // 9. NAVBAR AUTO-HIDE (TRY MAGIC PAGE)
 // =========================================
+// 9. NAVBAR AUTO-HIDE (TRY MAGIC PAGE)
+// =========================================
 
-// Auto-hide navbar: muncul ketika mouse di POJOK KANAN ATAS saja
+// CONSOLIDATED: Single mousemove handler for navbar behavior
+let navbarHoverEnabled = false; // Will be enabled after morph animation
+let navbarVisible = false;
+let hideTimeout;
+
 document.addEventListener('mousemove', function (e) {
+    // Only activate after morph animation completes
+    if (!navbarHoverEnabled) return;
+    
     const navbar = document.getElementById('navbar');
+    const indicator = document.getElementById('navbar-indicator');
     if (!navbar) return;
 
-    const windowWidth = window.innerWidth;
+    // Get navbar bounding rect
+    const navbarRect = navbar.getBoundingClientRect();
+    const isMouseOverNavbar = navbarVisible &&
+        e.clientX >= navbarRect.left &&
+        e.clientX <= navbarRect.right &&
+        e.clientY >= navbarRect.top &&
+        e.clientY <= navbarRect.bottom;
 
-    // Hanya trigger jika mouse di pojok kanan atas
-    // Area: 200px dari kanan, 100px dari atas
-    const isInRightCorner = e.clientX > (windowWidth - 200) && e.clientY < 100;
+    // Mouse in top edge zone (0-20px) OR mouse is over the navbar itself
+    if (e.clientY <= 20 || isMouseOverNavbar) {
+        // Clear any pending hide
+        clearTimeout(hideTimeout);
 
-    if (isInRightCorner) {
-        document.body.classList.add('navbar-visible');
+        // Show navbar, hide indicator
+        if (!navbarVisible) {
+            navbar.classList.remove('navbar-hidden');
+            navbar.classList.add('navbar-visible');
+            document.body.classList.add('navbar-visible');
+            if (indicator) indicator.classList.remove('indicator-visible');
+            navbarVisible = true;
+        }
     } else {
-        // Jika mouse keluar dari area navbar, hide
-        const navbarRect = navbar.getBoundingClientRect();
-        const isHoveringNavbar = e.clientY < navbarRect.bottom;
-
-        if (!isHoveringNavbar) {
-            document.body.classList.remove('navbar-visible');
+        // Mouse left both zones, delay hide
+        if (navbarVisible) {
+            hideTimeout = setTimeout(() => {
+                navbar.classList.remove('navbar-visible');
+                navbar.classList.add('navbar-hidden');
+                document.body.classList.remove('navbar-visible');
+                if (indicator) indicator.classList.add('indicator-visible');
+                navbarVisible = false;
+            }, 300); // 300ms delay before hiding
         }
     }
 });
@@ -796,50 +822,8 @@ window.addEventListener('DOMContentLoaded', () => {
 // =========================================
 // NAVBAR HOVER DETECTION (Post-Morph)
 // =========================================
-let navbarHoverEnabled = false;
-let navbarVisible = false;
-let hideTimeout;
-
-// Show navbar when mouse enters top edge area (top 60px)
-document.addEventListener('mousemove', (e) => {
-    if (!navbarHoverEnabled) return;
-
-    const navbar = document.getElementById('navbar');
-    const indicator = document.getElementById('navbar-indicator');
-    if (!navbar) return;
-
-    // Get navbar bounding rect to check if mouse is inside
-    const navbarRect = navbar.getBoundingClientRect();
-    const isMouseOverNavbar = navbarVisible &&
-        e.clientX >= navbarRect.left &&
-        e.clientX <= navbarRect.right &&
-        e.clientY >= navbarRect.top &&
-        e.clientY <= navbarRect.bottom;
-
-    // Mouse in top edge zone (0-20px) OR mouse is over the navbar itself
-    if (e.clientY <= 20 || isMouseOverNavbar) {
-        // Clear any pending hide
-        clearTimeout(hideTimeout);
-
-        // Show navbar, hide indicator
-        if (!navbarVisible) {
-            navbar.classList.remove('navbar-hidden');
-            navbar.classList.add('navbar-visible');
-            if (indicator) indicator.classList.remove('indicator-visible');
-            navbarVisible = true;
-        }
-    } else {
-        // Mouse left both zones, delay hide
-        if (navbarVisible) {
-            hideTimeout = setTimeout(() => {
-                navbar.classList.remove('navbar-visible');
-                navbar.classList.add('navbar-hidden');
-                if (indicator) indicator.classList.add('indicator-visible');
-                navbarVisible = false;
-            }, 300); // 300ms delay before hiding
-        }
-    }
-});
+// navbarHoverEnabled flag declared in section 9 above
+// Show navbar when mouse enters top edge area (top 20px) - handled by consolidated mousemove handler
 
 // =========================================
 // SCROLL BEHAVIOR (Post-Morph)
