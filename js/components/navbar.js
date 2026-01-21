@@ -1,24 +1,32 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const navbar = document.querySelector('nav');
+// Initialize navbar immediately when script loads
+// Use requestAnimationFrame to ensure DOM is ready without blocking
+(function initNavbar() {
+    function setupNavbar() {
+        const navbar = document.querySelector('nav');
+        if (!navbar) {
+            // Navbar not ready yet, retry on next frame
+            requestAnimationFrame(setupNavbar);
+            return;
+        }
 
-    // =========================================
-    // 1. DEFAULT BACKGROUND (Konsisten di semua page)
-    // =========================================
-    // REMOVED: Inline styles conflict with navbar.css glassmorphism
-    // Let CSS handle all styling to avoid flash/jump
+        // =========================================
+        // 1. DEFAULT BACKGROUND (Konsisten di semua page)
+        // =========================================
+        // REMOVED: Inline styles conflict with navbar.css glassmorphism
+        // Let CSS handle all styling to avoid flash/jump
 
-    // if (!navbar.classList.contains('scrolled')) {
-    //     navbar.style.background = 'rgba(255, 246, 233, 0.95)';
-    //     navbar.style.backdropFilter = 'blur(10px)';
-    //     navbar.style.webkitBackdropFilter = 'blur(10px)';
-    //     navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
-    // }
+        // if (!navbar.classList.contains('scrolled')) {
+        //     navbar.style.background = 'rgba(255, 246, 233, 0.95)';
+        //     navbar.style.backdropFilter = 'blur(10px)';
+        //     navbar.style.webkitBackdropFilter = 'blur(10px)';
+        //     navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+        // }
 
-    // =========================================
-    // 2. NAVBAR VISIBILITY (Hover-based for catalog section)
-    // =========================================
-    const isTryMagicPage = document.getElementById('magic-studio') !== null;
-    const isFullCatalogPage = document.getElementById('full-catalog') !== null;
+        // =========================================
+        // 2. NAVBAR VISIBILITY (Hover-based for catalog section)
+        // =========================================
+        const isTryMagicPage = document.getElementById('magic-studio') !== null;
+        const isFullCatalogPage = document.getElementById('full-catalog') !== null;
 
     // Helper to update body class for CSS toolbar coordination
     function setNavbarVisible(visible) {
@@ -234,4 +242,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initMobileMenu();
-});
+    }
+
+    // Start initialization immediately
+    if (document.readyState === 'loading') {
+        // DOM not ready yet, wait for it
+        document.addEventListener('DOMContentLoaded', setupNavbar);
+    } else {
+        // DOM already loaded, initialize immediately
+        setupNavbar();
+    }
+})();
