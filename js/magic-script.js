@@ -7,8 +7,8 @@ const femaleBodyTypes = [
     { id: 'rectangle', label: 'Rectangle', desc: 'Badan rata dari bahu sampai pinggul.', img: '../assets/images/magic/Body/rectangle.png' },
     { id: 'pear', label: 'Pear', desc: 'Pinggul lebih lebar dibanding bahu.', img: '../assets/images/magic/Body/pear.png' },
     { id: 'hourglass', label: 'Hourglass', desc: 'Bahu dan pinggul seimbang.', img: '../assets/images/magic/Body/hourglass.png' },
-    { id: 'inverted-triangle', label: 'Inverted Triangle', desc: 'Bahu lebih lebar dari pinggul.', img: '../assets/images/magic/Body/inverted_triangle.png' },
-    { id: 'apple', label: 'Apple', desc: 'Berisi di area perut dan dada.', img: '../assets/images/magic/Body/apple.png' }
+    { id: 'inverted-triangle', label: 'Inverted Triangle', desc: 'Bahu lebih lebar dari pinggul.', img: '../assets/images/magic/Body/Inverted_Triangle.png' },
+    { id: 'apple', label: 'Apple', desc: 'Berisi di area perut dan dada.', img: '../assets/images/magic/Body/Apple.png' }
 ];
 
 // --- DATA SHAPE COWOK ---
