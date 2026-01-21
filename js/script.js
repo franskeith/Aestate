@@ -4,11 +4,12 @@
 
 // Security warning in console
 if (typeof console !== 'undefined') {
-    const style = 'font-size: 24px; color: #ff0000; font-weight: bold; text-shadow: 2px 2px 4px #000;';
-    const style2 = 'font-size: 16px; color: #ff6600;';
-    console.log('%c⚠️ PERINGATAN KEAMANAN', style);
-    console.log('%cJangan paste kode apapun di console ini!', style2);
-    console.log('%cIni bisa membahayakan akun Anda.', style2);
+    const style = 'font-size: 28px; color: #ff0000; font-weight: bold; text-shadow: 2px 2px 4px #000;';
+    const style2 = 'font-size: 18px; color: #ff6600; font-weight: bold;';
+    const style3 = 'font-size: 14px; color: #666; font-style: italic;';
+    console.log('%c⚠️ Eits, jangan nakal yaaa...', style);
+    console.log('%cJangan paste kode apapun atau nanti... tau sendiri :D', style2);
+    console.log('%c- Developer', style3);
 }
 
 // Pre-cache critical images AFTER page load (non-blocking)
